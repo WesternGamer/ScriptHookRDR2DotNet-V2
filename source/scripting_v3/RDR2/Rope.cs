@@ -17,36 +17,38 @@ namespace RDR2
 		}
 
 
-		public int VertexCount => Function.Call<int>(Hash.GET_ROPE_VERTEX_COUNT, Handle);
+		public int VertexCount => PHYSICS.GET_ROPE_VERTEX_COUNT(Handle);
 
 		public float Length
 		{
-           // get => Function.Call(Hash._0x3D69537039F8D824, Handle);
-			set => Function.Call(Hash.ROPE_FORCE_LENGTH, Handle, value);
+           // get => PHYSICS._0x3D69537039F8D824(Handle);
+			set => PHYSICS.ROPE_FORCE_LENGTH(Handle, value);
 		}
 
 		public void ActivatePhysics()
 		{
-			Function.Call(Hash.ACTIVATE_PHYSICS, Handle);
+			PHYSICS.ACTIVATE_PHYSICS(Handle);
 		}
 
 		public void DetachEntity(Entity entity)
 		{
-			Function.Call(Hash.DETACH_ROPE_FROM_ENTITY, Handle, entity.Handle);
+			PHYSICS.DETACH_ROPE_FROM_ENTITY(Handle, entity.Handle);
 		}
 
-		public void AttachEntities(Entity entityOne, Entity entityTwo, float length)
+		// TODO
+		// TODO: BoneID enum
+		/*public void AttachEntities(Entity entityOne, Entity entityTwo, float length)
 		{
 			AttachEntities(entityOne, Vector3.Zero, entityTwo, Vector3.Zero, length);
 		}
 		public void AttachEntities(Entity entityOne, Vector3 positionOne, Entity entityTwo, Vector3 positionTwo, float length)
 		{
-			Function.Call(Hash.ATTACH_ENTITIES_TO_ROPE, Handle, entityOne.Handle, entityTwo.Handle, positionOne.X, positionOne.Y, positionOne.Z, positionTwo.X, positionTwo.Y, positionTwo.Z, length, 0, 0, 0, 0);
-		}
+			PHYSICS.ATTACH_ENTITIES_TO_ROPE(Handle, entityOne.Handle, entityTwo.Handle, positionOne.X, positionOne.Y, positionOne.Z, positionTwo.X, positionTwo.Y, positionTwo.Z, length, 0, 0, "", "", false, 37709, 7966, 0, 0, true, true);
+		}*/
 
 		public Vector3 GetVertexCoord(int vertex)
 		{
-			return Function.Call<Vector3>(Hash.GET_ROPE_VERTEX_COORD, Handle, vertex);
+			return PHYSICS.GET_ROPE_VERTEX_COORD(Handle, vertex);
 		}
 
 		public override void Delete()
@@ -54,17 +56,13 @@ namespace RDR2
 			int handle = Handle;
 			unsafe
 			{
-				Function.Call(Hash.DELETE_ROPE, &handle);
+				PHYSICS.DELETE_ROPE(&handle);
 			}
 		}
 
 		public override bool Exists()
 		{
-			int handle = Handle;
-			unsafe
-			{
-				return Function.Call<bool>(Hash.DOES_ROPE_EXIST, &handle);
-			}
+			return PHYSICS.DOES_ROPE_EXIST(Handle);
 		}
 		public static bool Exists(Rope rope)
 		{

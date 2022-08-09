@@ -44,7 +44,7 @@ namespace RDR2
 		{
 			get
 			{
-				int handle = Function.Call<int>(Hash.GET_PLAYER_PED, Handle);
+				int handle = PLAYER.GET_PLAYER_PED(Handle);
 
 				if (ped == null || handle != ped.Handle)
 				{
@@ -55,72 +55,72 @@ namespace RDR2
 			}
 		}
 
-		public string Name => Function.Call<string>(Hash.GET_PLAYER_NAME, Handle);
+		public string Name => PLAYER.GET_PLAYER_NAME(Handle);
 
 		public static int Money
 		{
-			get => Function.Call<int>((Hash)0x0C02DABFA3B98176);
+			get => MONEY._MONEY_GET_CASH_BALANCE();
 			set {
 				var source = Money;
 				var target = value;
 				if (target < source)
 				{
-					Function.Call((Hash)0x466BC8769CF26A7A, source - target);
+					MONEY._MONEY_DECREMENT_CASH_BALANCE(source - target);
 				}
 				else
 				{
-					Function.Call((Hash)0xBC3422DC91667621, target - source);
+					MONEY._MONEY_INCREMENT_CASH_BALANCE(target - source, 752097756); // ADD_REASON_DEFAULT
 				}
 			}
 		}
 
 		public int WantedLevel
 		{
-			get => Function.Call<int>(Hash.GET_PLAYER_WANTED_LEVEL, Handle);
+			get => PLAYER.GET_PLAYER_WANTED_LEVEL(Handle);
 			set
 			{
-				Function.Call(Hash.SET_PLAYER_WANTED_LEVEL, Handle, value, false);
+				PLAYER.SET_PLAYER_WANTED_LEVEL(Handle, value, false);
 			}
 		}
 
-		public bool IsDead => Function.Call<bool>(Hash.IS_PLAYER_DEAD, Handle);
+		public bool IsDead => PLAYER.IS_PLAYER_DEAD(Handle);
 
 		public bool IsAlive => !IsDead;
 
-		public bool IsAiming => Function.Call<bool>(Hash.IS_PLAYER_FREE_AIMING, Handle);
+		public bool IsAiming => PLAYER.IS_PLAYER_FREE_AIMING(Handle);
 
-		public bool IsClimbing => Function.Call<bool>(Hash.IS_PLAYER_CLIMBING, Handle);
+		public bool IsClimbing => PLAYER.IS_PLAYER_CLIMBING(Handle);
 
-		public bool IsRidingTrain => Function.Call<bool>(Hash.IS_PLAYER_RIDING_TRAIN, Handle);
+		public bool IsRidingTrain => PLAYER.IS_PLAYER_RIDING_TRAIN(Handle);
 
 
-		public bool IsPlaying => Function.Call<bool>(Hash.IS_PLAYER_PLAYING, Handle);
+		public bool IsPlaying => PLAYER.IS_PLAYER_PLAYING(Handle);
 
 		public bool IsInvincible
 		{
-			get => Function.Call<bool>(Hash.GET_PLAYER_INVINCIBLE, Handle);
-			set => Function.Call(Hash.SET_PLAYER_INVINCIBLE, Handle, value);
+			get => PLAYER.GET_PLAYER_INVINCIBLE(Handle);
+			set => PLAYER.SET_PLAYER_INVINCIBLE(Handle, value);
 		}
 
 		public bool IgnoredByEveryone
 		{
-			set => Function.Call(Hash.SET_EVERYONE_IGNORE_PLAYER, Handle, value);
+			set => PLAYER.SET_EVERYONE_IGNORE_PLAYER(Handle, value);
 		}
 
 		public bool CanUseCover
 		{
-			set => Function.Call(Hash.SET_PLAYER_CAN_USE_COVER, Handle, value);
+			set => PLAYER.SET_PLAYER_CAN_USE_COVER(Handle, value);
 		}
 
 		public bool CanStartMission
 		{
-			get => Function.Call<bool>(Hash.CAN_PLAYER_START_MISSION, Handle);
+			get => PLAYER.CAN_PLAYER_START_MISSION(Handle);
 		}
 
-		public bool CanControlCharacter
+		public bool CanControlPlayer
 		{
-			get => Function.Call<bool>(Hash.IS_PLAYER_CONTROL_ON, Handle);
-			set => Function.Call(Hash.SET_PLAYER_CONTROL, Handle, value, 0, 0);
+			get => PLAYER.IS_PLAYER_CONTROL_ON(Handle);
+			set => PLAYER.SET_PLAYER_CONTROL(Handle, value, 0, false);
 		}
 
 		public bool ChangeModel(Model model)
@@ -130,40 +130,40 @@ namespace RDR2
 				return false;
 			}
 
-			Function.Call(Hash.SET_PLAYER_MODEL, Handle, model.Hash);
+			PLAYER.SET_PLAYER_MODEL(Handle, (uint)model.Hash, false);
 			model.MarkAsNoLongerNeeded();
 			return true;
 		}
 
 
-		public Vehicle LastVehicle => Function.Call<Vehicle>(Hash.GET_PLAYERS_LAST_VEHICLE);
+		public Vehicle LastVehicle => (Vehicle)Vehicle.FromHandle(PLAYER.GET_PLAYERS_LAST_VEHICLE());
 
-		public bool IsTargetting(Entity entity)
+		public bool IsAimingAtEntity(Entity entity)
 		{
-			return Function.Call<bool>(Hash.IS_PLAYER_FREE_AIMING_AT_ENTITY, Handle, entity.Handle, 0);
+			return PLAYER.IS_PLAYER_FREE_AIMING_AT_ENTITY(Handle, entity.Handle);
 		}
 
-		public bool IsTargettingAnything => Function.Call<bool>(Hash.IS_PLAYER_TARGETTING_ANYTHING, Handle);
+		public bool IsTargettingAnything => PLAYER.IS_PLAYER_TARGETTING_ANYTHING(Handle);
 
 
 		public void DisableFiringThisFrame(bool toggle)
 		{
-			Function.Call(Hash.DISABLE_PLAYER_FIRING, Handle, toggle);
+			PLAYER.DISABLE_PLAYER_FIRING(Handle, toggle);
 		}
 
 		public void SetSuperJumpThisFrame()
 		{
-			Function.Call(Hash.SET_SUPER_JUMP_THIS_FRAME, Handle);
+			MISC.SET_SUPER_JUMP_THIS_FRAME(Handle);
 		}
 
 		public void SetMayNotEnterAnyVehicleThisFrame()
 		{
-			Function.Call(Hash.SET_PLAYER_MAY_NOT_ENTER_ANY_VEHICLE, Handle);
+			PLAYER.SET_PLAYER_MAY_NOT_ENTER_ANY_VEHICLE(Handle);
 		}
 
 		public void SetMayOnlyEnterThisVehicleThisFrame(Vehicle vehicle)
 		{
-			Function.Call(Hash.SET_PLAYER_MAY_ONLY_ENTER_THIS_VEHICLE, Handle, vehicle);
+			PLAYER.SET_PLAYER_MAY_ONLY_ENTER_THIS_VEHICLE(Handle, vehicle.Handle);
 		}
 
 		public bool Exists()

@@ -19,7 +19,7 @@ namespace RDR2
 			int handle;
 			unsafe
 			{
-				Function.Call(Hash.OPEN_SEQUENCE_TASK, &handle);
+				TASK.OPEN_SEQUENCE_TASK(&handle);
 			}
 			Handle = handle;
 
@@ -43,7 +43,7 @@ namespace RDR2
 			int handle = Handle;
 			unsafe
 			{
-				Function.Call(Hash.CLEAR_SEQUENCE_TASK, &handle);
+				TASK.CLEAR_SEQUENCE_TASK(&handle);
 			}
 			GC.SuppressFinalize(this);
 		}
@@ -88,8 +88,8 @@ namespace RDR2
 				return;
 			}
 
-			Function.Call(Hash.SET_SEQUENCE_TO_REPEAT, Handle, repeat);
-			Function.Call(Hash.CLOSE_SEQUENCE_TASK, Handle);
+			TASK.SET_SEQUENCE_TO_REPEAT(Handle, repeat);
+			TASK.CLOSE_SEQUENCE_TASK(Handle);
 
 			IsClosed = true;
 		}

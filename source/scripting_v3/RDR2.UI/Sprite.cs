@@ -76,7 +76,7 @@ namespace RDR2.UI
 			Rotation = rotation;
 			Centered = centered;
 
-			Function.Call(Hash.REQUEST_STREAMED_TEXTURE_DICT, _pinnedDict);
+			TXD.REQUEST_STREAMED_TEXTURE_DICT(_pinnedDict, false);
 
 			if (_activeTextures.ContainsKey(textureDict.ToLower()))
 			{
@@ -109,7 +109,7 @@ namespace RDR2.UI
 
 					if (current == 1)
 					{
-						Function.Call(Hash.SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED, _pinnedDict);
+						TXD.SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(_pinnedDict);
 						_activeTextures.Remove(_textureDict.ToLower());
 					}
 					else
@@ -120,7 +120,7 @@ namespace RDR2.UI
 				else
 				{
 					// In practice this should never get executed
-					Function.Call(Hash.SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED, _pinnedDict);
+					TXD.SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(_pinnedDict);
 				}
 			}
 		}
@@ -226,7 +226,7 @@ namespace RDR2.UI
 
 		void InternalDraw(SizeF offset, float screenWidth, float screenHeight)
 		{
-			if (!Enabled || !Function.Call<bool>(Hash.HAS_STREAMED_TEXTURE_DICT_LOADED, _textureDict))
+			if (!Enabled || !TXD.HAS_STREAMED_TEXTURE_DICT_LOADED(_textureDict))
 			{
 				return;
 			}
@@ -242,7 +242,7 @@ namespace RDR2.UI
 				positionY += scaleY * 0.5f;
 			}
 
-			Function.Call(Hash.DRAW_SPRITE, _pinnedDict, _pinnedName, positionX, positionY, scaleX, scaleY, Rotation, Color.R, Color.G, Color.B, Color.A);
+			GRAPHICS.DRAW_SPRITE(_pinnedDict, _pinnedName, positionX, positionY, scaleX, scaleY, Rotation, Color.R, Color.G, Color.B, Color.A, false);
 		}
 	}
 }

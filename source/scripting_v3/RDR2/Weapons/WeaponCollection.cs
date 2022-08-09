@@ -26,7 +26,7 @@ namespace RDR2
 			{
 				if (!weapons.TryGetValue(hash, out Weapon weapon))
 				{
-					if (!Function.Call<bool>(Hash.HAS_PED_GOT_WEAPON, owner.Handle, (uint)hash, true, 0))
+					if (!WEAPON.HAS_PED_GOT_WEAPON(owner.Handle, hash, 0, false))
 					{
 						return null;
 					}
@@ -43,13 +43,13 @@ namespace RDR2
 		{
 			get
 			{
-				int currentWeapon;
+				uint currentWeapon;
 				unsafe
 				{
-					Function.Call(Hash.GET_CURRENT_PED_WEAPON, owner.Handle, &currentWeapon, true);
+					WEAPON.GET_CURRENT_PED_WEAPON(owner.Handle, &currentWeapon, true, 0, false);
 				}
 
-				var hash = (uint)currentWeapon;
+				var hash = currentWeapon;
 
 				if (weapons.ContainsKey(hash))
 				{
@@ -69,7 +69,7 @@ namespace RDR2
 		{
 			get
 			{
-				uint hash = Function.Call<uint>(Hash.GET_BEST_PED_WEAPON, owner.Handle, 0, 0);
+				uint hash = WEAPON.GET_BEST_PED_WEAPON(owner.Handle, false, false);
 
 				if (weapons.ContainsKey(hash))
 				{
@@ -87,24 +87,24 @@ namespace RDR2
 
 		public bool HasWeapon(uint wHash)
 		{
-			return Function.Call<bool>(Hash.HAS_PED_GOT_WEAPON, owner.Handle, (uint)wHash, 0 ,0);
+			return WEAPON.HAS_PED_GOT_WEAPON(owner.Handle, (uint)wHash, 0, false);
 		}
 
 		public bool IsWeaponValid(uint hash)
 		{
-			return Function.Call<bool>(Hash.IS_WEAPON_VALID, (uint)hash);
+			return WEAPON.IS_WEAPON_VALID(hash);
 		}
 
-		public Prop CurrentWeaponObject
+		public Entity CurrentWeaponEntity
 		{
 			get
 			{
-				if (Current.Hash == Function.Call<WeaponHash>(Hash.GET_HASH_KEY, "WEAPON_UNARMED"))
+				if (Current.Hash == (WeaponHash)MISC.GET_HASH_KEY("WEAPON_UNARMED"))
 				{
 					return null;
 				}
 
-				return new Prop(Function.Call<int>(Hash.GET_CURRENT_PED_WEAPON_ENTITY_INDEX, owner.Handle, 0));
+				return Entity.FromHandle(WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(owner.Handle, 0));
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace RDR2
 				return false;
 			}
 
-			Function.Call(Hash.SET_CURRENT_PED_WEAPON, owner.Handle, (uint)weapon.Hash, true);
+			WEAPON.SET_CURRENT_PED_WEAPON(owner.Handle, (uint)weapon.Hash, true, 0, false, false);
 
 			return true;
 		}
@@ -125,12 +125,12 @@ namespace RDR2
 		}
 		public bool Select(uint wHash, bool equipNow)
 		{
-			if (!Function.Call<bool>(Hash.HAS_PED_GOT_WEAPON, owner.Handle, (uint)wHash))
+			if (!WEAPON.HAS_PED_GOT_WEAPON(owner.Handle, wHash, 0, false))
 			{
 				return false;
 			}
 
-			Function.Call(Hash.SET_CURRENT_PED_WEAPON, owner.Handle, (uint)wHash, equipNow);
+			WEAPON.SET_CURRENT_PED_WEAPON(owner.Handle, wHash, equipNow, 0, false, false);
 
 			return true;
 		}
@@ -149,7 +149,7 @@ namespace RDR2
 			}
 			else
 			{
-				Function.Call(Hash.GIVE_DELAYED_WEAPON_TO_PED, owner.Handle, (uint)weapon.Hash, ammoCount);
+				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(owner.Handle, (uint)weapon.Hash, ammoCount, false, 752097756); // ADD_REASON_DEFAULT
 			}
 
 			return weapon;
@@ -169,12 +169,12 @@ namespace RDR2
 		}
 		public void Remove(uint wHash)
 		{
-			Function.Call(Hash.REMOVE_WEAPON_FROM_PED, owner.Handle, (uint)wHash, 0, 0);
+			WEAPON.REMOVE_WEAPON_FROM_PED(owner.Handle, (uint)wHash, false, unchecked((uint)-142743235)); // REMOVE_REASON_DEFAULT
 		}
 
 		public void RemoveAll()
 		{
-			Function.Call(Hash.REMOVE_ALL_PED_WEAPONS, owner.Handle, true, 0);
+			WEAPON.REMOVE_ALL_PED_WEAPONS(owner.Handle, true, true);
 
 			weapons.Clear();
 		}

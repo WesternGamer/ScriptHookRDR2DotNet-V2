@@ -15,23 +15,23 @@ namespace RDR2
 			Handle = handle;
 		}
 
-		public Vector3 Position => Function.Call<Vector3>(Hash.GET_PICKUP_COORDS, Handle);
+		public Vector3 Position => OBJECT.GET_PICKUP_COORDS(Handle);
 
-		public bool IsCollected => Function.Call<bool>(Hash.HAS_PICKUP_BEEN_COLLECTED, Handle);
+		public bool IsCollected => OBJECT.HAS_PICKUP_BEEN_COLLECTED(Handle);
 
 		public bool ObjectExists()
 		{
-			return Function.Call<bool>(Hash.DOES_PICKUP_OBJECT_EXIST, Handle);
+			return OBJECT.DOES_PICKUP_OBJECT_EXIST(Handle);
 		}
 
 		public override void Delete()
 		{
-			Function.Call(Hash.REMOVE_PICKUP, Handle);
+			OBJECT.REMOVE_PICKUP(Handle);
 		}
 
 		public override bool Exists()
 		{
-			return Function.Call<bool>(Hash.DOES_PICKUP_EXIST, Handle);
+			return OBJECT.DOES_PICKUP_EXIST(Handle);
 		}
 		public static bool Exists(Pickup pickup)
 		{

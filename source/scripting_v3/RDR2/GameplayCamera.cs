@@ -10,9 +10,8 @@ namespace RDR2
 {
 	public static class GameplayCamera
 	{
-		public static Vector3 Position => Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_COORD);
-
-		public static Vector3 Rotation => Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_ROT, 2);
+		public static Vector3 Position => CAM.GET_GAMEPLAY_CAM_COORD();
+		public static Vector3 Rotation => CAM.GET_GAMEPLAY_CAM_ROT(2);
 
 		public static Vector3 Direction
 		{
@@ -56,36 +55,35 @@ namespace RDR2
 
 		public static void ClampYaw(float min, float max)
 		{
-			Function.Call(Hash._CLAMP_GAMEPLAY_CAM_YAW, min, max);
+			CAM._CLAMP_GAMEPLAY_CAM_YAW(min, max);
 		}
 		public static void ClampPitch(float min, float max)
 		{
-			Function.Call(Hash._CLAMP_GAMEPLAY_CAM_PITCH, min, max);
+			CAM._CLAMP_GAMEPLAY_CAM_PITCH(min, max);
 		}
 
 		public static float RelativePitch
 		{
-			get => Function.Call<float>(Hash.GET_GAMEPLAY_CAM_RELATIVE_PITCH);
-			set => Function.Call(Hash.SET_GAMEPLAY_CAM_RELATIVE_PITCH, value, 1f);
+			get => CAM.GET_GAMEPLAY_CAM_RELATIVE_PITCH();
+			set => CAM.SET_GAMEPLAY_CAM_RELATIVE_PITCH(value, 1.0f);
 		}
 
 		public static float RelativeHeading
 		{
-			get => Function.Call<float>(Hash.GET_GAMEPLAY_CAM_RELATIVE_HEADING);
-			set => Function.Call(Hash.SET_GAMEPLAY_CAM_RELATIVE_HEADING, value);
+			get => CAM.GET_GAMEPLAY_CAM_RELATIVE_HEADING();
+			set => CAM.SET_GAMEPLAY_CAM_RELATIVE_HEADING(value, 1.0f);
 		}
 
-		public static float Zoom => Function.Call<float>((Hash)0xB4132CA1B0EE1365);
-		public static float FieldOfView => Function.Call<float>(Hash.GET_GAMEPLAY_CAM_FOV);
+		public static float FieldOfView => CAM.GET_GAMEPLAY_CAM_FOV();
 
-		public static bool IsRendering => Function.Call<bool>(Hash.IS_GAMEPLAY_CAM_RENDERING);
+		public static bool IsRendering => CAM.IS_GAMEPLAY_CAM_RENDERING();
 
-		public static bool IsFirstPersonAimCamActive => Function.Call<bool>(Hash.IS_FIRST_PERSON_AIM_CAM_ACTIVE);
+		public static bool IsFirstPersonAimCamActive => CAM.IS_FIRST_PERSON_AIM_CAM_ACTIVE();
 
-		public static bool IsLookingBehind => Function.Call<bool>(Hash.IS_GAMEPLAY_CAM_LOOKING_BEHIND);
+		public static bool IsLookingBehind => CAM.IS_GAMEPLAY_CAM_LOOKING_BEHIND();
 
 
-		public static bool IsShaking => Function.Call<bool>(Hash.IS_GAMEPLAY_CAM_SHAKING);
+		public static bool IsShaking => CAM.IS_GAMEPLAY_CAM_SHAKING();
 
 		
 	}

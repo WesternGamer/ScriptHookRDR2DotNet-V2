@@ -21,6 +21,28 @@ namespace RDR2
 
 		public unsafe ulong* MemoryAddress => (ulong*)address.ToPointer();
 
+		/*public unsafe void Set<T>(T value)
+		{
+			if (typeof(T) == typeof(int)) {
+				RDR2DN.NativeMemory.WriteInt32(address, Convert.ToInt32(value));
+			}
+			else if (typeof(T) == typeof(float)) {
+				RDR2DN.NativeMemory.WriteFloat(address, (float)Convert.ToDouble(value));
+			}
+			else if (typeof(T) == typeof(string)) {
+				string _value = Convert.ToString(value);
+				int size = Encoding.UTF8.GetByteCount(_value);
+				Marshal.Copy(Encoding.UTF8.GetBytes(_value), 0, address, size);
+				*((byte*)MemoryAddress + size) = 0;
+			}
+			else if (typeof(T) == typeof(Vector3)) {
+				Vector3 vec = (Vector3)Convert.ChangeType(value, typeof(Vector3));
+				RDR2DN.NativeMemory.WriteVector3(address, vec.ToArray());
+			}
+
+			throw new InvalidCastException("Cannot set type '" + value.GetType() + "' to global");
+		}*/
+
 		public unsafe void SetInt(int value)
 		{
 			RDR2DN.NativeMemory.WriteInt32(address, value);

@@ -20,7 +20,7 @@ namespace RDR2
 
         public void Repair()
         {
-            Function.Call(Hash.SET_VEHICLE_FIXED, Handle);
+            VEHICLE.SET_VEHICLE_FIXED(Handle);
         }
 
 
@@ -28,17 +28,17 @@ namespace RDR2
 
         public bool IsExtraOn(int extra)
         {
-            return Function.Call<bool>(Hash.IS_VEHICLE_EXTRA_TURNED_ON, Handle, extra);
+            return VEHICLE.IS_VEHICLE_EXTRA_TURNED_ON(Handle, extra);
         }
 
         public bool ExtraExists(int extra)
         {
-            return Function.Call<bool>(Hash.DOES_EXTRA_EXIST, Handle, extra);
+            return VEHICLE.DOES_EXTRA_EXIST(Handle, extra);
         }
 
         public void ToggleExtra(int extra, bool toggle)
         {
-            Function.Call(Hash.SET_VEHICLE_EXTRA, Handle, extra, !toggle);
+            VEHICLE.SET_VEHICLE_EXTRA(Handle, extra, !toggle);
         }
 
         #endregion
@@ -47,12 +47,12 @@ namespace RDR2
 
         public bool IsStolen
         {
-            set => Function.Call(Hash.SET_VEHICLE_IS_STOLEN, Handle, value);
+            set => VEHICLE.SET_VEHICLE_IS_STOLEN(Handle, value);
         }
 
         /*public bool IsWanted
 		{
-			set => Function.Call(Hash.SET_VEHICLE_IS_WANTED, Handle, value);
+			set => VEHICLE.SET_VEHICLE_IS_WANTED(Handle, value);
 		}*/
 
 
@@ -62,8 +62,8 @@ namespace RDR2
 
         public float BodyHealth
         {
-            get => Function.Call<float>(Hash.GET_VEHICLE_BODY_HEALTH, Handle);
-            set => Function.Call(Hash.SET_VEHICLE_BODY_HEALTH, Handle, value);
+            get => VEHICLE.GET_VEHICLE_BODY_HEALTH(Handle);
+            set => VEHICLE.SET_VEHICLE_BODY_HEALTH(Handle, value);
         }
 
         #endregion
@@ -73,17 +73,17 @@ namespace RDR2
 
         public float Speed
         {
-            get => Function.Call<float>(Hash.GET_ENTITY_SPEED, Handle);
+            get => ENTITY.GET_ENTITY_SPEED(Handle);
             set
             {
                 if (Model.IsTrain)
                 {
-                    Function.Call(Hash.SET_TRAIN_SPEED, Handle, value);
-                    Function.Call(Hash.SET_TRAIN_CRUISE_SPEED, Handle, value);
+                    VEHICLE.SET_TRAIN_SPEED(Handle, value);
+                    VEHICLE.SET_TRAIN_CRUISE_SPEED(Handle, value);
                 }
                 else
                 {
-                    Function.Call(Hash.SET_VEHICLE_FORWARD_SPEED, Handle, value);
+                    VEHICLE.SET_VEHICLE_FORWARD_SPEED(Handle, value);
                 }
             }
         }
@@ -96,8 +96,8 @@ namespace RDR2
         {
             get
             {
-                int health = Function.Call<int>(Hash.GET_ENTITY_HEALTH, Handle);
-				int maxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Handle, 0);
+                int health = ENTITY.GET_ENTITY_HEALTH(Handle);
+				int maxHealth = ENTITY.GET_ENTITY_MAX_HEALTH(Handle, false);
 
 				if (health < maxHealth)
                 {
@@ -112,40 +112,40 @@ namespace RDR2
 		}
 		public bool IsDriveable
 		{
-			get => Function.Call<bool>(Hash.IS_VEHICLE_DRIVEABLE, Handle, 1, 0);
-			set => Function.Call(Hash.SET_VEHICLE_UNDRIVEABLE, Handle, !value);
+			get => VEHICLE.IS_VEHICLE_DRIVEABLE(Handle, true, false);
+			set => VEHICLE.SET_VEHICLE_UNDRIVEABLE(Handle, !value);
 		}
 
 		public bool IsAxlesStrong
 		{
-			set => Function.Call<bool>(Hash.SET_VEHICLE_HAS_STRONG_AXLES, Handle, value);
+			set => VEHICLE.SET_VEHICLE_HAS_STRONG_AXLES(Handle, value);
 		}
 
 		public bool CanWheelsBreak
 		{
-			set => Function.Call(Hash.SET_VEHICLE_WHEELS_CAN_BREAK, Handle, value);
+			set => VEHICLE.SET_VEHICLE_WHEELS_CAN_BREAK(Handle, value);
 		}
 
 		public bool CanBeVisiblyDamaged
 		{
-			set => Function.Call(Hash.SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED, Handle, value);
+			set => VEHICLE.SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(Handle, value);
 		}
 
 
 		public void ApplyDamage(Vector3 loc, float damageAmount, float radius)
 		{
-			Function.Call(Hash.SET_VEHICLE_DAMAGE, loc.X, loc.Y, loc.Z, damageAmount, radius, true);
+			VEHICLE.SET_VEHICLE_DAMAGE(Handle, loc.X, loc.Y, loc.Z, damageAmount, radius, true);
 		}
 
 		#endregion
 
 		#region Occupants
 
-		public Ped Driver => GetPedOnSeat(-1);
+		public Ped Driver => GetPedInSeat(-1);
 
-		public Ped GetPedOnSeat(int seat)
+		public Ped GetPedInSeat(int seat)
 		{
-			return Function.Call<Ped>(Hash.GET_PED_IN_VEHICLE_SEAT, Handle, (int)(seat));
+			return (Ped)FromHandle(VEHICLE.GET_PED_IN_VEHICLE_SEAT(Handle, seat));
 		}
 
 		public Ped[] Occupants
@@ -171,7 +171,7 @@ namespace RDR2
 
 				for (int i = 0, seats = PassengerSeats; i < seats; i++)
 				{
-					Ped ped = GetPedOnSeat((int)i);
+					Ped ped = GetPedInSeat((int)i);
 
 					if (!Entity.Exists(ped))
 					{
@@ -205,7 +205,7 @@ namespace RDR2
 
 				for (int i = 0, seats = PassengerSeats; i < seats; i++)
 				{
-					Ped ped = GetPedOnSeat((int)i);
+					Ped ped = GetPedInSeat((int)i);
 
 					if (!Entity.Exists(ped))
 					{
@@ -225,9 +225,9 @@ namespace RDR2
 			}
 		}
 
-		public int PassengerCount => Function.Call<int>(Hash.GET_VEHICLE_NUMBER_OF_PASSENGERS, Handle);
+		public int PassengerCount => VEHICLE.GET_VEHICLE_NUMBER_OF_PASSENGERS(Handle);
 
-		public int PassengerSeats => Function.Call<int>(Hash.GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS, Handle);
+		public int PassengerSeats => VEHICLE.GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(Handle);
 
 		public Ped CreatePedOnSeat(int seat, RDR2.Model model)
 		{
@@ -236,42 +236,44 @@ namespace RDR2
 				return null;
 			}
 
-			return Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, Handle, 26, model.Hash, (int)seat, 1, 1);
+			return (Ped)FromHandle(PED.CREATE_PED_INSIDE_VEHICLE(Handle, (uint)model.Hash, seat, true, true, false));
 		}
 
 		
 		public bool IsSeatFree(int seat)
 		{
-			return Function.Call<bool>(Hash.IS_VEHICLE_SEAT_FREE, Handle, (int)seat);
+			return VEHICLE.IS_VEHICLE_SEAT_FREE(Handle, (int)seat);
 		}
 
 		#endregion
 
 		#region Positioning
 
-		public bool IsStopped => Function.Call<bool>(Hash.IS_VEHICLE_STOPPED, Handle);
+		public bool IsStopped => VEHICLE.IS_VEHICLE_STOPPED(Handle);
 
-		public bool IsOnAllWheels => Function.Call<bool>(Hash.IS_VEHICLE_ON_ALL_WHEELS, Handle);
+		public bool IsOnAllWheels => VEHICLE.IS_VEHICLE_ON_ALL_WHEELS(Handle);
 
 		public bool PlaceOnGround()
 		{
-			return Function.Call<bool>(Hash.SET_VEHICLE_ON_GROUND_PROPERLY, Handle, 0);
+			return VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(Handle, false);
 		}
 
 		public void PlaceOnNextStreet()
 		{
 			Vector3 pos = Position;
-			OutputArgument outPos = new OutputArgument();
 
 			for (int i = 1; i < 40; i++)
 			{
 				float heading;
-				float val;
+				ulong unk;
+				Vector3 outPos = Vector3.Zero;
+				Vector3 newPos = outPos;
 				unsafe
 				{
-					Function.Call(Hash.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING, pos.X, pos.Y, pos.Z, i, outPos, &heading, &val, 1, 0x40400000, 0);
+					if (PATHFIND.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(pos.X, pos.Y, pos.Z, i, &outPos, &heading, &unk, 1, 3.0f, 0.0f)) {
+						newPos = outPos;
+					}
 				}
-				Vector3 newPos = outPos.GetResult<Vector3>();
 
 				if (1 == 1)
 				{
@@ -285,7 +287,7 @@ namespace RDR2
 
 		public bool ProvidesCover
 		{
-			set => Function.Call(Hash.SET_VEHICLE_PROVIDES_COVER, Handle, value);
+			set => VEHICLE.SET_VEHICLE_PROVIDES_COVER(Handle, value);
 		}
 
 		#endregion

@@ -45,7 +45,7 @@ namespace RDR2.UI
 		/// </summary>
 		public static void ShowCursorThisFrame()
 		{
-			Function.Call(Hash._SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME);
+			_NAMESPACE30._SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME();
 		}
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace RDR2.UI
 		/// </summary>
 		public static CursorSprite CursorSprite
 		{
-			set => Function.Call(Hash._SET_MOUSE_CURSOR_SPRITE, value);
+			set => _NAMESPACE30._SET_MOUSE_CURSOR_SPRITE((int)value);
 		}
 
 		/// <summary>
@@ -61,8 +61,8 @@ namespace RDR2.UI
 		/// </summary>
 		public static bool IsVisible
 		{
-			get => !Function.Call<bool>(Hash.IS_HUD_HIDDEN);
-			set => Function.Call(Hash.DISPLAY_HUD, value);
+			get => !HUD.IS_HUD_HIDDEN();
+			set => HUD.DISPLAY_HUD(value);
 		}
 
 		/// <summary>
@@ -70,8 +70,8 @@ namespace RDR2.UI
 		/// </summary>
 		public static bool IsRadarVisible
 		{
-			get => !Function.Call<bool>(Hash.IS_RADAR_HIDDEN);
-			set => Function.Call(Hash.DISPLAY_RADAR, value);
+			get => !HUD.IS_RADAR_HIDDEN();
+			set => MAP.DISPLAY_RADAR(value);
 		}
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace RDR2.UI
 		/// </value>
 		public static int RadarZoom
 		{
-			set => Function.Call(Hash.SET_RADAR_ZOOM, value);
+			set => MAP.SET_RADAR_ZOOM(value);
 		}
 	}
 }

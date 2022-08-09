@@ -272,16 +272,10 @@ namespace RDR2.UI
 			float y = (Position.Y + offset.Height) / screenHeight;
 			float w = WrapWidth / screenWidth;
 
-			if (Shadow)
-			{
-				Function.Call(Hash.SET_TEXT_DROPSHADOW,2,0,0,0,255);
-			}
-
-			Function.Call(Hash.SET_TEXT_SCALE, Scale, Scale);
-			Function.Call(Hash._SET_TEXT_COLOR, Color.R, Color.G, Color.B, Color.A);
-			string varString = Function.Call<string>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", _caption);
-			Function.Call(Hash._DISPLAY_TEXT, varString, x, y);
-
+			string varString = MISC.VAR_STRING(10, "LITERAL_STRING", _caption);
+			UIDEBUG._BG_SET_TEXT_SCALE(Scale, Scale);
+			UIDEBUG._BG_SET_TEXT_COLOR(Color.R, Color.G, Color.B, Color.A);
+			UIDEBUG._BG_DISPLAY_TEXT(varString, x, y);
 		}
 	}
 }

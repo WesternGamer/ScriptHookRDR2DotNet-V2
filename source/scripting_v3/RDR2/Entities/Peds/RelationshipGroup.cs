@@ -12,13 +12,13 @@ namespace RDR2
 	{
 		RelationshipGroup(string name) : this()
 		{
-			int hashArg;
+			uint hashArg;
 			unsafe
 			{
-				Function.Call(Native.Hash.ADD_RELATIONSHIP_GROUP, name, &hashArg);
+				PED.ADD_RELATIONSHIP_GROUP(name, &hashArg);
 			}
 
-			Hash = hashArg;
+			Hash = (int)hashArg;
 		}
 		public RelationshipGroup(int hash) : this()
 		{
@@ -47,32 +47,32 @@ namespace RDR2
 
 		public Relationship GetRelationshipBetweenGroups(RelationshipGroup targetGroup)
 		{
-			return Function.Call<Relationship>(Native.Hash.GET_RELATIONSHIP_BETWEEN_GROUPS, Hash, targetGroup.NativeValue);
+			return (Relationship)PED.GET_RELATIONSHIP_BETWEEN_GROUPS((uint)Hash, (uint)targetGroup.NativeValue);
 		}
 
 		public void SetRelationshipBetweenGroups(RelationshipGroup targetGroup, Relationship relationship, bool bidirectionally = false)
 		{
-			Function.Call(Native.Hash.SET_RELATIONSHIP_BETWEEN_GROUPS, relationship, Hash, targetGroup.NativeValue);
+			PED.SET_RELATIONSHIP_BETWEEN_GROUPS((int)relationship, (uint)Hash, (uint)targetGroup.NativeValue);
 
 			if (bidirectionally)
 			{
-				Function.Call(Native.Hash.SET_RELATIONSHIP_BETWEEN_GROUPS, relationship, targetGroup.NativeValue, Hash);
+				PED.SET_RELATIONSHIP_BETWEEN_GROUPS((int)relationship, (uint)targetGroup.NativeValue, (uint)Hash);
 			}
 		}
 
 		public void ClearRelationshipBetweenGroups(RelationshipGroup targetGroup, Relationship relationship, bool bidirectionally = false)
 		{
-			Function.Call(Native.Hash.CLEAR_RELATIONSHIP_BETWEEN_GROUPS, relationship, Hash, targetGroup.NativeValue);
+			PED.CLEAR_RELATIONSHIP_BETWEEN_GROUPS((int)relationship, (uint)Hash, (uint)targetGroup.NativeValue);
 
 			if (bidirectionally)
 			{
-				Function.Call(Native.Hash.CLEAR_RELATIONSHIP_BETWEEN_GROUPS, relationship, targetGroup.NativeValue, Hash);
+				PED.CLEAR_RELATIONSHIP_BETWEEN_GROUPS((int)relationship, (uint)targetGroup.NativeValue, (uint)Hash);
 			}
 		}
 
 		public void Remove()
 		{
-			Function.Call(Native.Hash.REMOVE_RELATIONSHIP_GROUP, Hash);
+			PED.REMOVE_RELATIONSHIP_GROUP((uint)Hash);
 		}
 
 		public bool Equals(RelationshipGroup group)

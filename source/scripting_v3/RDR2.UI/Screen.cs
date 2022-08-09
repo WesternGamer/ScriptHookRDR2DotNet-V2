@@ -35,12 +35,12 @@ namespace RDR2.UI
 
 		public static bool IsCinematicModeEnabled
 		{
-			set => Function.Call(Hash.SET_CINEMATIC_BUTTON_ACTIVE, value);
+			set => CAM.SET_CINEMATIC_BUTTON_ACTIVE(value);
 		}
 
 		public static bool IsCinematicModeActive
 		{
-			set => Function.Call(Hash.SET_CINEMATIC_MODE_ACTIVE, value);
+			set => CAM.SET_CINEMATIC_MODE_ACTIVE(value);
 		}
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace RDR2.UI
 				int width, height;
 				unsafe
 				{
-					Function.Call(Hash.GET_SCREEN_RESOLUTION, &width, &height);
+					GRAPHICS.GET_SCREEN_RESOLUTION(&width, &height);
 				}
 
 				return new Size(width, height);
@@ -76,44 +76,44 @@ namespace RDR2.UI
 		/// <value>
 		/// <c>true</c> if the screen is faded in; otherwise, <c>false</c>.
 		/// </value>
-		public static bool IsFadedIn => Function.Call<bool>(Hash.IS_SCREEN_FADED_IN);
+		public static bool IsFadedIn => CAM.IS_SCREEN_FADED_IN();
 		/// <summary>
 		/// Gets a value indicating whether the screen is faded out.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if the screen is faded out; otherwise, <c>false</c>.
 		/// </value>
-		public static bool IsFadedOut => Function.Call<bool>(Hash.IS_SCREEN_FADED_OUT);
+		public static bool IsFadedOut => CAM.IS_SCREEN_FADED_OUT();
 		/// <summary>
 		/// Gets a value indicating whether the screen is fading in.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if the screen is fading in; otherwise, <c>false</c>.
 		/// </value>
-		public static bool IsFadingIn => Function.Call<bool>(Hash.IS_SCREEN_FADING_IN);
+		public static bool IsFadingIn => CAM.IS_SCREEN_FADING_IN();
 		/// <summary>
 		/// Gets a value indicating whether the screen is fading out.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if the screen is fading out; otherwise, <c>false</c>.
 		/// </value>
-		public static bool IsFadingOut => Function.Call<bool>(Hash.IS_SCREEN_FADING_OUT);
+		public static bool IsFadingOut => CAM.IS_SCREEN_FADING_OUT();
 
 		/// <summary>
 		/// Fades the screen in over a specific time, useful for transitioning
 		/// </summary>
-		/// <param name="time">The time for the fade in to take</param>
-		public static void FadeIn(int time)
+		/// <param name="duration">The time for the fade in to take</param>
+		public static void FadeIn(int duration)
 		{
-			Function.Call(Hash.DO_SCREEN_FADE_IN, time);
+			CAM.DO_SCREEN_FADE_IN(duration);
 		}
 		/// <summary>
 		/// Fades the screen out over a specific time, useful for transitioning
 		/// </summary>
-		/// <param name="time">The time for the fade out to take</param>
-		public static void FadeOut(int time)
+		/// <param name="duration">The time for the fade out to take</param>
+		public static void FadeOut(int duration)
 		{
-			Function.Call(Hash.DO_SCREEN_FADE_OUT, time);
+			CAM.DO_SCREEN_FADE_OUT(duration);
 		}
 
 		// Screen Effects
@@ -125,7 +125,7 @@ namespace RDR2.UI
 		/// <returns><c>true</c> if the screen effect is active; otherwise, <c>false</c>.</returns>
 		public static bool IsEffectActive(ScreenEffect effectName)
 		{
-			return Function.Call<bool>(Hash.ANIMPOSTFX_IS_RUNNING, _effects[(int)effectName]);
+			return GRAPHICS.ANIMPOSTFX_IS_RUNNING(_effects[(int)effectName]);
 		}
 
 		/// <summary>
@@ -133,7 +133,7 @@ namespace RDR2.UI
 		/// </summary>
 		public static void StopEffects()
 		{
-			Function.Call(Hash.ANIMPOSTFX_STOP_ALL);
+			GRAPHICS.ANIMPOSTFX_STOP_ALL();
 		}
 
 		// Text
@@ -142,14 +142,16 @@ namespace RDR2.UI
 		/// Shows a subtitle at the bottom of the screen for a given time
 		/// </summary>
 		/// <param name="message">The message to display.</param>
-		public static void ShowSubtitle(string message)
+		public static void PrintSubtitle(string message)
 		{
 			try
 			{
-				string varString = Function.Call<string>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", message);
-				Function.Call(Hash._UILOG_SET_CACHED_OBJECTIVE, varString);
-				Function.Call(Hash._UILOG_PRINT_CACHED_OBJECTIVE);
-				Function.Call(Hash._UILOG_CLEAR_CACHED_OBJECTIVE);
+				//string varString = MISC.VAR_STRING(10, "LITERAL_STRING", message);
+				UILOG._UILOG_SET_CACHED_OBJECTIVE(message);
+				UILOG._UILOG_PRINT_CACHED_OBJECTIVE();
+				UILOG._UILOG_CLEAR_HAS_DISPLAYED_CACHED_OBJECTIVE();
+				UILOG._UILOG_CLEAR_CACHED_OBJECTIVE();
+
 			}
 			catch (Exception ex)
 			{
@@ -170,8 +172,7 @@ namespace RDR2.UI
 
 			unsafe
 			{
-				if (!Function.Call<bool>(Hash.GET_SCREEN_COORD_FROM_WORLD_COORD, position.X, position.Y, position.Z, &pointX, &pointY))
-				{
+				if (!GRAPHICS.GET_SCREEN_COORD_FROM_WORLD_COORD(position.X, position.Y, position.Z, &pointX, &pointY)) {
 					return PointF.Empty;
 				}
 			}

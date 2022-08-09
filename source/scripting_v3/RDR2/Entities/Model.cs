@@ -15,7 +15,7 @@ namespace RDR2
 		{
 			Hash = hash;
 		}
-		public Model(string name) : this(Game.GenerateHash(name))
+		public Model(string name) : this(Game.Joaat(name))
 		{
 		}
 		public Model(uint hash) : this((int)hash)
@@ -36,38 +36,24 @@ namespace RDR2
 			get; private set;
 		}
 
-		public bool IsValid => Function.Call<bool>(Native.Hash.IS_MODEL_VALID, Hash);
-		public bool IsInCdImage => Function.Call<bool>(Native.Hash.IS_MODEL_IN_CDIMAGE, Hash);
+		public bool IsValid => STREAMING.IS_MODEL_VALID((uint)Hash);
+		public bool IsInCdImage => STREAMING.IS_MODEL_IN_CDIMAGE((uint)Hash);
 
-		public bool IsLoaded => Function.Call<bool>(Native.Hash.HAS_MODEL_LOADED, Hash);
-		public bool IsCollisionLoaded => Function.Call<bool>(Native.Hash.HAS_COLLISION_FOR_MODEL_LOADED, Hash);
+		public bool IsLoaded => STREAMING.HAS_MODEL_LOADED((uint)Hash);
+		public bool IsCollisionLoaded => STREAMING.HAS_COLLISION_FOR_MODEL_LOADED((uint)Hash);
 
-		public bool IsBoat => Function.Call<bool>(Native.Hash.IS_THIS_MODEL_A_BOAT, Hash);
-        public bool IsPed => Function.Call<bool>(Native.Hash.IS_MODEL_A_PED, Hash);
-		public bool IsTrain => Function.Call<bool>(Native.Hash.IS_THIS_MODEL_A_TRAIN, Hash);
-		public bool IsVehicle => Function.Call<bool>(Native.Hash.IS_MODEL_A_VEHICLE, Hash);
-
-		public void GetDimensions(out Vector3 minimum, out Vector3 maximum)
-		{
-			var outmin = new OutputArgument();
-			var outmax = new OutputArgument();
-			Function.Call(Native.Hash.GET_MODEL_DIMENSIONS, Hash, outmin, outmax);
-			minimum = outmin.GetResult<Vector3>();
-			maximum = outmax.GetResult<Vector3>();
-		}
-		public Vector3 GetDimensions()
-		{
-			GetDimensions(out Vector3 min, out Vector3 max);
-			return Vector3.Subtract(max, min);
-		}
+		public bool IsBoat => VEHICLE.IS_THIS_MODEL_A_BOAT((uint)Hash);
+        public bool IsPed => STREAMING.IS_MODEL_A_PED((uint)Hash);
+		public bool IsTrain => VEHICLE.IS_THIS_MODEL_A_TRAIN((uint)Hash);
+		public bool IsVehicle => STREAMING.IS_MODEL_A_VEHICLE((uint)Hash);
 
 		public void Request()
 		{
-            if (!Function.Call<bool>(Native.Hash.IS_MODEL_VALID, Hash))
+            if (!STREAMING.IS_MODEL_VALID((uint)Hash))
             {
                 return;
             }
-            Function.Call(Native.Hash.REQUEST_MODEL, Hash);
+            STREAMING.REQUEST_MODEL((uint)Hash, false);
 		}
 		public bool Request(int timeout)
 		{
@@ -86,9 +72,9 @@ namespace RDR2
 			return true;
 		}
 
-		public void MarkAsNoLongerNeeded()
+		public void MarkAsNoLongerNeeded() // Release
 		{
-			Function.Call(Native.Hash.SET_MODEL_AS_NO_LONGER_NEEDED, Hash);
+			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED((uint)Hash);
 		}
 
 		public bool Equals(Model obj)

@@ -51,7 +51,7 @@ namespace RDR2.NaturalMotion
 					target.CanRagdoll = true;
 				}
 
-				Function.Call(Hash.SET_PED_TO_RAGDOLL, target.Handle, 10000, -1, 1, 1, 1, 0);
+				PED.SET_PED_TO_RAGDOLL(target.Handle, 10000, -1, 1, true, true, false);
 			}
 
 		}
@@ -67,7 +67,7 @@ namespace RDR2.NaturalMotion
 				target.CanRagdoll = true;
 			}
 
-			Function.Call(Hash.SET_PED_TO_RAGDOLL, target.Handle, 10000, duration, 1, 1, 1, 0);
+			PED.SET_PED_TO_RAGDOLL(target.Handle, 10000, duration, 1, true, true, false);
 
 			SendTo(target);
 		}

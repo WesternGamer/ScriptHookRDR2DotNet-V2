@@ -3,13 +3,14 @@
 // License: https://github.com/crosire/scripthookvdotnet#license
 //
 
-namespace RDR2
+namespace RDR2.Native
 {
-	public enum EntityType
+	public enum eEntityType
 	{
-		Invalid = 0,
-		Ped = 1,
-		Vehicle = 2,
-		Prop = 3
+		ET_NONE = 0,
+		ET_PED = 1,
+		ET_VEHICLE = 2,
+		ET_OBJECT = 3,
+		//ET_DUMMY_OBJECT = 4, // Unused
 	}
 }

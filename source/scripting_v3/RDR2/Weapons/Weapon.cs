@@ -18,20 +18,18 @@ namespace RDR2
 			Hash = hash;
 		}
 
-		public bool IsPresent => Hash == WeaponHash.Unarmed || Function.Call<bool>(Native.Hash.HAS_PED_GOT_WEAPON, Owner.Handle, (uint)Hash, false, false);
+		public bool IsPresent => Hash == WeaponHash.Unarmed || WEAPON.HAS_PED_GOT_WEAPON(Owner.Handle, (uint)Hash, 0, false);
 
-		public Model Model => GetModelByHash(Hash);
+		public WeaponGroup Group => (WeaponGroup)WEAPON.GET_WEAPONTYPE_GROUP((uint)Hash);
 
-		public WeaponGroup Group => Function.Call<WeaponGroup>(Native.Hash.GET_WEAPONTYPE_GROUP, (uint)Hash);
-
-		public AmmoType AmmoType => Function.Call<AmmoType>(Native.Hash.GET_PED_AMMO_TYPE_FROM_WEAPON, Owner.Handle, (uint)Hash);
+		public AmmoType AmmoType => (AmmoType)WEAPON.GET_PED_AMMO_TYPE_FROM_WEAPON(Owner.Handle, (uint)Hash);
 
 		public int Ammo
 		{
 			get => Hash == WeaponHash.Unarmed
 				? 1
-				: Function.Call<int>(Native.Hash.GET_PED_AMMO_BY_TYPE, Owner.Handle, (uint)AmmoType);
-			set => Function.Call(Native.Hash.SET_PED_AMMO_BY_TYPE, Owner.Handle, (uint)AmmoType, value);
+				: WEAPON.GET_PED_AMMO_BY_TYPE(Owner.Handle, (uint)AmmoType);
+			set => WEAPON.SET_PED_AMMO_BY_TYPE(Owner.Handle, (uint)AmmoType, value);
 		}
 
 		public int AmmoInClip
@@ -41,11 +39,15 @@ namespace RDR2
 				{
 					return 1;
 				}
-				var ammo = new OutputArgument();
-				if (Function.Call<bool>(Native.Hash.GET_AMMO_IN_CLIP, Owner.Handle, (uint)Hash, ammo))
+
+				int ammo;
+				unsafe
 				{
-					return ammo.GetResult<int>();
+					if (WEAPON.GET_AMMO_IN_CLIP(Owner.Handle, &ammo, (uint)Hash)) {
+						return ammo;
+					}
 				}
+
 				return 0;
 			}
 			set {
@@ -53,13 +55,14 @@ namespace RDR2
 				{
 					return;
 				}
+
 				if (IsPresent)
 				{
-					Function.Call(Native.Hash.SET_AMMO_IN_CLIP, Owner.Handle, (uint)Hash, value);
+					WEAPON.SET_AMMO_IN_CLIP(Owner.Handle, (uint)Hash, value);
 				}
 				else
 				{
-					Owner.GiveWeapon(Hash, value);
+					Owner.GiveWeapon(Hash, value, 0);
 				}
 			}
 		}
@@ -69,29 +72,29 @@ namespace RDR2
 			get {
 				if (Hash == WeaponHash.Unarmed || !IsPresent)
 				{
-					return 1;
+					return 0;
 				}
 
-				var ammo = new OutputArgument();
-				return Function.Call<bool>(Native.Hash.GET_MAX_AMMO, Owner.Handle, (uint)Hash, ammo) ? ammo.GetResult<int>() : 1;
+				int ammo;
+				unsafe
+				{
+					if (WEAPON.GET_MAX_AMMO(Owner.Handle, &ammo, (uint)Hash)) {
+						return ammo;
+					}
+				}
+
+				return 0;
 			}
 		}
 
-		public int MaxAmmoInClip => Hash == WeaponHash.Unarmed ? 1 : Function.Call<int>(Native.Hash.GET_MAX_AMMO_IN_CLIP);
-
 		public bool InfiniteAmmo
 		{
-			set => Function.Call(Native.Hash.SET_PED_INFINITE_AMMO, Owner.Handle, (uint)Hash, value);
+			set => WEAPON.SET_PED_INFINITE_AMMO(Owner.Handle, value, (uint)Hash); // TODO: remove this?
 		}
 
 		public void Remove()
 		{
-			Function.Call(Native.Hash.REMOVE_WEAPON_FROM_PED, Owner.Handle, (uint)Hash, false, false);
-		}
-
-		public static Model GetModelByHash(WeaponHash hash)
-		{
-			return new Model(Function.Call<int>((Hash)0x865F36299079FB75, (uint)hash));
+			WEAPON.REMOVE_WEAPON_FROM_PED(Owner.Handle, (uint)Hash, true, unchecked((uint)-142743235)); // REMOVE_REASON_DEFAULT
 		}
 
 		public static implicit operator WeaponHash(Weapon weapon)

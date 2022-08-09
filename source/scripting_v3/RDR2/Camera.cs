@@ -26,22 +26,22 @@ namespace RDR2
 			get;
 		}
 
-		public bool IsActive
+		public bool Active
 		{
-			get => Function.Call<bool>(Hash.IS_CAM_ACTIVE, Handle);
-			set => Function.Call(Hash.SET_CAM_ACTIVE, Handle, value);
+			get => CAM.IS_CAM_ACTIVE(Handle);
+			set => CAM.SET_CAM_ACTIVE(Handle, value);
 		}
 
 		public Vector3 Position
 		{
-			get => Function.Call<Vector3>(Hash.GET_CAM_COORD, Handle);
-			set => Function.Call(Hash.SET_CAM_COORD, Handle, value.X, value.Y, value.Z);
+			get => CAM.GET_CAM_COORD(Handle);
+			set => CAM.SET_CAM_COORD(Handle, value.X, value.Y, value.Z);
 		}
 
 		public Vector3 Rotation
 		{
-			get => Function.Call<Vector3>(Hash.GET_CAM_ROT, Handle, 2);
-			set => Function.Call(Hash.SET_CAM_ROT, Handle, value.X, value.Y, value.Z, 2);
+			get => CAM.GET_CAM_ROT(Handle, 2);
+			set => CAM.SET_CAM_ROT(Handle, value.X, value.Y, value.Z, 2);
 		}
 
 		public Vector3 Direction
@@ -94,87 +94,87 @@ namespace RDR2
 
 		public float FarClip
 		{
-			set => Function.Call(Hash.SET_CAM_FAR_CLIP, Handle, value);
+			set => CAM.SET_CAM_FAR_CLIP(Handle, value);
 		}
 
 		public float NearClip
 		{
-			set => Function.Call(Hash.SET_CAM_NEAR_CLIP, Handle, value);
+			set => CAM.SET_CAM_NEAR_CLIP(Handle, value);
 		}
 
 		public float FieldOfView
 		{
-			get => Function.Call<float>(Hash.GET_CAM_FOV, Handle);
-			set => Function.Call(Hash.SET_CAM_FOV, Handle, value);
+			get => CAM.GET_CAM_FOV(Handle);
+			set => CAM.SET_CAM_FOV(Handle, value);
 		}
 
 
 		public float MotionBlurStrength
 		{
-			set => Function.Call(Hash.SET_CAM_MOTION_BLUR_STRENGTH, Handle, value);
+			set => CAM.SET_CAM_MOTION_BLUR_STRENGTH(Handle, value);
 		}
 
 		public void Shake(CameraShake shakeType, float amplitude)
 		{
-			Function.Call(Hash.SHAKE_CAM, Handle, shakeNames[(int)shakeType], amplitude);
+			CAM.SHAKE_CAM(Handle, shakeNames[(int)shakeType], amplitude);
 		}
 
 		public void StopShaking()
 		{
-			Function.Call(Hash.STOP_CAM_SHAKING, Handle, true);
+			CAM.STOP_CAM_SHAKING(Handle, true);
 		}
 
 		public bool IsShaking
 		{
-			get => Function.Call<bool>(Hash.IS_CAM_SHAKING, Handle);
+			get => CAM.IS_CAM_SHAKING(Handle);
 		}
 
 		public void PointAt(Vector3 target)
 		{
-			Function.Call(Hash.POINT_CAM_AT_COORD, Handle, target.X, target.Y, target.Z);
+			CAM.POINT_CAM_AT_COORD(Handle, target.X, target.Y, target.Z);
 		}
 		public void PointAt(Entity target)
 		{
-			Function.Call(Hash.POINT_CAM_AT_ENTITY, Handle, target.Handle, 0.0f, 0.0f, 0.0f, true);
+			CAM.POINT_CAM_AT_ENTITY(Handle, target.Handle, 0.0f, 0.0f, 0.0f, true);
 		}
 		public void PointAt(Entity target, Vector3 offset)
 		{
-			Function.Call(Hash.POINT_CAM_AT_ENTITY, Handle, target.Handle, offset.X, offset.Y, offset.Z, true);
+			CAM.POINT_CAM_AT_ENTITY(Handle, target.Handle, offset.X, offset.Y, offset.Z, true);
 		}
 
 		public void StopPointing()
 		{
-			Function.Call(Hash.STOP_CAM_POINTING, Handle);
+			CAM.STOP_CAM_POINTING(Handle);
 		}
 
 
 		public bool IsInterpolating
 		{
-			get => Function.Call<bool>(Hash.IS_CAM_INTERPOLATING, Handle);
+			get => CAM.IS_CAM_INTERPOLATING(Handle);
 		}
 
 		public void AttachTo(Entity entity, Vector3 offset)
 		{
-			Function.Call(Hash.ATTACH_CAM_TO_ENTITY, Handle, entity.Handle, offset.X, offset.Y, offset.Z, true);
+			CAM.ATTACH_CAM_TO_ENTITY(Handle, entity.Handle, offset.X, offset.Y, offset.Z, true);
 		}
 		public void AttachTo(Ped ped, int boneIndex, Vector3 offset)
 		{
-			Function.Call(Hash.ATTACH_CAM_TO_PED_BONE, Handle, ped.Handle, boneIndex, offset.X, offset.Y, offset.Z, true);
+			CAM.ATTACH_CAM_TO_PED_BONE(Handle, ped.Handle, boneIndex, offset.X, offset.Y, offset.Z, true);
 		}
 
 		public void Detach()
 		{
-			Function.Call(Hash.DETACH_CAM, Handle);
+			CAM.DETACH_CAM(Handle);
 		}
 
 		public override void Delete()
 		{
-			Function.Call(Hash.DESTROY_CAM, Handle, 0);
+			CAM.DESTROY_CAM(Handle, false);
 		}
 
 		public override bool Exists()
 		{
-			return Function.Call<bool>(Hash.DOES_CAM_EXIST, Handle);
+			return CAM.DOES_CAM_EXIST(Handle);
 		}
 		public static bool Exists(Camera camera)
 		{
