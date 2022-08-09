@@ -132,9 +132,6 @@ namespace RDR2.Native
 		public InputArgument(Ped value) : this((object)value)
 		{
 		}
-		public InputArgument(PedGroup value) : this((object)value)
-		{
-		}
 		public InputArgument(Player value) : this((object)value)
 		{
 		}
@@ -151,6 +148,9 @@ namespace RDR2.Native
 		{
 		}
 		public InputArgument(Relationship value) : this((object)value)
+		{
+		}
+		public InputArgument(Vector3 value) : this((object)value)
 		{
 		}
 
@@ -208,6 +208,10 @@ namespace RDR2.Native
 		{
 			return new InputArgument((ulong)new IntPtr(value).ToInt64());
 		}
+		public static unsafe implicit operator InputArgument(ulong* value)
+		{
+			return new InputArgument((ulong)new IntPtr(value).ToInt64());
+		}
 		public static unsafe implicit operator InputArgument(float* value)
 		{
 			return new InputArgument((ulong)new IntPtr(value).ToInt64());
@@ -215,6 +219,10 @@ namespace RDR2.Native
 		public static unsafe implicit operator InputArgument(sbyte* value)
 		{
 			return new InputArgument(new string(value));
+		}
+		public static unsafe implicit operator InputArgument(Vector3* value)
+		{
+			return new InputArgument((ulong)new IntPtr(value).ToInt64());
 		}
 
 		public static implicit operator InputArgument(Model value)
@@ -234,10 +242,6 @@ namespace RDR2.Native
 			return new InputArgument(value);
 		}
 		public static implicit operator InputArgument(Ped value)
-		{
-			return new InputArgument(value);
-		}
-		public static implicit operator InputArgument(PedGroup value)
 		{
 			return new InputArgument(value);
 		}
@@ -265,6 +269,10 @@ namespace RDR2.Native
 		{
 			return new InputArgument(value);
 		}
+		public static implicit operator InputArgument(Vector3 value)
+		{
+			return new InputArgument(value);
+		}
 
 		public override string ToString()
 		{
@@ -272,156 +280,88 @@ namespace RDR2.Native
 		}
 	}
 
-	public class OutputArgument : InputArgument, IDisposable
-	{
-		public OutputArgument() : base(Marshal.AllocCoTaskMem(24))
-		{
-		}
-		public OutputArgument(object initvalue) : this()
-		{
-			unsafe { *(ulong*)data = Function.ObjectToNative(initvalue); }
-		}
-
-		public OutputArgument([MarshalAs(UnmanagedType.U1)] bool initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(byte initvalue) : this((object)(int)initvalue)
-		{
-		}
-		public OutputArgument(sbyte initvalue) : this((object)(int)initvalue)
-		{
-		}
-		public OutputArgument(short initvalue) : this((object)(int)initvalue)
-		{
-		}
-		public OutputArgument(ushort initvalue) : this((object)(int)initvalue)
-		{
-		}
-		public OutputArgument(int initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(uint initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(float initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(double initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(string initvalue) : this((object)initvalue)
-		{
-		}
-
-		public OutputArgument(Model initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Blip initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Camera initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Entity initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Ped initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(PedGroup initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Player initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Prop initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Vehicle initvalue) : this((object)initvalue)
-		{
-		}
-		public OutputArgument(Rope initvalue) : this((object)initvalue)
-		{
-		}
-
-		~OutputArgument()
-		{
-			Dispose(false);
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		protected virtual void Dispose([MarshalAs(UnmanagedType.U1)] bool disposing)
-		{
-			if (data != 0)
-			{
-				Marshal.FreeCoTaskMem((IntPtr)(long)data);
-				data = 0;
-			}
-		}
-
-		public T GetResult<T>()
-		{
-			unsafe
-			{
-				if (typeof(T).IsEnum || typeof(T).IsPrimitive || typeof(T) == typeof(Vector3) || typeof(T) == typeof(Vector2))
-				{
-					return Function.ObjectFromNative<T>((ulong*)data);
-				}
-				else
-				{
-					return (T)Function.ObjectFromNative(typeof(T), (ulong*)data);
-				}
-			}
-		}
-	}
 
 	public static class Function
 	{
-		public static T Call<T>(Hash hash, params InputArgument[] arguments)
+		public static T Call<T>(ulong hash, params InputArgument[] arguments)
 		{
 			ulong[] args = new ulong[arguments.Length];
-			for (int i = 0; i < arguments.Length; ++i)
-			{
+			for (int i = 0; i < arguments.Length; ++i) {
 				args[i] = arguments[i].data;
 			}
 
-			unsafe
-			{
-				var res = RDR2DN.NativeFunc.Invoke((ulong)hash, args);
+			unsafe {
+				var res = RDR2DN.NativeFunc.Invoke(hash, args);
 
 				// The result will be null when this method is called from a thread other than the main thread
-				if (res == null)
-				{
+				if (res == null) {
 					throw new InvalidOperationException("Native.Function.Call can only be called from the main thread.");
 				}
 
-				if (typeof(T).IsEnum || typeof(T).IsPrimitive || typeof(T) == typeof(Vector3) || typeof(T) == typeof(Vector2))
-				{
+				if (typeof(T).IsEnum || typeof(T).IsPrimitive || typeof(T) == typeof(Vector3) || typeof(T) == typeof(Vector2)) {
 					return ObjectFromNative<T>(res);
 				}
-				else
-				{
+				else {
 					return (T)ObjectFromNative(typeof(T), res);
 				}
 			}
 		}
-		public static void Call(Hash hash, params InputArgument[] arguments)
+
+		// Hack for VAR_STRING
+		public static T _Call<T>(ulong hash, int flags, params InputArgument[] arguments)
+		{
+			// dumbass hack. just get it to fucking work.
+			ulong[] args = new ulong[arguments.Length + 1];
+			args[0] = (ulong)flags;
+			for (int i = 1; i <= arguments.Length; ++i) {
+				args[i] = arguments[i - 1].data;
+			}
+
+			unsafe {
+				var res = RDR2DN.NativeFunc.Invoke(hash, args);
+
+				// The result will be null when this method is called from a thread other than the main thread
+				if (res == null) {
+					throw new InvalidOperationException("Native.Function.Call can only be called from the main thread.");
+				}
+
+				if (typeof(T).IsEnum || typeof(T).IsPrimitive || typeof(T) == typeof(Vector3) || typeof(T) == typeof(Vector2)) {
+					return ObjectFromNative<T>(res);
+				}
+				else {
+					return (T)ObjectFromNative(typeof(T), res);
+				}
+			}
+		}
+
+		// Hack for _DATABINDING_WRITE_DATA_SCRIPT_VARIABLES 
+		public static void _Call(ulong hash, int p0, int p1, params InputArgument[] arguments)
+		{
+			// dumbass hack. just get it to fucking work.
+			ulong[] args = new ulong[arguments.Length + 2];
+			args[0] = (ulong)p0;
+			args[1] = (ulong)p1;
+			for (int i = 1; i <= arguments.Length; ++i) {
+				args[i] = arguments[i - 1].data;
+			}
+
+			unsafe {
+				RDR2DN.NativeFunc.Invoke(hash, args);
+			}
+		}
+
+		public static void Call(ulong hash, params InputArgument[] arguments)
 		{
 			ulong[] args = new ulong[arguments.Length];
-			for (int i = 0; i < arguments.Length; ++i)
-			{
+			for (int i = 0; i < arguments.Length; ++i) {
 				args[i] = arguments[i].data;
 			}
 
-			unsafe
-			{
-				RDR2DN.NativeFunc.Invoke((ulong)hash, args);
+			unsafe {
+				RDR2DN.NativeFunc.Invoke(hash, args);
 			}
 		}
+
 
 		internal static unsafe ulong ObjectToNative(object value)
 		{
@@ -529,10 +469,6 @@ namespace RDR2.Native
 			if (type == typeof(Ped))
 			{
 				return new Ped(*(int*)value);
-			}
-			if (type == typeof(PedGroup))
-			{
-				return new PedGroup(*(int*)value);
 			}
 			if (type == typeof(Player))
 			{
