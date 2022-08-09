@@ -341,7 +341,7 @@ namespace RDR2.Native
 			ulong[] args = new ulong[arguments.Length + 2];
 			args[0] = (ulong)p0;
 			args[1] = (ulong)p1;
-			for (int i = 1; i <= arguments.Length; ++i) {
+			for (int i = 2; i <= arguments.Length; ++i) {
 				args[i] = arguments[i - 1].data;
 			}
 
