@@ -1,6 +1,6 @@
 ## Community Script Hook RDR2 .NET | [![Downloads](https://raster.shields.io/github/downloads/Saltyq/ScriptHookRDR2DotNet/total.svg?style=for-the-badge)](https://github.com/Saltyq/ScriptHookRDR2DotNet/releases)
 
-#ScriptHookRDR2DotNet-V2
+## ScriptHookRDR2DotNet-V2
 
 An improved version of Saltyq's ScriptHookRDR2DotNet implementation
 
