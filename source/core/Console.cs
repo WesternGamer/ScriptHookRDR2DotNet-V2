@@ -558,8 +558,8 @@ namespace RDR2DN
 				compilerOptions.ReferencedAssemblies.Add(typeof(ScriptDomain).Assembly.Location);
 
 				foreach (var script in ScriptDomain.CurrentDomain.RunningScripts.Where(x => x.IsRunning))
-					if (System.IO.File.Exists(script.Filename) && System.IO.Path.GetExtension(script.Filename) == ".dll")
-						compilerOptions.ReferencedAssemblies.Add(script.Filename);
+					if (System.IO.File.Exists(script.FileName) && System.IO.Path.GetExtension(script.FileName) == ".dll")
+						compilerOptions.ReferencedAssemblies.Add(script.FileName);
 
 				const string template =
 					"using System; using System.Linq; using System.Drawing; using System.Windows.Forms; using RDR2; using RDR2.Math; using RDR2.Native; " +

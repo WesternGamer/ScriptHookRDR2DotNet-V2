@@ -13,7 +13,7 @@ namespace WinForms = System::Windows::Forms;
 [assembly:AssemblyCompanyAttribute("Salty, SHVDN: crosire & contributors")];
 [assembly:AssemblyProductAttribute("ScriptHookRDRDotNet")];
 [assembly:AssemblyDescriptionAttribute("An ASI plugin for Red Dead Redemption 2, which allows running scripts written in any .NET language in-game.")];
-[assembly:AssemblyVersionAttribute("1.0.5.4")];
+[assembly:AssemblyVersionAttribute("1.0.5.5")];
 [assembly:AssemblyCopyrightAttribute("Copyright © 2015 crosire | Copyright © 2019 Salty")];
 // Sign with a strong name to distinguish from older versions and cause .NET framework runtime to bind the correct assemblies
 // There is no version check performed for assemblies without strong names (https://docs.microsoft.com/en-us/dotnet/framework/deployment/how-the-runtime-locates-assemblies)
@@ -99,7 +99,7 @@ public:
 	{
 		console->PrintInfo("~c~--- Loaded Scripts ---");
 		for each (auto script in domain->RunningScripts)
-			console->PrintInfo(IO::Path::GetFileName(script->Filename) + " ~h~" + script->Name + (script->IsRunning ? (script->IsPaused ? " ~o~[paused]" : " ~g~[running]") : " ~r~[aborted]"));
+			console->PrintInfo(IO::Path::GetFileName(script->FileName) + " ~h~" + script->Name + (script->IsRunning ? (script->IsPaused ? " ~o~[paused]" : " ~g~[running]") : " ~r~[aborted]"));
 	}
 
 internal:

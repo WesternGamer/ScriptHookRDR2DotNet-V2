@@ -365,7 +365,7 @@ namespace RDR2DN
 				script.Name = scriptType.FullName;
 			}
 
-			script.Filename = LookupScriptFilename(scriptType);
+			script.FileName = LookupScriptFilename(scriptType);
 
 			try
 			{
@@ -487,7 +487,7 @@ namespace RDR2DN
 			foreach (var type in scriptTypes.Values.Where(x => x.Item1 == filename).Select(x => x.Item2))
 			{
 				// Make sure there are no others instances of this script
-				runningScripts.RemoveAll(x => x.Filename == filename && x.ScriptInstance.GetType() == type);
+				runningScripts.RemoveAll(x => x.FileName == filename && x.ScriptInstance.GetType() == type);
 
 				// Start the script unless script does not want a default instance
 				if (!(GetScriptAttribute(type, "NoDefaultInstance") is bool NoDefaultInstance) || !NoDefaultInstance)
@@ -513,7 +513,7 @@ namespace RDR2DN
 		{
 			filename = Path.GetFullPath(filename);
 
-			foreach (Script script in runningScripts.Where(x => filename.Equals(x.Filename, StringComparison.OrdinalIgnoreCase)))
+			foreach (Script script in runningScripts.Where(x => filename.Equals(x.FileName, StringComparison.OrdinalIgnoreCase)))
 				script.Abort();
 		}
 

@@ -31,7 +31,7 @@ namespace RDR2DN
 
 		/// <summary>
 		/// Gets the status of this script.
-		/// So <c>true</c> if it is running and <c>false</c> if it was aborted.
+		/// Returns <c>true</c> if it's running, or <c>false</c> if it was aborted.
 		/// </summary>
 		public bool IsRunning { get; private set; }
 
@@ -41,7 +41,7 @@ namespace RDR2DN
 		public bool IsExecuting => ScriptDomain.ExecutingScript == this;
 
 		/// <summary>
-		/// An event that is raised every tick of the script.
+		/// An event that is raised every tick or "frame" of the script.
 		/// </summary>
 		public event EventHandler Tick;
 		/// <summary>
@@ -50,23 +50,23 @@ namespace RDR2DN
 		public event EventHandler Aborted;
 
 		/// <summary>
-		/// An event that is raised when a key is lifted.
+		/// An event that is raised when a key is just lifted.
 		/// </summary>
 		public event KeyEventHandler KeyUp;
 		/// <summary>
-		/// An event that is raised when a key is first pressed.
+		/// An event that is raised when a key is just pressed.
 		/// </summary>
 		public event KeyEventHandler KeyDown;
 
 		/// <summary>
-		/// Gets the instance name of this script.
+		/// Gets the name of this script.
 		/// </summary>
 		public string Name { get; internal set; }
 
 		/// <summary>
 		/// Gets the path to the file that contains this script.
 		/// </summary>
-		public string Filename { get; internal set; }
+		public string FileName { get; internal set; }
 
 		/// <summary>
 		/// Gets the instance of the script.
@@ -155,7 +155,7 @@ namespace RDR2DN
 			thread = new Thread(new ThreadStart(MainLoop));
 			thread.Start();
 
-            TextPoolInit();
+            //TextPoolInit();
 
             Log.Message(Log.Level.Info, "Started script ", Name, ".");
         }
