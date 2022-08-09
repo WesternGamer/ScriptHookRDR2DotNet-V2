@@ -21,37 +21,6 @@ namespace RDR2DN
 	{
 		#region ScriptHookRDR2 Imports
 		/// <summary>
-		/// Creates a texture. Texture deletion is performed automatically when game reloads scripts.
-		/// Can be called only in the same thread as natives.
-		/// </summary>
-		/// <param name="filename"></param>
-		/// <returns>Internal texture ID.</returns>
-		//[DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?createTexture@@YAHPEBD@Z")]
-		//public static extern int CreateTexture([MarshalAs(UnmanagedType.LPStr)] string filename);
-
-		/// <summary>
-		/// Draws a texture on screen. Can be called only in the same thread as natives.
-		/// </summary>
-		/// <param name="id">Texture ID returned by <see cref="CreateTexture(string)"/>.</param>
-		/// <param name="instance">The instance index. Each texture can have up to 64 different instances on screen at a time.</param>
-		/// <param name="level">Texture instance with low levels draw first.</param>
-		/// <param name="time">How long in milliseconds the texture instance should stay on screen.</param>
-		/// <param name="sizeX">Width in screen space [0,1].</param>
-		/// <param name="sizeY">Height in screen space [0,1].</param>
-		/// <param name="centerX">Center position in texture space [0,1].</param>
-		/// <param name="centerY">Center position in texture space [0,1].</param>
-		/// <param name="posX">Position in screen space [0,1].</param>
-		/// <param name="posY">Position in screen space [0,1].</param>
-		/// <param name="rotation">Normalized rotation [0,1].</param>
-		/// <param name="scaleFactor">Screen aspect ratio, used for size correction.</param>
-		/// <param name="colorR">Red tint.</param>
-		/// <param name="colorG">Green tint.</param>
-		/// <param name="colorB">Blue tint.</param>
-		/// <param name="colorA">Alpha value.</param>
-		//[DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?drawTexture@@YAXHHHHMMMMMMMMMMMM@Z")]
-		//public static extern void DrawTexture(int id, int instance, int level, int time, float sizeX, float sizeY, float centerX, float centerY, float posX, float posY, float rotation, float scaleFactor, float colorR, float colorG, float colorB, float colorA);
-
-		/// <summary>
 		/// Gets the game version enumeration value as specified by ScriptHookRDR2.
 		/// </summary>
 		[DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?getGameVersion@@YA?AW4eGameVersion@@XZ")]
@@ -115,7 +84,7 @@ namespace RDR2DN
 		/// </summary>
 		static NativeMemory()
 		{
-			byte* address;
+			//byte* address;
 
             /*address = FindPattern("\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx");
             GetPlayerAddressFunc = GetDelegateForFunctionPointer<GetHandleAddressFuncDelegate>(
@@ -357,9 +326,9 @@ namespace RDR2DN
 			return GetHashKeyFunc(keyPtr, 0);
 		}
 
-		static ulong GetLabelTextByHashAddress;
+		//static ulong GetLabelTextByHashAddress;
 		delegate ulong GetLabelTextByHashFuncDelegate(ulong address, int labelHash);
-		static GetLabelTextByHashFuncDelegate GetLabelTextByHashFunc;
+		//static GetLabelTextByHashFuncDelegate GetLabelTextByHashFunc;
 
 		
 

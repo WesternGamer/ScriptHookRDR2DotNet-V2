@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RDR2</RootNamespace>
     <AssemblyName>ScriptHookRDRNetAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -56,7 +56,7 @@
     <Compile Include="RDR2.Math\Vector2.cs" />
     <Compile Include="RDR2.Math\Vector3.cs" />
     <Compile Include="RDR2.Native\Native.cs" />
-    <Compile Include="RDR2.Native\NativeHashes.cs" />
+    <Compile Include="RDR2.Native\NativeDecl.cs" />
     <Compile Include="RDR2.NaturalMotion\Euphoria.cs" />
     <Compile Include="RDR2.NaturalMotion\EuphoriaBase.cs" />
     <Compile Include="RDR2.NaturalMotion\EuphoriaHelpers.cs" />
@@ -69,18 +69,13 @@
     <Compile Include="RDR2.UI\HudComponent.cs" />
     <Compile Include="RDR2.UI\IElement.cs" />
     <Compile Include="RDR2.UI\ISpriteElement.cs" />
-    <Compile Include="RDR2.UI\LoadingPrompt.cs" />
-    <Compile Include="RDR2.UI\LoadingSpinnerType.cs" />
     <Compile Include="RDR2.UI\Notification.cs" />
     <Compile Include="RDR2.UI\NotificationIcon.cs" />
     <Compile Include="RDR2.UI\Screen.cs" />
     <Compile Include="RDR2.UI\ScreenEffects.cs" />
     <Compile Include="RDR2.UI\Sprite.cs" />
     <Compile Include="RDR2.UI\TextElement.cs" />
-    <Compile Include="RDR2\Audio.cs" />
-    <Compile Include="RDR2\AudioFlag.cs" />
     <Compile Include="RDR2\Blip.cs" />
-    <Compile Include="RDR2\BlipColor.cs" />
     <Compile Include="RDR2\Camera.cs" />
     <Compile Include="RDR2\CameraShake.cs" />
     <Compile Include="RDR2\Console.cs" />
@@ -95,7 +90,6 @@
     <Compile Include="RDR2\Entities\Peds\FormationType.cs" />
     <Compile Include="RDR2\Entities\Peds\Gender.cs" />
     <Compile Include="RDR2\Entities\Peds\Ped.cs" />
-    <Compile Include="RDR2\Entities\Peds\PedGroup.cs" />
     <Compile Include="RDR2\Entities\Peds\PedHash.cs" />
     <Compile Include="RDR2\Entities\Peds\Relationship.cs" />
     <Compile Include="RDR2\Entities\Peds\RelationshipGroup.cs" />
@@ -104,19 +98,8 @@
     <Compile Include="RDR2\Entities\Peds\VehicleFlags.cs" />
     <Compile Include="RDR2\Entities\Prop.cs" />
     <Compile Include="RDR2\Entities\Vehicles\Vehicle.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleClass.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleColor.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleDoor.cs" />
+    <Compile Include="RDR2\Entities\Vehicles\VehicleEnums.cs" />
     <Compile Include="RDR2\Entities\Vehicles\VehicleHash.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleLockStatus.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleMod.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleNeonLight.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleRoofState.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleSeat.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleToggleMod.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleWheelType.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleWindow.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleWindowTint.cs" />
     <Compile Include="RDR2\ExplosionType.cs" />
     <Compile Include="RDR2\ForceType.cs" />
     <Compile Include="RDR2\Game.cs" />
@@ -125,7 +108,6 @@
     <Compile Include="RDR2\Global.cs" />
     <Compile Include="RDR2\GlobalCollection.cs" />
     <Compile Include="RDR2\Handleable.cs" />
-    <Compile Include="RDR2\Language.cs" />
     <Compile Include="RDR2\MarkerType.cs" />
     <Compile Include="RDR2\Pickup.cs" />
     <Compile Include="RDR2\PickupType.cs" />
@@ -136,20 +118,18 @@
     <Compile Include="RDR2\RequireScript.cs" />
     <Compile Include="RDR2\Rope.cs" />
     <Compile Include="RDR2\RopeType.cs" />
-    <Compile Include="RDR2\Scaleform.cs" />
-    <Compile Include="RDR2\ScaleformArgumentTXD.cs" />
     <Compile Include="RDR2\Script.cs" />
     <Compile Include="RDR2\ScriptSettings.cs" />
-    <Compile Include="RDR2\Weapons\DlcWeaponData.cs" />
     <Compile Include="RDR2\Weapons\Weapon.cs" />
     <Compile Include="RDR2\Weapons\WeaponAsset.cs" />
     <Compile Include="RDR2\Weapons\WeaponCollection.cs" />
     <Compile Include="RDR2\Weapons\WeaponComponent.cs" />
     <Compile Include="RDR2\Weapons\WeaponTint.cs" />
-    <Compile Include="RDR2\Weather.cs" />
-    <Compile Include="RDR2\WindowTitle.cs" />
     <Compile Include="RDR2\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y /d "$(TargetPath)" "D:\Games\Red Dead Redemption 2"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

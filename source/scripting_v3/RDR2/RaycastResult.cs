@@ -12,27 +12,26 @@ namespace RDR2
 
 		public Vector3 SurfaceNormal { get; }
 
-		public bool DitHit { get; }
+		public bool DidHit { get; }
 
-		public bool DitHitEntity { get; }
+		public bool DidHitEntity { get; }
 
 		public int Result { get; }
 
 		public RaycastResult(int handle)
 		{
-			var hitPos = new OutputArgument();
-			var ditHit = new OutputArgument();
-			var entity = new OutputArgument();
-			var normal = new OutputArgument();
+			bool didHit = false;
+			Vector3 hitCoords = Vector3.Zero;
+			Vector3 surfaceNormal = Vector3.Zero;
+			int entityHit = 0;
 
-			Result = Function.Call<int>(Hash.GET_SHAPE_TEST_RESULT, handle, ditHit, hitPos, normal, entity);
+			unsafe { Result = SHAPETEST.GET_SHAPE_TEST_RESULT(handle, &didHit, &hitCoords, &surfaceNormal, &entityHit); }
 
-			var entityId = entity.GetResult<int>();
-			HitPosition = hitPos.GetResult<Vector3>();
-			HitEntity = entityId == 0 || HitPosition == default ? null : Entity.FromHandle(entityId);
-			DitHitEntity = HitEntity != null && HitPosition != default && HitEntity.EntityType != 0;
-			DitHit = ditHit.GetResult<bool>();
-			SurfaceNormal = normal.GetResult<Vector3>();
+			HitPosition = hitCoords;
+			HitEntity = entityHit == 0 || HitPosition == default ? null : Entity.FromHandle(entityHit);
+			DidHitEntity = HitEntity != null && HitPosition != default && HitEntity.EntityType != 0;
+			DidHit = didHit;
+			SurfaceNormal = surfaceNormal;
 		}
 	}
 

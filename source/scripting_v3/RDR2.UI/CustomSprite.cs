@@ -96,8 +96,8 @@ namespace RDR2.UI
 		}
 
 		#region Fields
-		int _id;
-		static int _globalLevel = 0, _globalLastDrawFrame = 0;
+		//int _id;
+		//static int _globalLevel = 0, _globalLastDrawFrame = 0;
 		static Dictionary<string, int> _textures = new Dictionary<string, int>();
 		static Dictionary<int, int> _lastDraw = new Dictionary<int, int>();
 		static Dictionary<int, int> _indexes = new Dictionary<int, int>();
