@@ -3,7 +3,7 @@
 // License: https://github.com/crosire/scripthookvdotnet#license
 //
 
-namespace RDR2.Native
+namespace RDR2
 {
 	public enum eEntityType
 	{

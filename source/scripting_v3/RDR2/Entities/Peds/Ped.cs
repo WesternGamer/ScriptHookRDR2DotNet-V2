@@ -29,21 +29,6 @@ namespace RDR2
 			PED.CLONE_PED(Handle, true, true, false);
 		}
 
-		public static Ped CreatePed(uint modelHash, float x, float y, float z, float heading, bool isNetwork = true, bool bScriptHostPed = true, bool p7 = false, bool p8 = false)
-		{
-			/*if (STREAMING.IS_MODEL_VALID(modelHash)) {
-				while (!STREAMING.HAS_MODEL_LOADED(modelHash)) {
-					STREAMING.REQUEST_MODEL(modelHash, true);
-					Script.Yield();
-				}
-			}
-			else {
-				return null;
-			}*/
-
-			return (Ped)FromHandle(PED.CREATE_PED(modelHash, x, y, z, heading, isNetwork, bScriptHostPed, p7, p8));
-		}
-
 		/*public void Kill()
 		{
 			Health = -1;
@@ -244,10 +229,10 @@ namespace RDR2
 			set => PED.SET_PED_CAN_SWITCH_WEAPON(Handle, value);
 		}*/
 
-		// TODO: WEAPON ATTACH POINT ENUM
-		public void GiveWeapon(WeaponHash weapon, int ammoCount, int attachPoint, bool bForceInHand = false, bool bForceInHolster = false, bool bAllowMultipleCopies = false)
+		
+		public void GiveWeapon(eWeapon weapon, int ammoCount, eWeaponAttachPoint attachPoint, bool bForceInHand = false, bool bForceInHolster = false, bool bAllowMultipleCopies = false)
 		{
-			WEAPON.GIVE_WEAPON_TO_PED(Handle, (uint)weapon, ammoCount, bForceInHand, bForceInHolster, attachPoint, bAllowMultipleCopies, 0.0f, 0.0f, 752097756, true, 0.0f, false);
+			WEAPON.GIVE_WEAPON_TO_PED(Handle, (uint)weapon, ammoCount, bForceInHand, bForceInHolster, (int)attachPoint, bAllowMultipleCopies, 0.0f, 0.0f, (uint)eAddItemReason.ADD_REASON_DEFAULT, true, 0.0f, false);
 		}
 
 		#endregion

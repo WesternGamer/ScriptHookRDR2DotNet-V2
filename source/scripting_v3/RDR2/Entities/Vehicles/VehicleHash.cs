@@ -1,4 +1,4 @@
-namespace RDR2.Native
+namespace RDR2
 {
 	public enum VehicleHash : uint
 	{
