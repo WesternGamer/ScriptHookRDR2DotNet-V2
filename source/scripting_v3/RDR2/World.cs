@@ -129,7 +129,7 @@ namespace RDR2
 		public static Ped[] GetAllPeds()
 		{
 			int[] peds = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.getAllPeds(peds, 1024);
+			int entityCount = RDR2DN.NativeMemory.worldGetAllPeds(peds, 1024);
 			List<Ped> Peds = new List<Ped>();
 			for (int i = 0; i < entityCount; i++)
 				Peds.Add(new Ped(peds[i]));
@@ -140,7 +140,7 @@ namespace RDR2
 		public static Vehicle[] GetAllVehicles()
 		{
 			int[] vehs = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.getAllVehicles(vehs, 1024);
+			int entityCount = RDR2DN.NativeMemory.worldGetAllVehicles(vehs, 1024);
 
 			List<Vehicle> Vehs = new List<Vehicle>();
 			for (int i = 0; i < entityCount; i++)
@@ -149,10 +149,10 @@ namespace RDR2
 			return Vehs.ToArray();
 		}
 
-		public static Prop[] GetAllProps()
+		public static Prop[] GetAllObjects()
 		{
 			int[] props = new int[1024];
-			int count = RDR2DN.NativeMemory.getAllObjects(props, 1024);
+			int count = RDR2DN.NativeMemory.worldGetAllObjects(props, 1024);
 
 			List<Prop> Prop = new List<Prop>();
 			for (int i = 0; i < count; i++)
@@ -204,7 +204,7 @@ namespace RDR2
 		public static Ped GetClosestPed(Vector3 position)
 		{
 			int[] peds = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.getAllPeds(peds, 1024);
+			int entityCount = RDR2DN.NativeMemory.worldGetAllPeds(peds, 1024);
 
 			List<Ped> Peds = new List<Ped>();
 			for (int i = 0; i < entityCount; i++)
@@ -218,7 +218,7 @@ namespace RDR2
 		public static Vehicle GetClosestVehicle(Vector3 position)
 		{
 			int[] vehs = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.getAllVehicles(vehs, 1024);
+			int entityCount = RDR2DN.NativeMemory.worldGetAllVehicles(vehs, 1024);
 
 			List<Vehicle> Vehs = new List<Vehicle>();
 			for (int i = 0; i < entityCount; i++)
@@ -227,10 +227,10 @@ namespace RDR2
 			return GetClosest(position, Vehs.ToArray());
 		}
 
-				public static Prop GetClosestProp(Vector3 position)
+		public static Prop GetClosestObject(Vector3 position)
 		{
 			int[] props = new int[1024];
-			int count = RDR2DN.NativeMemory.getAllObjects(props, 1024);
+			int count = RDR2DN.NativeMemory.worldGetAllObjects(props, 1024);
 
 			List<Prop> Prop = new List<Prop>();
 			for (int i = 0; i < count; i++)
@@ -471,33 +471,6 @@ namespace RDR2
 				GRAPHICS._DRAW_MARKER((uint)type, pos.X, pos.Y, pos.Z, dir.X, dir.Y, dir.Z, rot.X, rot.Y, rot.Z, scale.X,
 				 scale.Y, scale.Z, color.R, color.G, color.B, color.A, bobUpAndDown, faceCamera, 2, rotateY, "", "", drawOnEntity);
 			}
-		}
-		#endregion
-
-		#region Raycasting
-		public static RaycastResult Raycast(Vector3 source, Vector3 dest, IntersectOptions options, Entity ignoreEntity = null)
-		{
-			return new RaycastResult(SHAPETEST.START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(source.X, source.Y, source.Z,
-				dest.X, dest.Y, dest.Z, (int)options, ignoreEntity == null ? 0 : ignoreEntity.Handle, 7));
-		}
-
-		public static RaycastResult Raycast(Vector3 source, Vector3 direction, float maxDist, IntersectOptions options, Entity ignoreEntity = null)
-		{
-			var target = source + direction * maxDist;
-			return new RaycastResult(SHAPETEST.START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(source.X, source.Y, source.Z,
-				target.X, target.Y, target.Z, (int)options, ignoreEntity == null ? 0 : ignoreEntity.Handle, 7));
-		}
-
-		public static RaycastResult CrosshairRaycast(float maxDist, IntersectOptions options, Entity ignoreEntity = null)
-		{
-			var source = GameplayCamera.Position;
-			var rotation = (float)(System.Math.PI / 180.0) * GameplayCamera.Rotation;
-			var forward = Vector3.Normalize(new Vector3(
-				(float)-System.Math.Sin(rotation.Z) * (float)System.Math.Abs(System.Math.Cos(rotation.X)),
-				(float)System.Math.Cos(rotation.Z) * (float)System.Math.Abs(System.Math.Cos(rotation.X)),
-				(float)System.Math.Sin(rotation.X)));
-			var target = source + forward * maxDist;
-			return Raycast(source, target, options, ignoreEntity);
 		}
 		#endregion
 
