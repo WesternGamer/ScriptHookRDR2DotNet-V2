@@ -77,9 +77,7 @@
     <Compile Include="RDR2.UI\TextElement.cs" />
     <Compile Include="RDR2\Blip.cs" />
     <Compile Include="RDR2\Camera.cs" />
-    <Compile Include="RDR2\CameraShake.cs" />
     <Compile Include="RDR2\Console.cs" />
-    <Compile Include="RDR2\Control.cs" />
     <Compile Include="RDR2\Entities\Entity.cs" />
     <Compile Include="RDR2\Entities\EntityType.cs" />
     <Compile Include="RDR2\Entities\Model.cs" />
@@ -100,11 +98,9 @@
     <Compile Include="RDR2\Entities\Vehicles\Vehicle.cs" />
     <Compile Include="RDR2\Entities\Vehicles\VehicleEnums.cs" />
     <Compile Include="RDR2\Entities\Vehicles\VehicleHash.cs" />
-    <Compile Include="RDR2\ExplosionType.cs" />
-    <Compile Include="RDR2\ForceType.cs" />
+    <Compile Include="RDR2\Enums.cs" />
     <Compile Include="RDR2\Game.cs" />
     <Compile Include="RDR2\GameplayCamera.cs" />
-    <Compile Include="RDR2\GameVersion.cs" />
     <Compile Include="RDR2\Global.cs" />
     <Compile Include="RDR2\GlobalCollection.cs" />
     <Compile Include="RDR2\Handleable.cs" />
@@ -114,7 +110,7 @@
     <Compile Include="RDR2\Player.cs" />
     <Compile Include="RDR2\PoolObject.cs" />
     <Compile Include="RDR2\Prompt.cs" />
-    <Compile Include="RDR2\RaycastResult.cs" />
+    <Compile Include="RDR2\Raycasting.cs" />
     <Compile Include="RDR2\RequireScript.cs" />
     <Compile Include="RDR2\Rope.cs" />
     <Compile Include="RDR2\RopeType.cs" />
