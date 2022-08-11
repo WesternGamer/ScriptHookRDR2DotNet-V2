@@ -5,8 +5,79 @@ namespace RDR2.UI
 {
 	public sealed class Prompt : PoolObject, IEquatable<Prompt>
 	{
-		private string _text;
 
+		Prompt CreatePrompt(eInputType control, eUseContextMode mode, string text, int numMashes = 0, int holdTime = 1000, int depletionTime = 1000, int fillTime = 1000, uint timedEvent = 0)
+		{
+			int prompt = HUD._UI_PROMPT_REGISTER_BEGIN();
+			HUD._UI_PROMPT_SET_CONTROL_ACTION(prompt, (uint)control);
+			Text = text;
+
+			switch (mode)
+			{
+				case eUseContextMode.UCM_PRESS:
+					HUD._UI_PROMPT_SET_STANDARD_MODE(prompt, false);
+					break;
+				case eUseContextMode.UCM_TIMED_PRESS:
+					HUD._UI_PROMPT_SET_PRESSED_TIMED_MODE(prompt, depletionTime);
+					break;
+				case eUseContextMode.UCM_RELEASE:
+					HUD._UI_PROMPT_SET_STANDARD_MODE(prompt, true);
+					break;
+				case eUseContextMode.UCM_HOLD:
+					HUD._UI_PROMPT_SET_HOLD_INDEFINITELY_MODE(prompt);
+					break;
+				case eUseContextMode.UCM_METERED:
+					HUD._UI_PROMPT_SET_STANDARDIZED_HOLD_MODE(prompt, timedEvent);
+					break;
+				case eUseContextMode.UCM_METER_STANDARD_TIME:
+					HUD._UI_PROMPT_SET_STANDARDIZED_HOLD_MODE(prompt, timedEvent);
+					break;
+				case eUseContextMode.UCM_AUTO_FILL:
+					HUD._UI_PROMPT_SET_HOLD_AUTO_FILL_MODE(prompt, fillTime, holdTime);
+					break;
+				case eUseContextMode.UCM_AUTO_FILL_WITH_DECAY:
+					HUD._UI_PROMPT_SET_HOLD_AUTO_FILL_WITH_DECAY_MODE(prompt, fillTime, holdTime);
+					break;
+				case eUseContextMode.UCM_MASH:
+					HUD._UI_PROMPT_SET_MASH_MODE(prompt, numMashes);
+					break;
+				case eUseContextMode.UCM_MASH_AUTO_FILL:
+					HUD._UI_PROMPT_SET_MASH_AUTO_FILL_MODE(prompt, fillTime, numMashes);
+					break;
+				case eUseContextMode.UCM_MASH_RESISTANCE:
+					HUD._UI_PROMPT_SET_MASH_WITH_RESISTANCE_MODE(prompt, numMashes, 0.0f, 0.0f); // TODO: Figure out what these floats do
+					break;
+				case eUseContextMode.UCM_MASH_RESISTANCE_CAN_FAIL:
+					HUD._UI_PROMPT_SET_MASH_WITH_RESISTANCE_CAN_FAIL_MODE(prompt, numMashes, 0.0f, 0.0f); // TODO: Figure out what these floats do
+					break;
+				case eUseContextMode.UCM_MASH_RESISTANCE_DYNAMIC:
+					HUD._UI_PROMPT_SET_MASH_MANUAL_MODE(prompt, (1.0f / 10.0f), 0.0f, 0.0f, 0); // TODO: Figure out what these floats do
+					break;
+				case eUseContextMode.UCM_MASH_RESISTANCE_DYNAMIC_CAN_FAIL:
+					HUD._UI_PROMPT_SET_MASH_MANUAL_CAN_FAIL_MODE(prompt, (1.0f / 10.0f), 0.0f, 0.0f, 0); // TODO: Figure out what these floats do
+					break;
+				case eUseContextMode.UCM_MASH_INDEFINITELY:
+					HUD._UI_PROMPT_SET_MASH_INDEFINITELY_MODE(prompt);
+					break;
+				case eUseContextMode.UCM_ROTATE:
+					HUD._UI_PROMPT_SET_ROTATE_MODE(prompt, 1.0f, false);
+					HUD._UI_PROMPT_SET_ATTRIBUTE(prompt, 10, true);
+					break;
+				case eUseContextMode.UCM_TARGET_METER:
+					HUD._UI_PROMPT_SET_TARGET_MODE(prompt, 0.5f, 0.1f, 0);
+					break;
+				default:
+					return null;
+			}
+
+			HUD._UI_PROMPT_REGISTER_END(prompt);
+			Visible = false;
+			Enabled = false;
+
+			return new Prompt(prompt);
+		}
+
+		private string _text;
 		public string Text
 		{
 			get => _text;
@@ -17,26 +88,22 @@ namespace RDR2.UI
 			}
 		}
 
-		public bool IsVisible
+		public bool Visible
 		{
 			get => HUD._UI_PROMPT_IS_ACTIVE(Handle);
 			set => HUD._UI_PROMPT_SET_VISIBLE(Handle, value);
 		}
 
-		public int HoldTime
+		public bool Enabled
 		{
-			set => HUD._UI_PROMPT_SET_PRESSED_TIMED_MODE(Handle, value);
+			get => HUD._UI_PROMPT_IS_ENABLED(Handle);
+			set => HUD._UI_PROMPT_SET_ENABLED(Handle, value);
 		}
 
 		public bool IsPressed => HUD._UI_PROMPT_IS_PRESSED(Handle);
 		public bool IsJustPressed => HUD._UI_PROMPT_IS_JUST_PRESSED(Handle);
 		public bool IsReleased => HUD._UI_PROMPT_IS_RELEASED(Handle);
 		public bool IsJustReleased => HUD._UI_PROMPT_IS_JUST_RELEASED(Handle);
-
-		public Control Control
-		{
-			set => HUD._UI_PROMPT_SET_CONTROL_ACTION(Handle, (uint)value);
-		}
 
 		public int Priority
 		{
@@ -51,7 +118,6 @@ namespace RDR2.UI
 
 		public Prompt(int handle) : base(handle)
 		{
-
 		}
 
 		public bool Equals(Prompt other)
@@ -80,5 +146,26 @@ namespace RDR2.UI
 		{
 			return Handle.GetHashCode();
 		}
+	}
+
+	enum eUseContextMode : int
+	{
+		UCM_PRESS,
+		UCM_TIMED_PRESS,
+		UCM_RELEASE,
+		UCM_HOLD,
+		UCM_METERED,
+		UCM_METER_STANDARD_TIME,
+		UCM_AUTO_FILL,
+		UCM_AUTO_FILL_WITH_DECAY,
+		UCM_MASH,
+		UCM_MASH_AUTO_FILL,
+		UCM_MASH_RESISTANCE,
+		UCM_MASH_RESISTANCE_CAN_FAIL,
+		UCM_MASH_RESISTANCE_DYNAMIC,
+		UCM_MASH_RESISTANCE_DYNAMIC_CAN_FAIL,
+		UCM_MASH_INDEFINITELY,
+		UCM_ROTATE,
+		UCM_TARGET_METER,
 	}
 }
