@@ -39,16 +39,16 @@ namespace RDR2DN
 
         // Pools
         [DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?worldGetAllObjects@@YAHPEAHH@Z")]
-        public static extern int getAllObjects(int[] arr, int arrSize);
+        public static extern int worldGetAllObjects(int[] arr, int arrSize);
 
         [DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?worldGetAllPeds@@YAHPEAHH@Z")]
-        public static extern int getAllPeds(int[] arr, int arrSize);
+        public static extern int worldGetAllPeds(int[] arr, int arrSize);
 
         [DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?worldGetAllPickups@@YAHPEAHH@Z")]
-        public static extern int getAllPickups(int[] arr, int arrSize);
+        public static extern int worldGetAllPickups(int[] arr, int arrSize);
 
         [DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?worldGetAllVehicles@@YAHPEAHH@Z")]
-        public static extern int getAllVehicles(int[] arr, int arrSize);
+        public static extern int worldGetAllVehicles(int[] arr, int arrSize);
 
         #endregion
 
