@@ -21,8 +21,9 @@ namespace RDR2DN
 
 		/// <summary>
 		/// Gets or sets the interval in ms between each <see cref="Tick"/>.
+		/// Default interval is 1.
 		/// </summary>
-		public int Interval { get; set; }
+		public int Interval { get; set; } = 1;
 
 		/// <summary>
 		/// Gets whether executing of this script is paused or not.
@@ -186,7 +187,7 @@ namespace RDR2DN
 		}
 
 		/// <summary>
-		/// Pauses execution of this script.
+		/// Pause execution of this script.
 		/// </summary>
 		public void Pause()
 		{
@@ -198,7 +199,7 @@ namespace RDR2DN
 			Log.Message(Log.Level.Info, "Paused script ", Name, ".");
 		}
 		/// <summary>
-		/// Resumes execution of this script.
+		/// Resume execution of this script.
 		/// </summary>
 		public void Resume()
 		{
