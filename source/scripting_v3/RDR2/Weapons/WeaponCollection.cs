@@ -31,7 +31,7 @@ namespace RDR2
 						return null;
 					}
 
-					weapon = new Weapon(owner, (WeaponHash)hash);
+					weapon = new Weapon(owner, (eWeapon)hash);
 					weapons.Add(hash, weapon);
 				}
 
@@ -43,22 +43,16 @@ namespace RDR2
 		{
 			get
 			{
-				uint currentWeapon;
-				unsafe
-				{
-					WEAPON.GET_CURRENT_PED_WEAPON(owner.Handle, &currentWeapon, true, 0, false);
-				}
+				uint currentWeapon = WEAPON._GET_PED_CURRENT_HELD_WEAPON(owner.Handle);
 
-				var hash = currentWeapon;
-
-				if (weapons.ContainsKey(hash))
+				if (weapons.ContainsKey(currentWeapon))
 				{
-					return weapons[hash];
+					return weapons[currentWeapon];
 				}
 				else
 				{
-					var weapon = new Weapon(owner, (WeaponHash)hash);
-					weapons.Add(hash, weapon);
+					var weapon = new Weapon(owner, (eWeapon)currentWeapon);
+					weapons.Add(currentWeapon, weapon);
 
 					return weapon;
 				}
@@ -77,7 +71,7 @@ namespace RDR2
 				}
 				else
 				{
-					var weapon = new Weapon(owner, (WeaponHash)hash);
+					var weapon = new Weapon(owner, (eWeapon)hash);
 					weapons.Add(hash, weapon);
 
 					return weapon;
@@ -99,7 +93,7 @@ namespace RDR2
 		{
 			get
 			{
-				if (Current.Hash == (WeaponHash)MISC.GET_HASH_KEY("WEAPON_UNARMED"))
+				if (Current.Hash == eWeapon.WEAPON_UNARMED)
 				{
 					return null;
 				}
@@ -110,7 +104,7 @@ namespace RDR2
 
 		public bool Select(Weapon weapon)
 		{
-			if (!weapon.IsPresent)
+			if (!weapon.PedHasThisWeapon)
 			{
 				return false;
 			}
@@ -139,11 +133,11 @@ namespace RDR2
 		{
 			if (!weapons.TryGetValue(hash, out Weapon weapon))
 			{
-				weapon = new Weapon(owner, (WeaponHash)hash);
+				weapon = new Weapon(owner, (eWeapon)hash);
 				weapons.Add(hash, weapon);
 			}
 
-			if (weapon.IsPresent)
+			if (weapon.PedHasThisWeapon)
 			{
 				Select(weapon);
 			}

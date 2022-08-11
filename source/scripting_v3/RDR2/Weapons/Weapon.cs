@@ -5,41 +5,53 @@ namespace RDR2
 	public sealed class Weapon
 	{
 		private Ped Owner { get; }
-
-		public WeaponHash Hash { get; } = WeaponHash.Unarmed;
+		public eWeapon Hash { get; }
 
 		public Weapon()
 		{
 		}
 
-		public Weapon(Ped owner, WeaponHash hash)
+		public Weapon(Ped owner, eWeapon weaponHash)
 		{
 			Owner = owner;
-			Hash = hash;
+			Hash = weaponHash;
 		}
 
-		public bool IsPresent => Hash == WeaponHash.Unarmed || WEAPON.HAS_PED_GOT_WEAPON(Owner.Handle, (uint)Hash, 0, false);
 
-		public WeaponGroup Group => (WeaponGroup)WEAPON.GET_WEAPONTYPE_GROUP((uint)Hash);
+		public bool PedHasThisWeapon => WEAPON.HAS_PED_GOT_WEAPON(Owner.Handle, (uint)Hash, 0, false);
+		public bool IsBeingCarried => WEAPON.IS_PED_CARRYING_WEAPON(Owner.Handle, (uint)Hash);
+		public eWeaponGroup Group => (eWeaponGroup)WEAPON.GET_WEAPONTYPE_GROUP((uint)Hash);
+		public uint WeaponModel => WEAPON._GET_WEAPONTYPE_MODEL((uint)Hash);
 
-		public AmmoType AmmoType => (AmmoType)WEAPON.GET_PED_AMMO_TYPE_FROM_WEAPON(Owner.Handle, (uint)Hash);
+
+		public bool IsValid			=> WEAPON.IS_WEAPON_VALID((uint)Hash);
+		public bool IsGun			=> WEAPON.IS_WEAPON_A_GUN((uint)Hash);
+		public bool IsBow			=> WEAPON.IS_WEAPON_BOW((uint)Hash);
+		public bool IsMelee			=> WEAPON.IS_WEAPON_MELEE_WEAPON((uint)Hash);
+		public bool IsPistol		=> WEAPON.IS_WEAPON_PISTOL((uint)Hash);
+		public bool IsRepeater		=> WEAPON.IS_WEAPON_REPEATER((uint)Hash);
+		public bool IsRifle			=> WEAPON.IS_WEAPON_RIFLE((uint)Hash);
+		public bool IsSniper		=> WEAPON._IS_WEAPON_SNIPER((uint)Hash);
+		public bool IsShotgun		=> WEAPON.IS_WEAPON_SHOTGUN((uint)Hash);
+		public bool IsKit			=> WEAPON._IS_WEAPON_KIT((uint)Hash);
+		public bool IsOneHanded		=> WEAPON._IS_WEAPON_ONE_HANDED((uint)Hash);
+		public bool IsTwoHanded		=> WEAPON._IS_WEAPON_TWO_HANDED((uint)Hash);
+		public bool IsThrowable		=> WEAPON._IS_WEAPON_THROWABLE((uint)Hash);
+
+
+		public eAmmoType DefaultAmmoType => (eAmmoType)WEAPON._GET_AMMO_TYPE_FOR_WEAPON((uint)Hash);
+		public eAmmoType AmmoType => (eAmmoType)WEAPON.GET_PED_AMMO_TYPE_FROM_WEAPON(Owner.Handle, (uint)Hash);
+		public bool InfiniteAmmo { set => WEAPON.SET_PED_INFINITE_AMMO(Owner.Handle, value, (uint)Hash); }
 
 		public int Ammo
 		{
-			get => Hash == WeaponHash.Unarmed
-				? 1
-				: WEAPON.GET_PED_AMMO_BY_TYPE(Owner.Handle, (uint)AmmoType);
+			get => WEAPON.GET_PED_AMMO_BY_TYPE(Owner.Handle, (uint)AmmoType);
 			set => WEAPON.SET_PED_AMMO_BY_TYPE(Owner.Handle, (uint)AmmoType, value);
 		}
 
 		public int AmmoInClip
 		{
 			get {
-				if (Hash == WeaponHash.Unarmed)
-				{
-					return 1;
-				}
-
 				int ammo;
 				unsafe
 				{
@@ -50,18 +62,11 @@ namespace RDR2
 
 				return 0;
 			}
-			set {
-				if (Hash == WeaponHash.Unarmed)
-				{
-					return;
-				}
 
-				if (IsPresent)
-				{
+			set {
+				if (PedHasThisWeapon) {
 					WEAPON.SET_AMMO_IN_CLIP(Owner.Handle, (uint)Hash, value);
-				}
-				else
-				{
+				} else {
 					Owner.GiveWeapon(Hash, value, 0);
 				}
 			}
@@ -70,11 +75,6 @@ namespace RDR2
 		public int MaxAmmo
 		{
 			get {
-				if (Hash == WeaponHash.Unarmed || !IsPresent)
-				{
-					return 0;
-				}
-
 				int ammo;
 				unsafe
 				{
@@ -87,181 +87,262 @@ namespace RDR2
 			}
 		}
 
-		public bool InfiniteAmmo
+		public void RemoveAmmo(int amount)
 		{
-			set => WEAPON.SET_PED_INFINITE_AMMO(Owner.Handle, value, (uint)Hash); // TODO: remove this?
+			WEAPON._REMOVE_AMMO_FROM_PED(Owner.Handle, (uint)Hash, amount, (uint)eRemoveItemReason.REMOVE_REASON_DEFAULT);
+		}
+
+		public void AddAmmo(int amount)
+		{
+			WEAPON._ADD_AMMO_TO_PED(Owner.Handle, (uint)Hash, amount, (uint)eAddItemReason.ADD_REASON_DEFAULT);
+		}
+
+		public void SetAmmoType(eAmmoType ammoType)
+		{
+			WEAPON._SET_AMMO_TYPE_FOR_PED_WEAPON(Owner.Handle, (uint)Hash, (uint)ammoType);
+		}
+
+
+
+		public void Equip()
+		{
+			WEAPON.SET_CURRENT_PED_WEAPON(Owner.Handle, (uint)Hash, true, 0, false, false);
 		}
 
 		public void Remove()
 		{
-			WEAPON.REMOVE_WEAPON_FROM_PED(Owner.Handle, (uint)Hash, true, unchecked((uint)-142743235)); // REMOVE_REASON_DEFAULT
+			WEAPON.REMOVE_WEAPON_FROM_PED(Owner.Handle, (uint)Hash, true, (uint)eRemoveItemReason.REMOVE_REASON_DEFAULT);
 		}
 
-		public static implicit operator WeaponHash(Weapon weapon)
+
+
+		public static implicit operator eWeapon(Weapon weapon)
 		{
 			return weapon.Hash;
 		}
 	}
 
-	public enum WeaponHash : uint
+	#region Weapon Related Enums
+
+	// TODO: Add back specific ped weapons
+
+	public enum eWeapon : uint
 	{
-		Unarmed = 0xA2719263,
-		Animal = 0xF9FBAEBE,
-		Alligator = 0xB5C5D8F1,
-		Badger = 0xD872AB0A,
-		Bear = 0x1EC181D9,
-		Beaver = 0x30E5211A,
-		Horse = 0x8BD282A4,
-		Cougar = 0x8D4BE52,
-		Coyote = 0x453467D1,
-		Deer = 0xF4C67A9E,
-		Fox = 0x33B2D208,
-		Muskrat = 0x2D880572,
-		Raccoon = 0x356951B,
-		Snake = 0xD8EFBC17,
-		Wolf = 0x238A339,
-		WolfMedium = 0x88394C06,
-		WolfSmall = 0xC80FDF53,
-		RevolverCattleman = 0x169F59F7,
-		MeleeKnife = 0xDB21AC8C,
-		ShotgunDoublebarrel = 0x6DFA071B,
-		MeleeLantern = 0xF62FB3A3,
-		RepeaterCarbine = 0xF5175BA1,
-		RevolverSchofieldBill = 0x6DFE44AB,
-		RifleBoltactionBill = 0xD853C801,
-		MeleeKnifeBill = 0xCE3C31A4,
-		ShotgunSawedoffCharles = 0xBE8D2666,
-		BowCharles = 0x791BBD2C,
-		MeleeKnifeCharles = 0xB4774D3D,
-		ThrownTomahawk = 0xA5E972D7,
-		RevolverSchofieldDutch = 0xFA4B2D47,
-		RevolverSchofieldDutchDualwield = 0xD44A5A04,
-		MeleeKnifeDutch = 0x2C8DBB17,
-		RevolverCattlemanHosea = 0xA6FE9435,
-		RevolverCattlemanHoseaDualwield = 0x1EAA7376,
-		ShotgunSemiautoHosea = 0xFD9B510B,
-		MeleeKnifeHosea = 0xCACE760E,
-		RevolverDoubleactionJavier = 0x514B39A1,
-		ThrownThrowingKnivesJavier = 0x39B815A2,
-		MeleeKnifeJavier = 0xFA66468E,
-		RevolverCattlemanJohn = 0xC9622757,
-		RepeaterWinchesterJohn = 0xBE76397C,
-		MeleeKnifeJohn = 0x1D7D0737,
-		RevolverCattlemanKieran = 0x8FAE73BB,
-		MeleeKnifeKieran = 0x2F3ECD37,
-		RevolverCattlemanLenny = 0xC9095426,
-		SniperrifleRollingblockLenny = 0x21556EC2,
-		MeleeKnifeLenny = 0x9DD839AE,
-		RevolverDoubleactionMicah = 0x2300C65,
-		RevolverDoubleactionMicahDualwield = 0xD427AD,
-		MeleeKnifeMicah = 0xE9245D38,
-		RevolverCattlemanSadie = 0x49F6BE32,
-		RevolverCattlemanSadieDualwield = 0x8384D5FE,
-		RepeaterCarbineSadie = 0x7BD9C820,
-		ThrownThrowingKnives = 0xD2718D48,
-		MeleeKnifeSadie = 0xAF5EEF08,
-		RevolverCattlemanSean = 0x3EECE288,
-		MeleeKnifeSean = 0x64514239,
-		RevolverSchofieldUncle = 0x99496406,
-		ShotgunDoublebarrelUncle = 0x8BA6AF0A,
-		MeleeKnifeUncle = 0x46E97B10,
-		RevolverDoubleaction = 0x797FBF5,
-		RifleBoltaction = 0x772C8DD6,
-		RevolverSchofield = 0x7BBD1FF6,
-		RifleSpringfield = 0x63F46DE6,
-		RepeaterWinchester = 0xA84762EC,
-		RifleVarmint = 0xDDF7BC1E,
-		PistolVolcanic = 0x20D13FF,
-		ShotgunSawedoff = 0x1765A8F8,
-		PistolSemiauto = 0x657065D6,
-		PistolMauser = 0x8580C63E,
-		RepeaterHenry = 0x95B24592,
-		ShotgunPump = 0x31B7B9FE,
-		Bow = 0x88A8505C,
-		ThrownMolotov = 0x7067E7A7,
-		MeleeHatchetHewing = 0x1C02870C,
-		MeleeMachete = 0x28950C71,
-		RevolverDoubleactionExotic = 0x23C706CD,
-		RevolverSchofieldGolden = 0xE195D259,
-		ThrownDynamite = 0xA64DAA5E,
-		MeleeDavyLantern = 0x4A59E501,
-		Lasso = 0x7A8A724A,
-		KitBinoculars = 0xF6687C5A,
-		KitCamera = 0xC3662B7D,
-		Fishingrod = 0xABA87754,
-		SniperrifleRollingblock = 0xE1D2B317,
-		ShotgunSemiauto = 0x6D9BB970,
-		ShotgunRepeating = 0x63CA782A,
-		SniperrifleCarcano = 0x53944780,
-		MeleeBrokenSword = 0xF79190B4,
-		MeleeKnifeBear = 0x2BC12CDA,
-		MeleeKnifeCivilWar = 0xDA54DD53,
-		MeleeKnifeJawbone = 0x1086D041,
-		MeleeKnifeMiner = 0xC45B2DE,
-		MeleeKnifeVampire = 0x14D3F94D,
-		MeleeTorch = 0x67DC3FDE,
-		MeleeLanternElectric = 0x3155643F,
-		MeleeHatchet = 0x9E12A01,
-		MeleeAncientHatchet = 0x21CCCA44,
-		MeleeCleaver = 0xEF32A25D,
-		MeleeHatchetDoubleBit = 0xBCC63763,
-		MeleeHatchetDoubleBitRusted = 0x8F0FDE0E,
-		MeleeHatchetHunter = 0x2A5CF9D6,
-		MeleeHatchetHunterRusted = 0xE470B7AD,
-		MeleeHatchetViking = 0x74DC40ED,
-		RevolverCattlemanMexican = 0x16D655F7,
-		RevolverCattlemanPig = 0xF5E4207F,
-		RevolverSchofieldCalloway = 0x247E783,
-		PistolMauserDrunk = 0x4AAE5FFA,
-		ShotgunDoublebarrelExotic = 0x2250E150,
-		SniperrifleRollingblockExotic = 0x4E328256,
-		ThrownTomahawkAncient = 0x7F23B6C7,
-		MeleeTorchCrowd = 0xCC4588BD,
-		MeleeHatchetMeleeonly = 0x76D4FAB
+		WEAPON_REVOLVER_CATTLEMAN = 379542007,
+		WEAPON_REVOLVER_CATTLEMAN_JOHN = 3378653015,
+		WEAPON_REVOLVER_CATTLEMAN_MEXICAN = 383145463,
+		WEAPON_REVOLVER_CATTLEMAN_PIG = 4125368447,
+		WEAPON_REVOLVER_DOUBLEACTION = 127400949,
+		WEAPON_REVOLVER_DOUBLEACTION_EXOTIC = 600245965,
+		WEAPON_REVOLVER_DOUBLEACTION_GAMBLER = 2212320791,
+		WEAPON_REVOLVER_DOUBLEACTION_MICAH = 36703333,
+		WEAPON_REVOLVER_LEMAT = 1529685685,
+		WEAPON_REVOLVER_NAVY = 132728264,
+		WEAPON_REVOLVER_NAVY_CROSSOVER = 389133414,
+		WEAPON_REVOLVER_SCHOFIELD = 2075992054,
+		WEAPON_REVOLVER_SCHOFIELD_CALLOWAY = 38266755,
+		WEAPON_REVOLVER_SCHOFIELD_GOLDEN = 3784692313,
+		WEAPON_REPEATER_CARBINE = 4111948705,
+		WEAPON_REPEATER_EVANS = 1905553950,
+		WEAPON_REPEATER_HENRY = 2511488402,
+		WEAPON_REPEATER_WINCHESTER = 2823250668,
+		WEAPON_RIFLE_BOLTACTION = 1999408598,
+		WEAPON_RIFLE_ELEPHANT = 2577544200,
+		WEAPON_RIFLE_SPRINGFIELD = 1676963302,
+		WEAPON_RIFLE_VARMINT = 3724000286,
+		WEAPON_SNIPERRIFLE_CARCANO = 1402226560,
+		WEAPON_SNIPERRIFLE_ROLLINGBLOCK = 3788682007,
+		WEAPON_SNIPERRIFLE_ROLLINGBLOCK_EXOTIC = 1311933014,
+		WEAPON_SHOTGUN_DOUBLEBARREL = 1845102363,
+		WEAPON_SHOTGUN_DOUBLEBARREL_EXOTIC = 575725904,
+		WEAPON_SHOTGUN_PUMP = 834124286,
+		WEAPON_SHOTGUN_REPEATING = 1674213418,
+		WEAPON_SHOTGUN_SAWEDOFF = 392538360,
+		WEAPON_SHOTGUN_SEMIAUTO = 1838922096,
+		WEAPON_PISTOL_M1899 = 1534638301,
+		WEAPON_PISTOL_MAUSER = 2239809086,
+		WEAPON_PISTOL_MAUSER_DRUNK = 1252941818,
+		WEAPON_PISTOL_SEMIAUTO = 1701864918,
+		WEAPON_PISTOL_VOLCANIC = 34411519,
+		WEAPON_LASSO = 2055893578,
+		WEAPON_LASSO_REINFORCED = 3614665296,
+		WEAPON_THROWN_BOLAS = 1151374672,
+		WEAPON_THROWN_DYNAMITE = 2790107742,
+		WEAPON_THROWN_MOLOTOV = 1885857703,
+		WEAPON_THROWN_POISONBOTTLE = 3717074181,
+		WEAPON_THROWN_THROWING_KNIVES = 3530657096,
+		WEAPON_THROWN_TOMAHAWK = 2783539927,
+		WEAPON_THROWN_TOMAHAWK_ANCIENT = 2133046983,
+		WEAPON_MELEE_ANCIENT_HATCHET = 567069252,
+		WEAPON_MELEE_BROKEN_SWORD = 4153512116,
+		WEAPON_MELEE_CLEAVER = 4013072989,
+		WEAPON_MELEE_HAMMER = 3999617846,
+		WEAPON_MELEE_HATCHET = 165751297,
+		WEAPON_MELEE_HATCHET_DOUBLE_BIT = 3167106915,
+		WEAPON_MELEE_HATCHET_DOUBLE_BIT_RUSTED = 2400181774,
+		WEAPON_MELEE_HATCHET_HEWING = 469927692,
+		WEAPON_MELEE_HATCHET_HUNTER = 710736342,
+		WEAPON_MELEE_HATCHET_HUNTER_RUSTED = 3832592301,
+		WEAPON_MELEE_HATCHET_VIKING = 1960591597,
+		WEAPON_MELEE_KNIFE = 3676417164,
+		WEAPON_MELEE_KNIFE_BEAR = 734080218,
+		WEAPON_MELEE_KNIFE_CIVIL_WAR = 3662994771,
+		WEAPON_MELEE_KNIFE_JAWBONE = 277270593,
+		WEAPON_MELEE_KNIFE_MINER = 205894366,
+		WEAPON_MELEE_KNIFE_TRADER = 2846148967,
+		WEAPON_MELEE_KNIFE_VAMPIRE = 349436237,
+		WEAPON_MELEE_MACHETE = 680856689,
+		WEAPON_MELEE_MACHETE_COLLECTOR = 2520515983,
+		WEAPON_MELEE_DAVY_LANTERN = 1247405313,
+		WEAPON_MELEE_LANTERN = 4130321315,
+		WEAPON_MELEE_LANTERN_ELECTRIC = 827679807,
+		WEAPON_MELEE_TORCH = 1742487518,
+		WEAPON_UNARMED = 2725352035,
+		WEAPON_BOW = 2292731996,
+		WEAPON_FISHINGROD = 2879944532,
+		WEAPON_MOONSHINEJUG = 2933179980,
+		WEAPON_KIT_BINOCULARS = 4134042714,
+		WEAPON_KIT_BINOCULARS_IMPROVED = 1652431022,
+		WEAPON_KIT_CAMERA = 3278252925,
+		WEAPON_KIT_DETECTOR = 191707516,
 	}
 
-	public enum WeaponGroup : uint
+	public enum eWeaponGroup : uint
 	{
-		Revolver = 0xBE5B8969,
-		Pistol = 0x18D5FA97,
-		Animal = 0xA00FC1E4,
-		Melee = 0xD49321D4,
-		MeleeThrowable = 0x5C4C5883,
-		Shotgun = 0x33431399,
-		SniperRifle = 0xB7BBD827,
-		Kit = 0xC715F939,
-		Rifle = 0x39D5C192,
-		Bow = 0xB5FD67CD,
-		Lasso = 0x126210C3,
-		Repeater = 0xDC8FB3E9,
-		FishingRod = 0x60B51DA4
+		GROUP_BOW = 0xB5FD67CD,
+		GROUP_FISHINGROD = 0x60B51DA4,
+		GROUP_HEAVY = 0xA27A4F9F,
+		GROUP_KIT = 0xC715F939, // Note: Hash doesn't match GROUP_KIT
+		GROUP_LASSO = 0x126210C3,
+		GROUP_MELEE = 0xD49321D4,
+		GROUP_PETROLCAN = 0x5F1BE07C,
+		GROUP_PISTOL = 0x18D5FA97,
+		GROUP_REPEATER = 0xDC8FB3E9,
+		GROUP_REVOLVER = 0xBE5B8969,
+		GROUP_RIFLE = 0x39D5C192,
+		GROUP_SHOTGUN = 0x33431399,
+		GROUP_SNIPER = 0xB7BBD827,
+		GROUP_THROWN = 0x5C4C5883,
+		GROUP_UNARMED = 0xA00FC1E4,
 	}
 
-	public enum AmmoType : uint
+	public enum eAmmoType : uint
 	{
-		Unusable = 0x0,
-		Revolver = 0x64356159,
-		Pistol = 0x743D4F54,
-		HatchetThrowable = 0x194631D6,
-		Shotgun = 0x90083D3B,
-		HatchetHewingThrowable = 0x8507C1F7,
-		SniperRifle = 0xD05319F,
-		HatchetAncientThrowable = 0xA9708E57,
-		HatchetHunterThrowable = 0x1AA32EB0,
-		JavierThrowingKnives = 0xF51D1AC7,
-		Molotov = 0x5633F9D5,
-		HatchetVikingThrowable = 0xE501537B,
-		Bow = 0x38E6F55F,
-		Lasso = 0xEAD00129,
-		Repeater = 0xB0B80B9A,
-		AncientTomahawk = 0xF25D45BC,
-		HatchetDoubleBitRustedThrowable = 0xCABE0C0F,
-		Tomahawk = 0x49A985D7,
-		Dynamite = 0x1C9D6E9D,
-		HatchetDoubleBitThrowable = 0x63A5047F,
-		ThrowingKnives = 0x9E4AD291,
-		RifleVarmint = 0x7DF4D025,
-		HatchedHunterRustedThrowable = 0xBEDC8EB6,
-		CleaverThrowable = 0xB925EC32
+		AMMO_22 = 0x7DF4D025,
+		AMMO_22_TRANQUILIZER = 0x8E919F27,
+		AMMO_ARROW = 0x38E6F55F,
+		AMMO_ARROW_CONFUSION = 0x1F901FAE,
+		AMMO_ARROW_DISORIENT = 0xDC6FE2FE,
+		AMMO_ARROW_DRAIN = 0xA3B9DB42,
+		AMMO_ARROW_DYNAMITE = 0xC1F57A79,
+		AMMO_ARROW_FIRE = 0x11B25B49,
+		AMMO_ARROW_IMPROVED = 0x9238061F,
+		AMMO_ARROW_POISON = 0x07865A92,
+		AMMO_ARROW_SMALL_GAME = 0xAE6E2B0E,
+		AMMO_ARROW_TRACKING = 0x62CEC038,
+		AMMO_ARROW_TRAIL = 0xF680010B,
+		AMMO_ARROW_WOUND = 0xB6731F5A,
+		AMMO_BOLAS = 0x020C7A4A,
+		AMMO_BOLAS_HAWKMOTH = 0x22E119A9,
+		AMMO_BOLAS_INTERTWINED = 0x9AB3E5C1,
+		AMMO_BOLAS_IRONSPIKED = 0x87BA17E6,
+		AMMO_CANNON = 0xB6976AA1,
+		AMMO_DYNAMITE = 0x1C9D6E9D,
+		AMMO_DYNAMITE_VOLATILE = 0x321BA159,
+		AMMO_HATCHET = 0x194631D6,
+		AMMO_HATCHET_ANCIENT = 0xA9708E57,
+		AMMO_HATCHET_CLEAVER = 0xB925EC32,
+		AMMO_HATCHET_DOUBLE_BIT = 0x63A5047F,
+		AMMO_HATCHET_DOUBLE_BIT_RUSTED = 0xCABE0C0F,
+		AMMO_HATCHET_HEWING = 0x8507C1F7,
+		AMMO_HATCHET_HUNTER = 0x1AA32EB0,
+		AMMO_HATCHET_HUNTER_RUSTED = 0xBEDC8EB6,
+		AMMO_HATCHET_VIKING = 0xE501537B,
+		AMMO_LASSO = 0xEAD00129,
+		AMMO_LASSO_REINFORCED = 0xAE802EDC,
+		AMMO_MOLOTOV = 0x5633F9D5,
+		AMMO_MOLOTOV_VOLATILE = 0x886C55D7,
+		AMMO_MOONSHINEJUG = 0x631C84FC,
+		AMMO_MOONSHINEJUG_MP = 0x656A2F3B,
+		AMMO_PISTOL = 0x743D4F54,
+		AMMO_PISTOL_EXPRESS = 0x31E2AD5B,
+		AMMO_PISTOL_EXPRESS_EXPLOSIVE = 0x46A648C2,
+		AMMO_PISTOL_HIGH_VELOCITY = 0xABD96830,
+		AMMO_PISTOL_SPLIT_POINT = 0x0E163B80,
+		AMMO_POISONBOTTLE = 0x39714C4F,
+		AMMO_REPEATER = 0xB0B80B9A,
+		AMMO_REPEATER_EXPRESS = 0xDD871DC8,
+		AMMO_REPEATER_EXPRESS_EXPLOSIVE = 0x9C8B6796,
+		AMMO_REPEATER_HIGH_VELOCITY = 0x0DCBE210,
+		AMMO_REPEATER_SPLIT_POINT = 0x44750C88,
+		AMMO_REVOLVER = 0x64356159,
+		AMMO_REVOLVER_EXPRESS = 0x4970588D,
+		AMMO_REVOLVER_EXPRESS_EXPLOSIVE = 0x04A8EFBB,
+		AMMO_REVOLVER_HIGH_VELOCITY = 0x83C5E860,
+		AMMO_REVOLVER_SPLIT_POINT = 0x4A25B008,
+		AMMO_RIFLE = 0x0D05319F,
+		AMMO_RIFLE_ELEPHANT = 0xB392591E,
+		AMMO_RIFLE_EXPRESS = 0x62A11A4B,
+		AMMO_RIFLE_EXPRESS_EXPLOSIVE = 0x6D926443,
+		AMMO_RIFLE_HIGH_VELOCITY = 0x6ECB67F9,
+		AMMO_RIFLE_SPLIT_POINT = 0x0BEFA5B2,
+		AMMO_SHOTGUN = 0x90083D3B,
+		AMMO_SHOTGUN_BUCKSHOT_INCENDIARY = 0xBFCB2621,
+		AMMO_SHOTGUN_SLUG = 0x12C60041,
+		AMMO_SHOTGUN_SLUG_EXPLOSIVE = 0x2314B32A,
+		AMMO_THROWING_KNIVES = 0x9E4AD291,
+		AMMO_THROWING_KNIVES_CONFUSE = 0x9117CF91,
+		AMMO_THROWING_KNIVES_DISORIENT = 0x59DCB686,
+		AMMO_THROWING_KNIVES_DRAIN = 0x6D0020AB,
+		AMMO_THROWING_KNIVES_IMPROVED = 0x48DC05F6,
+		AMMO_THROWING_KNIVES_JAVIER = 0xF51D1AC7,
+		AMMO_THROWING_KNIVES_POISON = 0x7BA5E56E,
+		AMMO_THROWING_KNIVES_TRAIL = 0x4BC1020F,
+		AMMO_THROWING_KNIVES_WOUND = 0x9143D131,
+		AMMO_THROWN_ITEM = 0xCE156C30,
+		AMMO_TOMAHAWK = 0x49A985D7,
+		AMMO_TOMAHAWK_ANCIENT = 0xF25D45BC,
+		AMMO_TOMAHAWK_HOMING = 0xABD7C401,
+		AMMO_TOMAHAWK_IMPROVED = 0xCE489834,
+		AMMO_TURRET = 0xBA2D509B
 	}
+
+	public enum eWeaponAttachPoint
+	{
+		WEAPON_ATTACH_POINT_INVALID = -1,
+		WEAPON_ATTACH_POINT_HAND_PRIMARY = 0,
+		WEAPON_ATTACH_POINT_HAND_SECONDARY = 1,
+		WEAPON_ATTACH_POINT_PISTOL_R = 2,
+		MAX_HAND_WEAPON_ATTACH_POINTS = 2,
+		WEAPON_ATTACH_POINT_PISTOL_L = 3,
+		WEAPON_ATTACH_POINT_KNIFE = 4,
+		WEAPON_ATTACH_POINT_LASSO = 5,
+		WEAPON_ATTACH_POINT_THROWER = 6,
+		WEAPON_ATTACH_POINT_BOW = 7,
+		WEAPON_ATTACH_POINT_BOW_ALTERNATE = 8,
+		WEAPON_ATTACH_POINT_RIFLE = 9,
+		WEAPON_ATTACH_POINT_RIFLE_ALTERNATE = 10,
+		WEAPON_ATTACH_POINT_LANTERN = 11,
+		WEAPON_ATTACH_POINT_TEMP_LANTERN = 12,
+		WEAPON_ATTACH_POINT_MELEE = 13,
+		MAX_SYNCED_WEAPON_ATTACH_POINTS = 13,
+		WEAPON_ATTACH_POINT_HIP = 14,
+		WEAPON_ATTACH_POINT_BOOT = 15,
+		WEAPON_ATTACH_POINT_BACK = 16,
+		WEAPON_ATTACH_POINT_FRONT = 17,
+		WEAPON_ATTACH_POINT_SHOULDERSLING = 18,
+		WEAPON_ATTACH_POINT_LEFTBREAST = 19,
+		WEAPON_ATTACH_POINT_RIGHTBREAST = 20,
+		WEAPON_ATTACH_POINT_LEFTARMPIT = 21,
+		WEAPON_ATTACH_POINT_RIGHTARMPIT = 22,
+		WEAPON_ATTACH_POINT_LEFTARMPIT_RIFLE = 23,
+		WEAPON_ATTACH_POINT_SATCHEL = 24,
+		WEAPON_ATTACH_POINT_LEFTARMPIT_BOW = 25,
+		WEAPON_ATTACH_POINT_RIGHT_HAND_EXTRA = 26,
+		WEAPON_ATTACH_POINT_LEFT_HAND_EXTRA = 27,
+		WEAPON_ATTACH_POINT_RIGHT_HAND_AUX = 28,
+		MAX_WEAPON_ATTACH_POINTS = 29
+	}
+
+	#endregion
 }
