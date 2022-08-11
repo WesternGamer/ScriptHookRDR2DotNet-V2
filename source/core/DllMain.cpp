@@ -165,7 +165,7 @@ static void ScriptHookRDRDotNet_ManagedInit()
 	domain = RDR2DN::ScriptDomain::Load(directory, scriptPath);
 	if (domain == nullptr)
 	{
-		RDR2DN::Log::Message(RDR2DN::Log::Level::Error, "return null on scriptdomain::load() in ", scriptPath);
+		RDR2DN::Log::Message(RDR2DN::Log::Level::Error, "ScriptDomain::Load() returned null in ", scriptPath);
 		return;
 	}
 
@@ -178,7 +178,7 @@ static void ScriptHookRDRDotNet_ManagedInit()
 			RDR2DN::Console::typeid->Assembly->Location, RDR2DN::Console::typeid->FullName);
 
 		// Print welcome message
-		console->PrintInfo("~c~--- Community Script Hook RDR2 .NET  ---");
+		console->PrintInfo("~c~--- Community Script Hook RDR2 .NET V2 ---");
 		console->PrintInfo("~c~--- Type \"Help()\" to print an overview of available commands ---");
 
 		// Update console pointer in script domain
