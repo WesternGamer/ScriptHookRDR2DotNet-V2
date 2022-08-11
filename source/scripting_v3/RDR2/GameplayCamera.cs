@@ -10,9 +10,17 @@ namespace RDR2
 {
 	public static class GameplayCamera
 	{
+		public static float FieldOfView => CAM.GET_GAMEPLAY_CAM_FOV();
+		public static bool IsRendering => CAM.IS_GAMEPLAY_CAM_RENDERING();
+		public static bool IsFirstPersonAimCamActive => CAM.IS_FIRST_PERSON_AIM_CAM_ACTIVE();
+		public static bool IsLookingBehind => CAM.IS_GAMEPLAY_CAM_LOOKING_BEHIND();
+		public static bool IsShaking => CAM.IS_GAMEPLAY_CAM_SHAKING();
+		public static bool IsInFirstPerson => CAM._IS_IN_FULL_FIRST_PERSON_MODE();
+		public static bool IsInThirdPerson => !IsInFirstPerson;
+		public static float Zoom { set => CAM._ANIMATE_GAMEPLAY_CAM_ZOOM(1.0f, value); }
+
 		public static Vector3 Position => CAM.GET_GAMEPLAY_CAM_COORD();
 		public static Vector3 Rotation => CAM.GET_GAMEPLAY_CAM_ROT(2);
-
 		public static Vector3 Direction
 		{
 			get
@@ -21,10 +29,11 @@ namespace RDR2
 				double rotX = rot.X / 57.295779513082320876798154814105;
 				double rotZ = rot.Z / 57.295779513082320876798154814105;
 				double multXY = System.Math.Abs(System.Math.Cos(rotX));
-
+				
 				return new Vector3((float)(-System.Math.Sin(rotZ) * multXY), (float)(System.Math.Cos(rotZ) * multXY), (float)System.Math.Sin(rotX));
 			}
 		}
+		public static Vector3 ForwardVector => Direction;
 
 		public static Vector3 GetOffsetInWorldCoords(Vector3 offset)
 		{
@@ -73,18 +82,5 @@ namespace RDR2
 			get => CAM.GET_GAMEPLAY_CAM_RELATIVE_HEADING();
 			set => CAM.SET_GAMEPLAY_CAM_RELATIVE_HEADING(value, 1.0f);
 		}
-
-		public static float FieldOfView => CAM.GET_GAMEPLAY_CAM_FOV();
-
-		public static bool IsRendering => CAM.IS_GAMEPLAY_CAM_RENDERING();
-
-		public static bool IsFirstPersonAimCamActive => CAM.IS_FIRST_PERSON_AIM_CAM_ACTIVE();
-
-		public static bool IsLookingBehind => CAM.IS_GAMEPLAY_CAM_LOOKING_BEHIND();
-
-
-		public static bool IsShaking => CAM.IS_GAMEPLAY_CAM_SHAKING();
-
-		
 	}
 }

@@ -5,17 +5,11 @@
 
 using RDR2.Math;
 using RDR2.Native;
-using System;
 
 namespace RDR2
 {
 	public sealed class Camera : PoolObject, ISpatial
 	{
-		internal static readonly string[] shakeNames = {
-			"HAND_SHAKE", "NONE", "SMALL_EXPLOSION_SHAKE", "MEDIUM_EXPLOSION_SHAKE", "LARGE_EXPLOSION_SHAKE",
-			"JOLT_SHAKE", "VIBRATE_SHAKE", "WOBBLY_SHAKE", "DRUNK_SHAKE",
-		};
-
 		public Camera(int handle) : base(handle)
 		{
 			Handle = handle;
@@ -26,11 +20,44 @@ namespace RDR2
 			get;
 		}
 
+
+		public bool IsInterpolating => CAM.IS_CAM_INTERPOLATING(Handle);
+		public bool IsShaking => CAM.IS_CAM_SHAKING(Handle);
+		public bool IsRendering => CAM.IS_CAM_RENDERING(Handle);
+
 		public bool Active
 		{
 			get => CAM.IS_CAM_ACTIVE(Handle);
 			set => CAM.SET_CAM_ACTIVE(Handle, value);
 		}
+
+		public float FarClip
+		{
+			set => CAM.SET_CAM_FAR_CLIP(Handle, value);
+		}
+
+		public float NearClip
+		{
+			set => CAM.SET_CAM_NEAR_CLIP(Handle, value);
+		}
+
+		public float FieldOfView
+		{
+			get => CAM.GET_CAM_FOV(Handle);
+			set => CAM.SET_CAM_FOV(Handle, value);
+		}
+
+		public float MotionBlurStrength
+		{
+			set => CAM.SET_CAM_MOTION_BLUR_STRENGTH(Handle, value);
+		}
+
+		public float FocusDistance
+		{
+			set => CAM._SET_CAM_FOCUS_DISTANCE(Handle, value);
+		}
+
+
 
 		public Vector3 Position
 		{
@@ -63,7 +90,9 @@ namespace RDR2
 				Vector3 vector3 = Vector3.Normalize(vector2);
 				Rotation = new Vector3((float)(System.Math.Atan2(vector3.X, vector3.Y) * 57.295779513082320876798154814105), 0.0f, (float)(-System.Math.Atan2(value.X, value.Y) * 57.295779513082320876798154814105));
 			}
-	}
+		}
+
+		public Vector3 ForwardVector => Direction;
 
 		public Vector3 GetOffsetInWorldCoords(Vector3 offset)
 		{
@@ -92,31 +121,46 @@ namespace RDR2
 			return new Vector3(Vector3.Dot(Right, Delta), Vector3.Dot(Forward, Delta), Vector3.Dot(Up, Delta));
 		}
 
-		public float FarClip
-		{
-			set => CAM.SET_CAM_FAR_CLIP(Handle, value);
-		}
 
-		public float NearClip
-		{
-			set => CAM.SET_CAM_NEAR_CLIP(Handle, value);
-		}
 
-		public float FieldOfView
+		public void Render(bool bShouldRender, bool bEaseCam = false, int iEaseTime = 3000)
 		{
-			get => CAM.GET_CAM_FOV(Handle);
-			set => CAM.SET_CAM_FOV(Handle, value);
+			CAM.RENDER_SCRIPT_CAMS(bShouldRender, bEaseCam, iEaseTime, true, false, 0);
 		}
 
 
-		public float MotionBlurStrength
+
+		private string getShakeName(CameraShake shakeType)
 		{
-			set => CAM.SET_CAM_MOTION_BLUR_STRENGTH(Handle, value);
+			switch ((int)shakeType)
+			{
+				case -1:
+					return "NONE";
+				case 0:
+					return "SMALL_EXPLOSION_SHAKE";
+				case 1:
+					return "MEDIUM_EXPLOSION_SHAKE";
+				case 2:
+					return "LARGE_EXPLOSION_SHAKE";
+				case 3:
+					return "HAND_SHAKE";
+				case 4:
+					return "JOLT_SHAKE";
+				case 5:
+					return "VIBRATE_SHAKE";
+				case 6:
+					return "WOBBLY_SHAKE";
+				case 7:
+					return "DRUNK_SHAKE";
+				default:
+					break;
+			}
+			return "NONE";
 		}
 
 		public void Shake(CameraShake shakeType, float amplitude)
 		{
-			CAM.SHAKE_CAM(Handle, shakeNames[(int)shakeType], amplitude);
+			CAM.SHAKE_CAM(Handle, getShakeName(shakeType), amplitude);
 		}
 
 		public void StopShaking()
@@ -124,10 +168,7 @@ namespace RDR2
 			CAM.STOP_CAM_SHAKING(Handle, true);
 		}
 
-		public bool IsShaking
-		{
-			get => CAM.IS_CAM_SHAKING(Handle);
-		}
+
 
 		public void PointAt(Vector3 target)
 		{
@@ -148,10 +189,6 @@ namespace RDR2
 		}
 
 
-		public bool IsInterpolating
-		{
-			get => CAM.IS_CAM_INTERPOLATING(Handle);
-		}
 
 		public void AttachTo(Entity entity, Vector3 offset)
 		{
@@ -166,6 +203,8 @@ namespace RDR2
 		{
 			CAM.DETACH_CAM(Handle);
 		}
+
+
 
 		public override void Delete()
 		{
@@ -203,5 +242,18 @@ namespace RDR2
 		{
 			return Handle.GetHashCode();
 		}
+	}
+
+	public enum CameraShake
+	{
+		NONE = -1,
+		SMALL_EXPLOSION_SHAKE,
+		MEDIUM_EXPLOSION_SHAKE,
+		LARGE_EXPLOSION_SHAKE,
+		HAND_SHAKE,
+		JOLT_SHAKE,
+		VIBRATE_SHAKE,
+		WOBBLY_SHAKE,
+		DRUNK_SHAKE,
 	}
 }
