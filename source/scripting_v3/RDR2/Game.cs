@@ -6,26 +6,32 @@
 using RDR2.Native;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace RDR2
 {
 	public static class Game
 	{
-		static Player _cachedPlayer;
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		private static extern System.IntPtr GetForegroundWindow();
+		[DllImport("user32.dll")]
+		private static extern bool GetWindowRect(System.IntPtr hWnd, Rectangle rect);
 
 
-		public static float FPS => 1.0f / LastFrameTime;
 		public static float LastFrameTime => MISC.GET_FRAME_TIME();
+		public static float FPS => 1.0f / LastFrameTime;
 
 		public static Size ScreenResolution
 		{
-			get {
-				int w, h;
-				unsafe { GRAPHICS.GET_SCREEN_RESOLUTION(&w, &h); }
-				return new Size(w, h);
+			get
+			{
+				Rectangle rect = new Rectangle();
+				GetWindowRect(GetForegroundWindow(), rect);
+				return new Size(rect.Width, rect.Height);
 			}
 		}
 
+		static Player _cachedPlayer;
 		public static Player Player
 		{
 			get {
@@ -40,7 +46,7 @@ namespace RDR2
 			}
 		}
 
-		public static GameVersion Version => (GameVersion)(RDR2DN.NativeMemory.GetGameVersion() + 1);
+		public static int Version => (RDR2DN.NativeMemory.GetGameVersion() + 1);
 
 		public static GlobalCollection Globals { get; private set; } = new GlobalCollection();
 

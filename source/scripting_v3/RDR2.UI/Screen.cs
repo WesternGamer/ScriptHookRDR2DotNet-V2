@@ -50,13 +50,7 @@ namespace RDR2.UI
 		{
 			get
 			{
-				int width, height;
-				unsafe
-				{
-					GRAPHICS.GET_SCREEN_RESOLUTION(&width, &height);
-				}
-
-				return new Size(width, height);
+				return Game.ScreenResolution;
 			}
 		}
 		/// <summary>
