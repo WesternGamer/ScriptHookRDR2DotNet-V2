@@ -16,27 +16,36 @@ namespace RDR2
 			Handle = handle;
 		}
 
-
 		public int VertexCount => PHYSICS.GET_ROPE_VERTEX_COUNT(Handle);
+		public bool IsBroken => PHYSICS._IS_ROPE_BROKEN(Handle);
 
 		public float Length
 		{
-           // get => PHYSICS._0x3D69537039F8D824(Handle);
+			// get => PHYSICS._0x3D69537039F8D824(Handle);
 			set => PHYSICS.ROPE_FORCE_LENGTH(Handle, value);
 		}
+
+		/*public void temp()
+		{
+			unsafe
+			{
+				int ptr = Handle;
+				PHYSICS._0x7A54D82227A139DB(&ptr, 1); // makes rope (in)visible
+			}
+			
+		}*/
 
 		public void ActivatePhysics()
 		{
 			PHYSICS.ACTIVATE_PHYSICS(Handle);
 		}
 
-		public void DetachEntity(Entity entity)
+		public Vector3 GetVertexCoord(int vertex)
 		{
-			PHYSICS.DETACH_ROPE_FROM_ENTITY(Handle, entity.Handle);
+			return PHYSICS.GET_ROPE_VERTEX_COORD(Handle, vertex);
 		}
 
 		// TODO
-		// TODO: BoneID enum
 		/*public void AttachEntities(Entity entityOne, Entity entityTwo, float length)
 		{
 			AttachEntities(entityOne, Vector3.Zero, entityTwo, Vector3.Zero, length);
@@ -46,9 +55,19 @@ namespace RDR2
 			PHYSICS.ATTACH_ENTITIES_TO_ROPE(Handle, entityOne.Handle, entityTwo.Handle, positionOne.X, positionOne.Y, positionOne.Z, positionTwo.X, positionTwo.Y, positionTwo.Z, length, 0, 0, "", "", false, 37709, 7966, 0, 0, true, true);
 		}*/
 
-		public Vector3 GetVertexCoord(int vertex)
+		public bool IsAttachedTo(Entity entity)
 		{
-			return PHYSICS.GET_ROPE_VERTEX_COORD(Handle, vertex);
+			return PHYSICS._IS_ROPE_ATTACHED_TO_ENTITY(Handle, entity.Handle);
+		}
+
+		public void Detach(Entity entity)
+		{
+			PHYSICS.DETACH_ROPE_FROM_ENTITY(Handle, entity.Handle);
+		}
+
+		public void Release()
+		{
+			PHYSICS._RELEASE_ROPE(Handle);
 		}
 
 		public override void Delete()

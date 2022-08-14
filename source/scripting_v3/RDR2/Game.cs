@@ -50,6 +50,8 @@ namespace RDR2
 
 		public static GlobalCollection Globals { get; private set; } = new GlobalCollection();
 
+		public static bool InCutscene => ANIMSCENE.DOES_ANIM_SCENE_EXIST((int)RDR2DN.NativeMemory.GetGlobalPtr(16)) && ANIMSCENE.IS_ANIM_SCENE_RUNNING((int)RDR2DN.NativeMemory.GetGlobalPtr(16), false);
+
 		public static void Pause(bool toggle)
 		{
 			MISC.SET_GAME_PAUSED(toggle);

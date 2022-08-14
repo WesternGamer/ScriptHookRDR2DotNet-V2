@@ -99,6 +99,24 @@ namespace RDR2
 			set => MISC._SET_WEATHER_TYPE_TRANSITION(0, 0, value, true);
 		}
 
+
+		public static void SetSnowCoverageType(eSnowCoverageType type)
+		{
+			GRAPHICS._SET_SNOW_COVERAGE_TYPE((int)type);
+		}
+
+
+		/*public static void SetCascadeShadowType(string type)
+		{
+
+		}
+
+		public static void ClearCascadeShadowType()
+		{
+
+		}*/
+
+
 		/*
 		public static int GravityLevel
 		{
@@ -609,4 +627,13 @@ namespace RDR2
 		Whiteout = 0x2B402288,
 		GroundBlizzard = 0x7F622122
 	}
+
+	public enum eSnowCoverageType
+	{
+		Primary,
+		Secondary,
+		Xmas,
+		XmasSecondary,
+	}
+
 }

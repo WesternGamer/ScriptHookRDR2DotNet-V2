@@ -110,22 +110,80 @@ namespace RDR2.UI
 			CAM.DO_SCREEN_FADE_OUT(duration);
 		}
 
-		// Screen Effects
+		// Letter Box
+
+		public static float LetterBoxRatio => CAM.GET_LETTER_BOX_RATIO();
+		public static bool HasLetterBox
+		{
+			get => CAM.HAS_LETTER_BOX();
+			set => CAM._REQUEST_LETTER_BOX_NOW(value, value);
+		}
+
+		public static void RequestLetterBox()
+		{
+			CAM._REQUEST_LETTER_BOX_OVERTIME(-1, -1, false, 17, true, false);
+		}
+
+		public static void RequestLetterBoxImmediately(bool bEnabled)
+		{
+			CAM._REQUEST_LETTER_BOX_NOW(bEnabled, bEnabled);
+		}
+
+		// Post Processing Effects
 
 		/// <summary>
 		/// Gets a value indicating whether the specific screen effect is running.
 		/// </summary>
-		/// <param name="effectName">The <see cref="ScreenEffect"/> to check.</param>
+		/// <param name="effectName">The effect to check.</param>
 		/// <returns><c>true</c> if the screen effect is active; otherwise, <c>false</c>.</returns>
-		public static bool IsEffectActive(ScreenEffect effectName)
+		public static bool IsEffectActive(string effectName)
 		{
-			return GRAPHICS.ANIMPOSTFX_IS_RUNNING(_effects[(int)effectName]);
+			return GRAPHICS.ANIMPOSTFX_IS_RUNNING(effectName);
+		}
+
+		/// <summary>
+		/// Plays a post processing effect on screen
+		/// </summary>
+		/// <param name="effectName">The effect to play</param>
+		public static void PlayEffect(string effectName)
+		{
+			if (!GRAPHICS._ANIMPOSTFX_HAS_LOADED(effectName)) {
+				GRAPHICS._ANIMPOSTFX_PRELOAD_POSTFX(effectName);
+			}
+
+			if (GRAPHICS._ANIMPOSTFX_HAS_LOADED(effectName)) {
+				GRAPHICS.ANIMPOSTFX_PLAY(effectName);
+			}
+
+			GRAPHICS._ANIMPOSTFX_SET_TO_UNLOAD(effectName);
+		}
+
+		/// <summary>
+		/// Stops a running post processing effect on screen
+		/// </summary>
+		/// <param name="effectName">The effect to stop</param>
+		public static void StopEffect(string effectName)
+		{
+			if (GRAPHICS.ANIMPOSTFX_IS_RUNNING(effectName)) {
+				GRAPHICS.ANIMPOSTFX_STOP(effectName);
+			}
+		}
+
+		/// <summary>
+		/// Stops a running post processing effect on screen
+		/// </summary>
+		/// <param name="effectName">The effect to stop</param>
+		public static void ClearEffect(string effectName)
+		{
+			if (GRAPHICS.ANIMPOSTFX_IS_RUNNING(effectName)) {
+				GRAPHICS._ANIMPOSTFX_CLEAR_EFFECT(effectName);
+			}
 		}
 
 		/// <summary>
 		/// Stops all currently running effects.
 		/// </summary>
-		public static void StopEffects()
+		public static void StopAllEffects()
 		{
 			GRAPHICS.ANIMPOSTFX_STOP_ALL();
 		}
@@ -138,20 +196,22 @@ namespace RDR2.UI
 		/// <param name="message">The message to display.</param>
 		public static void PrintSubtitle(string message)
 		{
-			try
-			{
-				//string varString = MISC.VAR_STRING(10, "LITERAL_STRING", message);
-				UILOG._UILOG_SET_CACHED_OBJECTIVE(message);
-				UILOG._UILOG_PRINT_CACHED_OBJECTIVE();
-				UILOG._UILOG_CLEAR_HAS_DISPLAYED_CACHED_OBJECTIVE();
-				UILOG._UILOG_CLEAR_CACHED_OBJECTIVE();
-
-			}
-			catch (Exception ex)
-			{
-				RDR2DN.Log.Message(RDR2DN.Log.Level.Error, ex.ToString());
-			}
+			UILOG._UILOG_SET_CACHED_OBJECTIVE(message);
+			UILOG._UILOG_PRINT_CACHED_OBJECTIVE();
+			UILOG._UILOG_CLEAR_HAS_DISPLAYED_CACHED_OBJECTIVE();
+			UILOG._UILOG_CLEAR_CACHED_OBJECTIVE();
 		}
+
+		/// <summary>
+		/// Shows a subtitle at the bottom of the screen for a given time.
+		/// Alias for function "PrintSubtitle()"
+		/// </summary>
+		/// <param name="message">The message to display.</param>
+		public static void DisplaySubtitle(string message)
+		{
+			PrintSubtitle(message);
+		}
+
 		// Space Conversion
 
 		/// <summary>

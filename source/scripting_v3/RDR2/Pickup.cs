@@ -16,7 +16,7 @@ namespace RDR2
 		}
 
 		public Vector3 Position => OBJECT.GET_PICKUP_COORDS(Handle);
-
+		public Prop Object => new Prop(OBJECT.GET_PICKUP_OBJECT(Handle));
 		public bool IsCollected => OBJECT.HAS_PICKUP_BEEN_COLLECTED(Handle);
 
 		public bool ObjectExists()
