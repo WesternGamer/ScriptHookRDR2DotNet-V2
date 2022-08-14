@@ -144,9 +144,6 @@ namespace RDR2.Native
 		public InputArgument(Rope value) : this((object)value)
 		{
 		}
-		public InputArgument(UI.CursorSprite value) : this((object)value)
-		{
-		}
 		public InputArgument(Relationship value) : this((object)value)
 		{
 		}
@@ -258,10 +255,6 @@ namespace RDR2.Native
 			return new InputArgument(value);
 		}
 		public static implicit operator InputArgument(Rope value)
-		{
-			return new InputArgument(value);
-		}
-		public static implicit operator InputArgument(UI.CursorSprite value)
 		{
 			return new InputArgument(value);
 		}

@@ -148,7 +148,7 @@ namespace RDR2.UI
 		}
 	}
 
-	enum eUseContextMode : int
+	public enum eUseContextMode : int
 	{
 		UCM_PRESS,
 		UCM_TIMED_PRESS,

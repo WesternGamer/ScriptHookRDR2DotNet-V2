@@ -21,9 +21,9 @@ namespace RDR2DN
 
 		/// <summary>
 		/// Gets or sets the interval in ms between each <see cref="Tick"/>.
-		/// Default interval is 1.
+		/// Default interval is 0.
 		/// </summary>
-		public int Interval { get; set; } = 1;
+		public int Interval { get; set; } = 0;
 
 		/// <summary>
 		/// Gets whether executing of this script is paused or not.

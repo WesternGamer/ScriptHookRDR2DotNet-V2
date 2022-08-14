@@ -22,7 +22,7 @@ namespace RDR2
         public Script()
         {
             Name = RDR2DN.ScriptDomain.CurrentDomain.LookupScript(this).Name;
-            Filename = RDR2DN.ScriptDomain.CurrentDomain.LookupScriptFilename(GetType());
+			FileName = RDR2DN.ScriptDomain.CurrentDomain.LookupScriptFilename(GetType());
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace RDR2
             get;
         }
         /// <summary>
-        /// Gets the filename of this <see cref="Script"/>.
+        /// Gets the file name of this <see cref="Script"/>.
         /// </summary>
-        public string Filename
+        public string FileName
         {
             get;
         }
@@ -137,7 +137,7 @@ namespace RDR2
         /// <summary>
         /// Gets the Directory where this <see cref="Script"/> is stored.
         /// </summary>
-        public string BaseDirectory => Path.GetDirectoryName(Filename);
+        public string BaseDirectory => Path.GetDirectoryName(FileName);
 
         /// <summary>
         /// Checks if this <see cref="Script"/> is paused.
@@ -183,7 +183,7 @@ namespace RDR2
             {
                 if (_settings == null)
                 {
-                    string path = Path.ChangeExtension(Filename, ".ini");
+                    string path = Path.ChangeExtension(FileName, ".ini");
 
                     _settings = ScriptSettings.Load(path);
                 }

@@ -17,7 +17,7 @@ namespace ExampleScript
 			KeyDown += OnKeyDown; // Hook KeyDown event
 			Tick += OnTick; // Hook Tick event. This is called every frame
 
-			Interval = 1; // Optional, default is already 1
+			Interval = 1; // Optional, default is 0
 		}
 
 		private void OnTick(object sender, EventArgs e)
