@@ -120,16 +120,16 @@ namespace RDR2
 			PED.SET_PED_RESET_FLAG(Handle, flagID, true);
 		}
 
-		public int GetBoneIndex(Bone BoneID)
+		public int GetBoneIndex(BoneID BoneID)
 		{
 			return PED.GET_PED_BONE_INDEX(Handle, (int)BoneID);
 		}
 
-		public Vector3 GetBoneCoord(Bone BoneID)
+		public Vector3 GetBoneCoord(BoneID BoneID)
 		{
 			return GetBoneCoord(BoneID, Vector3.Zero);
 		}
-		public Vector3 GetBoneCoord(Bone BoneID, Vector3 Offset)
+		public Vector3 GetBoneCoord(BoneID BoneID, Vector3 Offset)
 		{
 			return PED.GET_PED_BONE_COORDS(Handle, (int)BoneID, Offset.X, Offset.Y, Offset.Z);
 		}
