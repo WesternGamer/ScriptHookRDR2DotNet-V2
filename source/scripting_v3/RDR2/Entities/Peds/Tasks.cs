@@ -150,13 +150,13 @@ namespace RDR2
 		{
 			TASK.TASK_JUMP(_ped.Handle, true);
 		}
-		public void LeaveVehicle()
+		public void LeaveVehicle(eExitConfigFlag flags = eExitConfigFlag.ECF_NONE)
 		{
-			TASK.TASK_LEAVE_ANY_VEHICLE(_ped.Handle, 0, 0 /* flags */);
+			TASK.TASK_LEAVE_ANY_VEHICLE(_ped.Handle, 0, (int)flags);
 		}
-		public void LeaveVehicle(Vehicle vehicle, bool closeDoor)
+		public void LeaveVehicle(Vehicle vehicle, eExitConfigFlag flags)
 		{
-			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, (closeDoor ? 0 : 1 << 8), 0);
+			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, (int)flags, 0);
 		}
 		public void LookAt(Entity target)
 		{
@@ -181,7 +181,7 @@ namespace RDR2
 				sequence.Close();
 			}
 
-			ClearTasks();
+			ClearTasks(false);
 
 			_ped.BlockPermanentEvents = true;
 
@@ -221,7 +221,7 @@ namespace RDR2
 			TASK.TASK_PLAY_ANIM(_ped.Handle, animDict, animName, blendInSpeed, blendOutSpeed, duration, (int)flags, playbackRate, false, 0, false, "", false);
 		}
 
-		public void ClearAnimation(string animDict, string animName, float blendOutSpeed = -8f)
+		public void StopAnimation(string animDict, string animName, float blendOutSpeed = -8f)
 		{
 			TASK.STOP_ANIM_TASK(_ped.Handle, animDict, animName, blendOutSpeed);
 		}
@@ -327,14 +327,16 @@ namespace RDR2
 			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, 0, 0);
 		}
 
-		public void ClearTasks()
+		public void ClearTasks(bool bImmediately)
 		{
-			TASK.CLEAR_PED_TASKS(_ped.Handle, true, true);
+			if (bImmediately) {
+				TASK.CLEAR_PED_TASKS_IMMEDIATELY(_ped.Handle, true, true);
+			}
+			else {
+				TASK.CLEAR_PED_TASKS(_ped.Handle, true, true);
+			}
 		}
-		public void ClearAllImmediately()
-		{
-			TASK.CLEAR_PED_TASKS_IMMEDIATELY(_ped.Handle, true, true);
-		}
+
 		public void ClearLookAt()
 		{
 			TASK.TASK_CLEAR_LOOK_AT(_ped.Handle);
@@ -344,9 +346,9 @@ namespace RDR2
 			TASK.CLEAR_PED_SECONDARY_TASK(_ped.Handle);
 		}
 
-		public void Whistle()
+		public void Whistle(eAudPedWhistleType whistleType)
 		{
-			TASK.TASK_WHISTLE_ANIM(_ped.Handle, 869278708, 1971704925);
+			TASK.TASK_WHISTLE_ANIM(_ped.Handle, (uint)whistleType, 1971704925); // UNSPECIFIED
 		}
 
 		public void HandsUp(int duration, Ped facingPed)
@@ -371,7 +373,9 @@ namespace RDR2
 
 		public void ReviveTarget(Ped target)
 		{
-			TASK.TASK_REVIVE_TARGET(_ped.Handle, target.Handle, unchecked((uint)-1516555556)); // TODO: Find hash
+			//TASK.TASK_REVIVE_TARGET(_ped.Handle, target.Handle, unchecked((uint)-1516555556));
+			PED.REVIVE_INJURED_PED(target.Handle);
+			ENTITY.SET_ENTITY_HEALTH(target.Handle, ENTITY.GET_ENTITY_MAX_HEALTH(target.Handle, true), 0);
 		}
 
 		public void SeekCoverFrom(Ped target, int duration)
@@ -415,7 +419,7 @@ namespace RDR2
 			AICOVERPOINT.TASK_EXIT_COVER(_ped.Handle);
 		}
 
-		public void ExitVehicle(Vehicle vehicle, LeaveVehicleFlags flag = LeaveVehicleFlags.None)
+		public void ExitVehicle(Vehicle vehicle, eExitConfigFlag flag = eExitConfigFlag.ECF_NONE)
 		{
 			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, (int)flag, 0);
 		}
@@ -464,6 +468,16 @@ namespace RDR2
 		{
 			TASK.TASK_WALK_AWAY(awayFrom == null ? 0 : awayFrom.Handle, 0);
 		}
+	}
+
+	public enum eAudPedWhistleType : uint
+	{
+		WHISTLEHORSERESPONSIVE = 0xFBB22B86,
+		WHISTLEHORSETALK = 0x2628D6E0,
+		WHISTLEHORSELONG = 0x33D023F4,
+		WHISTLEHORSEDOUBLE = 0x3EAC666C,
+		WHISTLEHORSESHORT = 0x659F956D,
+		WHISTLEANIMALNOISES = 0x6BBE62DD,
 	}
 
 	public enum EventReaction
