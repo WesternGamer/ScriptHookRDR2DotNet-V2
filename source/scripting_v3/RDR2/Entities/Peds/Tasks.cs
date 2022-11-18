@@ -188,37 +188,32 @@ namespace RDR2
 			TASK.TASK_PERFORM_SEQUENCE(_ped.Handle, sequence.Handle);
 		}
 
-		public void PlayAnimation(string animDict, string animName)
+		public void PlayAnimation(string animDict, string animName, float blendInSpeed, float blendOutSpeed, int duration, eScriptedAnimFlags flags, float playbackRate, float timeout = 1000f)
 		{
-			PlayAnimation(animDict, animName, 8f, -8f, -1, AnimationFlags.None, 0f);
-		}
-		public void PlayAnimation(string animDict, string animName, float speed, int duration, float playbackRate)
-		{
-			PlayAnimation(animDict, animName, speed, -speed, duration, AnimationFlags.None, playbackRate);
-		}
-		public void PlayAnimation(string animDict, string animName, float blendInSpeed, int duration, AnimationFlags flags)
-		{
-			PlayAnimation(animDict, animName, blendInSpeed, -8f, duration, flags, 0f);
-		}
-
-		public void PlayAnimation(string animDict, string animName, float blendInSpeed, float blendOutSpeed, int duration,
-			AnimationFlags flags, float playbackRate, float timeout = 1000f)
-		{
-			if (!STREAMING.HAS_ANIM_DICT_LOADED(animDict))
-			{
+			if (!STREAMING.HAS_ANIM_DICT_LOADED(animDict)) {
 				STREAMING.REQUEST_ANIM_DICT(animDict);
 			}
 
 			var end = DateTime.UtcNow.AddMilliseconds(timeout);
-			while (!STREAMING.HAS_ANIM_DICT_LOADED(animDict))
-			{
-				if (DateTime.UtcNow >= end)
-				{
+			while (!STREAMING.HAS_ANIM_DICT_LOADED(animDict)) {
+				if (DateTime.UtcNow >= end) {
 					return;
 				}
 			}
 
 			TASK.TASK_PLAY_ANIM(_ped.Handle, animDict, animName, blendInSpeed, blendOutSpeed, duration, (int)flags, playbackRate, false, 0, false, "", false);
+		}
+		public void PlayAnimation(string animDict, string animName)
+		{
+			PlayAnimation(animDict, animName, 8f, -8f, -1, eScriptedAnimFlags.AF_NONE, 0f);
+		}
+		public void PlayAnimation(string animDict, string animName, float speed, int duration, float playbackRate)
+		{
+			PlayAnimation(animDict, animName, speed, -speed, duration, eScriptedAnimFlags.AF_NONE, playbackRate);
+		}
+		public void PlayAnimation(string animDict, string animName, float blendInSpeed, int duration, eScriptedAnimFlags flags = eScriptedAnimFlags.AF_NONE)
+		{
+			PlayAnimation(animDict, animName, blendInSpeed, -8f, duration, flags, 0f);
 		}
 
 		public void StopAnimation(string animDict, string animName, float blendOutSpeed = -8f)
@@ -439,7 +434,7 @@ namespace RDR2
 			TASK.TASK_HITCH_ANIMAL(_ped.Handle, animal.Handle, flag);
 		}
 
-		public void DriveToCoord(Vehicle vehicle, Vector3 pos, float speed, float radius = 6f, VehicleDrivingFlags drivingMode = VehicleDrivingFlags.Default)
+		public void DriveToCoord(Vehicle vehicle, Vector3 pos, float speed, float radius = 6f, VehicleDrivingFlags drivingMode = VehicleDrivingFlags.None)
 		{
 			TASK.TASK_VEHICLE_DRIVE_TO_COORD(_ped.Handle, vehicle.Handle, pos.X, pos.Y, pos.Z, speed, (ulong)radius, (uint)vehicle.Model.Hash, (int)drivingMode, 0.0f, 0.0f);
 		}

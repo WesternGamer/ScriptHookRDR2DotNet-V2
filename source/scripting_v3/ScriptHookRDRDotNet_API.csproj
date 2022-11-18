@@ -79,6 +79,7 @@
     <Compile Include="RDR2\Entities\Model.cs" />
     <Compile Include="RDR2\Entities\Peds\AnimationFlags.cs" />
     <Compile Include="RDR2\Entities\Peds\Bone.cs" />
+    <Compile Include="RDR2\Entities\Peds\ConfigFlags.cs" />
     <Compile Include="RDR2\Entities\Peds\DrivingStyle.cs" />
     <Compile Include="RDR2\Entities\Peds\FiringPattern.cs" />
     <Compile Include="RDR2\Entities\Peds\FormationType.cs" />
