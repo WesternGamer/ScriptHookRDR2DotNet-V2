@@ -67,7 +67,7 @@ namespace RDR2DN
 
             ulong[] conargs = ConvertPrimitiveArguments(new object[] { 10, "LITERAL_STRING", str });
             domain.ExecuteTask(new NativeTask {
-				Hash = 0xFA925AC00EB830B9,
+				Hash = 0xFA925AC00EB830B9, // MISC::VAR_STRING
 				Arguments = conargs
 			});
 		}

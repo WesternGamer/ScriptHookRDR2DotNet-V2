@@ -275,7 +275,7 @@ namespace RDR2
 					}
 				}
 
-				if (1 == 1)
+				if (true)
 				{
 					Position = newPos;
 					PlaceOnGround();

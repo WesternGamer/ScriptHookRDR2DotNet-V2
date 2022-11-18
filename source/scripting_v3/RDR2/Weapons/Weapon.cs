@@ -17,12 +17,10 @@ namespace RDR2
 			Hash = weaponHash;
 		}
 
-
 		public bool PedHasThisWeapon => WEAPON.HAS_PED_GOT_WEAPON(Owner.Handle, (uint)Hash, 0, false);
 		public bool IsBeingCarried => WEAPON.IS_PED_CARRYING_WEAPON(Owner.Handle, (uint)Hash);
 		public eWeaponGroup Group => (eWeaponGroup)WEAPON.GET_WEAPONTYPE_GROUP((uint)Hash);
 		public uint WeaponModel => WEAPON._GET_WEAPONTYPE_MODEL((uint)Hash);
-
 
 		public bool IsValid			=> WEAPON.IS_WEAPON_VALID((uint)Hash);
 		public bool IsGun			=> WEAPON.IS_WEAPON_A_GUN((uint)Hash);
@@ -37,7 +35,6 @@ namespace RDR2
 		public bool IsOneHanded		=> WEAPON._IS_WEAPON_ONE_HANDED((uint)Hash);
 		public bool IsTwoHanded		=> WEAPON._IS_WEAPON_TWO_HANDED((uint)Hash);
 		public bool IsThrowable		=> WEAPON._IS_WEAPON_THROWABLE((uint)Hash);
-
 
 		public eAmmoType DefaultAmmoType => (eAmmoType)WEAPON._GET_AMMO_TYPE_FOR_WEAPON((uint)Hash);
 		public eAmmoType AmmoType => (eAmmoType)WEAPON.GET_PED_AMMO_TYPE_FROM_WEAPON(Owner.Handle, (uint)Hash);

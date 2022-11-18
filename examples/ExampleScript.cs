@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 using RDR2;				// Generic RDR2 related stuff
 using RDR2.UI;			// UI related stuff
-using RDR2.Native;		// RDR2 native functions
+using RDR2.Native;		// RDR2 native functions (commands)
 using RDR2.Math;		// Vectors, Quaternions, Matrixes
 
 namespace ExampleScript
@@ -23,12 +23,14 @@ namespace ExampleScript
 		private void OnTick(object sender, EventArgs e)
 		{
 			// Our current player ped
-			// Note: "Ped" is a class, not a type alias
+			// Note: "Ped" is a class, not a type alias like it is in C++
 			Ped myPlayerPed = Game.Player.Character;
 			
+			// As long as "bRagdoll" is true, we will continue
+			// to ragdoll because were calling this every frame (tick)
 			if (bRagdoll)
 			{
-				PED.SET_PED_TO_RAGDOLL(myPlayerPed.Handle, 5000, 5000, 0, false, false, false);
+				PED.SET_PED_TO_RAGDOLL(myPlayerPed.Handle, 5000, 5000, 0, false, false, string.Empty);
 			}
 		} 
 
