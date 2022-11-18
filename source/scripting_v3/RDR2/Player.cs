@@ -129,7 +129,7 @@ namespace RDR2
 			}
 
 			PLAYER.SET_PLAYER_MODEL(Handle, (uint)model.Hash, false);
-			model.MarkAsNoLongerNeeded();
+			STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(model);
 			return true;
 		}
 

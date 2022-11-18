@@ -17,7 +17,7 @@ namespace RDR2
 		public static bool IsShaking => CAM.IS_GAMEPLAY_CAM_SHAKING();
 		public static bool IsInFirstPerson => CAM._IS_IN_FULL_FIRST_PERSON_MODE();
 		public static bool IsInThirdPerson => !IsInFirstPerson;
-		public static float Zoom { set => CAM._ANIMATE_GAMEPLAY_CAM_ZOOM(1.0f, value); }
+		public static float Zoom { set => CAM.SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE(1.0f, value); }
 
 		public static Vector3 Position => CAM.GET_GAMEPLAY_CAM_COORD();
 		public static Vector3 Rotation => CAM.GET_GAMEPLAY_CAM_ROT(2);
@@ -33,7 +33,7 @@ namespace RDR2
 				return new Vector3((float)(-System.Math.Sin(rotZ) * multXY), (float)(System.Math.Cos(rotZ) * multXY), (float)System.Math.Sin(rotX));
 			}
 		}
-		public static Vector3 ForwardVector => Direction;
+		public static Vector3 Forward => Direction;
 
 		public static Vector3 GetOffsetInWorldCoords(Vector3 offset)
 		{
@@ -64,11 +64,11 @@ namespace RDR2
 
 		public static void ClampYaw(float min, float max)
 		{
-			CAM._CLAMP_GAMEPLAY_CAM_YAW(min, max);
+			CAM.SET_THIRD_PERSON_CAM_RELATIVE_HEADING_LIMITS_THIS_UPDATE(min, max);
 		}
 		public static void ClampPitch(float min, float max)
 		{
-			CAM._CLAMP_GAMEPLAY_CAM_PITCH(min, max);
+			CAM.SET_THIRD_PERSON_CAM_RELATIVE_PITCH_LIMITS_THIS_UPDATE(min, max);
 		}
 
 		public static float RelativePitch

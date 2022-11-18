@@ -32,7 +32,7 @@ namespace RDR2
 
 		public string Label
 		{
-			set => MAP._SET_BLIP_NAME_FROM_PLAYER_STRING(Handle, MISC.VAR_STRING(10, "LITERAL_STRING", value));
+			set => MAP._SET_BLIP_NAME(Handle, MISC.VAR_STRING(10, "LITERAL_STRING", value));
 		}
 
 		public bool IsOnMinimap => MAP.IS_BLIP_ON_MINIMAP(Handle);

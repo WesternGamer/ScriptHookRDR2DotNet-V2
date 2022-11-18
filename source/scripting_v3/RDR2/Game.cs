@@ -50,7 +50,7 @@ namespace RDR2
 
 		public static GlobalCollection Globals { get; private set; } = new GlobalCollection();
 
-		public static bool InCutscene => ANIMSCENE.DOES_ANIM_SCENE_EXIST((int)RDR2DN.NativeMemory.GetGlobalPtr(16)) && ANIMSCENE.IS_ANIM_SCENE_RUNNING((int)RDR2DN.NativeMemory.GetGlobalPtr(16), false);
+		public static bool InCutscene => ANIMSCENE.DOES_ANIM_SCENE_EXIST((int)RDR2DN.NativeMemory.GetGlobalPtr(43800)) && ANIMSCENE.IS_ANIM_SCENE_RUNNING((int)RDR2DN.NativeMemory.GetGlobalPtr(43800), false);
 
 		public static void Pause(bool toggle)
 		{
@@ -157,7 +157,7 @@ namespace RDR2
 
 		public static string GetGXTEntry(string entry)
 		{
-			return HUD._GET_LABEL_TEXT(entry);
+			return HUD._GET_LABEL_TEXT_2(entry);
 		}
 
 		public static bool DoesGXTEntryExist(string entry)

@@ -56,7 +56,7 @@ namespace RDR2
 			get => GetCurrentWeatherType();
 			set {
 				_currentWeather = value;
-				MISC._SET_WEATHER_TYPE_TRANSITION((uint)GetCurrentWeatherType(), (uint)value, 1f, true);
+				MISC.SET_CURR_WEATHER_STATE((uint)GetCurrentWeatherType(), (uint)value, 1f, true);
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace RDR2
 			uint currentWeather;
 			uint nextWeather;
 			float percent;
-			unsafe { MISC._GET_WEATHER_TYPE_TRANSITION(&currentWeather, &nextWeather, &percent); }
+			unsafe { MISC.GET_CURR_WEATHER_STATE(&currentWeather, &nextWeather, &percent); }
 			_currentWeather = (WeatherType)currentWeather;
 			_nextWeather = (WeatherType)nextWeather;
 			if (percent >= 0.5f)
@@ -92,11 +92,11 @@ namespace RDR2
 				float weatherTransition;
 				unsafe
 				{
-					MISC._GET_WEATHER_TYPE_TRANSITION(&currentWeatherHash, &nextWeatherHash, &weatherTransition);
+					MISC.GET_CURR_WEATHER_STATE(&currentWeatherHash, &nextWeatherHash, &weatherTransition);
 				}
 				return weatherTransition;
 			}
-			set => MISC._SET_WEATHER_TYPE_TRANSITION(0, 0, value, true);
+			set => MISC.SET_CURR_WEATHER_STATE(0, 0, value, true);
 		}
 
 
