@@ -29,10 +29,7 @@ namespace RDR2
 			PED.CLONE_PED(Handle, true, true, false);
 		}
 
-		/*public void Kill()
-		{
-			Health = -1;
-		}*/
+		
 
 		#region Styling
 		public float Scale
@@ -105,19 +102,24 @@ namespace RDR2
 			PED._SET_PED_PROMPT_NAME(Handle, MISC.VAR_STRING(10, "LITERAL_STRING", name));
 		}
 		
-		public bool GetConfigFlag(int flagID)
+		public bool GetConfigFlag(ePedScriptConfigFlags flagID)
 		{
-			return PED.GET_PED_CONFIG_FLAG(Handle, flagID, true);
+			return PED.GET_PED_CONFIG_FLAG(Handle, (int)flagID, true);
 		}
 
-		public void SetConfigFlag(int flagID, bool value)
+		public void SetConfigFlag(ePedScriptConfigFlags flagID, bool value)
 		{
-			PED.SET_PED_CONFIG_FLAG(Handle, flagID, value);
+			PED.SET_PED_CONFIG_FLAG(Handle, (int)flagID, value);
 		}
 
-		public void ResetConfigFlag(int flagID)
+		public void SetResetFlag(ePedScriptResetFlags flagID)
 		{
-			PED.SET_PED_RESET_FLAG(Handle, flagID, true);
+			PED.SET_PED_RESET_FLAG(Handle, (int)flagID, true);
+		}
+
+		public bool GetResetFlag(ePedScriptResetFlags flagID)
+		{
+			return PED.GET_PED_RESET_FLAG(Handle, (int)flagID);
 		}
 
 		public int GetBoneIndex(BoneID BoneID)
@@ -371,26 +373,6 @@ namespace RDR2
 			set => SetConfigFlag(281, !value);
 		}*/
 
-		/*public bool AlwaysDiesOnLowHealth
-		{
-			set => PED.SET_PED_DIES_WHEN_INJURED(Handle, value);
-		}
-
-		public bool DiesInstantlyInWater
-		{
-			set => PED.SET_PED_DIES_INSTANTLY_IN_WATER(Handle, value);
-		}
-
-		public bool DrownsInWater
-		{
-			set => PED.SET_PED_DIES_IN_WATER(Handle, value);
-		}
-
-		public bool DrownsInSinkingVehicle
-		{
-			set => PED.SET_PED_DIES_IN_SINKING_VEHICLE(Handle, value);
-		}*/
-
 		public bool DropsWeaponsOnDeath
 		{
 			set => WEAPON.SET_PED_DROPS_WEAPONS_WHEN_DEAD(Handle, value);
@@ -408,6 +390,11 @@ namespace RDR2
 				return outCoords;
 			}
 			return Vector3.Zero;
+		}
+
+		public void Kill()
+		{
+			PED._FORCE_PED_DEATH(Handle, 0, 0);
 		}
 
 		#endregion
@@ -552,6 +539,7 @@ namespace RDR2
 		}
 		#endregion
 	}
+
 	public enum PedCore
 	{
 		Health = 0,

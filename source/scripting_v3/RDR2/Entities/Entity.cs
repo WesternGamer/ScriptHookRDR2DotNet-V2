@@ -128,7 +128,7 @@ namespace RDR2
 
 		public Vector3 UpVector
 		{
-			get => Vector3.Cross(RightVector, ForwardVector);
+			get => Vector3.Cross(RightVector, Forward);
 		}
 
 		public Vector3 RightVector
@@ -144,7 +144,7 @@ namespace RDR2
 			}
 		}
 
-		public Vector3 ForwardVector
+		public Vector3 Forward
 		{
 			get => ENTITY.GET_ENTITY_FORWARD_VECTOR(Handle);
 		}
@@ -168,132 +168,65 @@ namespace RDR2
 
 		#endregion
 
-		#region Invincibility
-
-		// is***proof address's arent found yet
-		/*public bool IsMeleeProof
-		{
-			get
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return false;
-				}
-
-				return RDR2DN.NativeMemory.IsBitSet(address + 392, 7);
-			}
-			set
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return;
-				}
-
-				if (value)
-				{
-					RDR2DN.NativeMemory.SetBit(address + 392, 7);
-				}
-				else
-				{
-					RDR2DN.NativeMemory.ClearBit(address + 392, 7);
-				}
-			}
-		}
+		#region Proofs
 
 		public bool IsBulletProof
 		{
-			get
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return false;
-				}
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 1) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 1, value);
+		}
 
-				return RDR2DN.NativeMemory.IsBitSet(address + 392, 4);
-			}
-			set
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return;
-				}
-
-				if (value)
-				{
-					RDR2DN.NativeMemory.SetBit(address + 392, 4);
-				}
-				else
-				{
-					RDR2DN.NativeMemory.ClearBit(address + 392, 4);
-				}
-			}
+		public bool IsFlameProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 2) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 2, value);
 		}
 
 		public bool IsExplosionProof
 		{
-			get
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return false;
-				}
-
-				return RDR2DN.NativeMemory.IsBitSet(address + 392, 11);
-			}
-			set
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return;
-				}
-
-				if (value)
-				{
-					RDR2DN.NativeMemory.SetBit(address + 392, 11);
-				}
-				else
-				{
-					RDR2DN.NativeMemory.ClearBit(address + 392, 11);
-				}
-			}
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 4) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 4, value);
 		}
 
 		public bool IsCollisionProof
 		{
-			get
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return false;
-				}
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 8) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 8, value);
+		}
 
-				return RDR2DN.NativeMemory.IsBitSet(address + 392, 6);
-			}
-			set
-			{
-				var address = RDR2DN.NativeMemory.GetEntityAddress(Handle);
-				if (address == IntPtr.Zero)
-				{
-					return;
-				}
+		public bool IsMeleeProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 16) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 16, value);
+		}
 
-				if (value)
-				{
-					RDR2DN.NativeMemory.SetBit(address + 392, 6);
-				}
-				else
-				{
-					RDR2DN.NativeMemory.ClearBit(address + 392, 6);
-				}
-			}
-		}*/
+		public bool IsSteamProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 32) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 32, value);
+		}
+
+		public bool IsSmokeProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 64) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 64, value);
+		}
+
+		public bool IsHeadshotProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 128) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 128, value);
+		}
+
+		public bool IsProjectileProof
+		{
+			get => (ENTITY._GET_ENTITY_PROOFS(Handle) & 256) != 0;
+			set => ENTITY.SET_ENTITY_PROOFS(Handle, 256, value);
+		}
+
+		#endregion
+
+		#region Invincibility
 
 		public bool IsInvincible
 		{
@@ -466,24 +399,16 @@ namespace RDR2
 
 		#endregion
 
-		public void MarkAsNoLongerNeeded() // Release
-		{
-			int handle = Handle;
-			ENTITY.SET_ENTITY_AS_MISSION_ENTITY(handle, true, true);
-			unsafe
-			{
-				ENTITY.SET_ENTITY_AS_NO_LONGER_NEEDED(&handle);
-			}
-		}
-
 		public override void Delete()
 		{
 			int handle = Handle;
-			ENTITY.SET_ENTITY_AS_MISSION_ENTITY(handle, true, true);
-			unsafe
-			{
-				ENTITY.DELETE_ENTITY(&handle);
+
+			// Request ownership of entity if we do not have it
+			if (!ENTITY.DOES_ENTITY_BELONG_TO_THIS_SCRIPT(handle, true) || !ENTITY._DOES_THREAD_OWN_THIS_ENTITY(handle)) {
+				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(handle, true, true);
 			}
+			
+			unsafe { ENTITY.DELETE_ENTITY(&handle); }
 		}
 
 		public override bool Exists()

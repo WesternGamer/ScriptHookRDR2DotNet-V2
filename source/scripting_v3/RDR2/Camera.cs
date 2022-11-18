@@ -92,7 +92,7 @@ namespace RDR2
 			}
 		}
 
-		public Vector3 ForwardVector => Direction;
+		public Vector3 Forward => Direction;
 
 		public Vector3 GetOffsetInWorldCoords(Vector3 offset)
 		{
