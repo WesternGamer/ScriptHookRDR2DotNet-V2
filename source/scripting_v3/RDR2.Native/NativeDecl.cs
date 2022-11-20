@@ -1781,7 +1781,7 @@ namespace RDR2.Native
 		public static Any _0xF47E33F8D2523825(Any p0, int p1) { return Function.Call<Any>(0xF47E33F8D2523825, p0, p1); }
 		public static void _0x3BF0767CF33FCC88(Hash entryId) { Function.Call(0x3BF0767CF33FCC88, entryId); }
 		public static Any _DATABINDING_GET_ARRAY_COUNT(Hash entryId) { return Function.Call<Any>(0xD23F5DE04FE717E2, entryId); }
-		public static void _DATABINDING_WRITE_DATA_SCRIPT_VARIABLES(int p0, int p1, params InputArgument[] args) { Function._Call(0xAB888B4B91046771, p0, p1, args); }
+		public static void _DATABINDING_WRITE_DATA_SCRIPT_VARIABLES(int p0, int p1, params InputArgument[] args) { Function.Call(0xAB888B4B91046771, p0, p1, args); }
 		public static void _DATABINDING_WRITE_DATA_BOOL(Any p0, bool p1) { Function.Call(0xAB888B4B91046770, p0, p1); }
 		public static void _DATABINDING_WRITE_DATA_BOOL_FROM_PARENT(Any p0, string p1, bool p2) { Function.Call(0xBDFE546E4C2D0E21, p0, p1, p2); }
 		/// <summary>
@@ -5374,7 +5374,7 @@ namespace RDR2.Native
 		public static string _GET_STRING_FROM_FLOAT(float value, int digits) { return Function.Call<string>(0x2B6846401D68E563, value, digits); }
 		public static string _GET_STRING_FROM_VECTOR(float x, float y, float z) { return Function.Call<string>(0x6C4DBF553885F9EB, x, y, z); }
 		public static string _GET_STRING_FROM_BOOL(bool value) { return Function.Call<string>(0xF216F74101968DB0, value); }
-		public static string VAR_STRING(int flags, params InputArgument[] args) { return Function._Call<string>(0xFA925AC00EB830B9, flags, args); }
+		public static string VAR_STRING(int flags, params InputArgument[] args) { return Function.Call<string>(0xFA925AC00EB830B9, flags, args); }
 		/// <summary>
 		/// Returns a formatted string (0x%x)
 		/// </summary>
