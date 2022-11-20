@@ -179,26 +179,6 @@ namespace RDR2
 			return Prop.ToArray();
 		}
 
-
-		/*public static Blip[] GetActiveBlips()
-		{
-			List<Blip> res = new List<Blip>();
-
-			foreach (BlipSprite sprite in Enum.GetValues(typeof(BlipSprite)))
-			{
-				int handle = Function.Call<int>(Hash.GET_FIRST_BLIP_INFO_ID, (int)sprite);
-
-				while (Function.Call<bool>(Hash.DOES_BLIP_EXIST, handle))
-				{
-					res.Add(new Blip(handle));
-
-					handle = Function.Call<int>(Hash.GET_NEXT_BLIP_INFO_ID, (int)sprite);
-				}
-			}
-
-			return res.ToArray();
-		}*/ // need blip natives
-
 		public static T GetClosest<T>(Vector3 position, params T[] spatials) where T : ISpatial
 		{
 			ISpatial closest = null;
@@ -216,45 +196,23 @@ namespace RDR2
 			}
 			return (T)closest;
 		}		
-		/// <summary>
-		/// This method is not fully tested. It uses a straight import from ScriptHookRDR2.dll, and if it is returning 0, then it is *probably* a SHRDR2 issue.
-		/// </summary>
+		
 		public static Ped GetClosestPed(Vector3 position)
 		{
-			int[] peds = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.worldGetAllPeds(peds, 1024);
-
-			List<Ped> Peds = new List<Ped>();
-			for (int i = 0; i < entityCount; i++)
-				Peds.Add(new Ped(peds[i]));
-
-			return GetClosest(position, Peds.ToArray());
+			Ped[] peds = GetAllPeds();
+			return GetClosest(position, peds);
 		}
-		/// <summary>
-		/// This method is not fully tested. It uses a straight import from ScriptHookRDR2.dll, and if it is returning 0, then it is *probably* a SHRDR2 issue.
-		/// </summary>
+
 		public static Vehicle GetClosestVehicle(Vector3 position)
 		{
-			int[] vehs = new int[1024];
-			int entityCount = RDR2DN.NativeMemory.worldGetAllVehicles(vehs, 1024);
-
-			List<Vehicle> Vehs = new List<Vehicle>();
-			for (int i = 0; i < entityCount; i++)
-				Vehs.Add(new Vehicle(vehs[i]));
-
-			return GetClosest(position, Vehs.ToArray());
+			Vehicle[] vehicles = GetAllVehicles();
+			return GetClosest(position, vehicles);
 		}
 
 		public static Prop GetClosestObject(Vector3 position)
 		{
-			int[] props = new int[1024];
-			int count = RDR2DN.NativeMemory.worldGetAllObjects(props, 1024);
-
-			List<Prop> Prop = new List<Prop>();
-			for (int i = 0; i < count; i++)
-				Prop.Add(new Prop(props[i]));
-
-			return GetClosest(position, Prop.ToArray());
+			Prop[] objects = GetAllObjects();
+			return GetClosest(position, objects);
 		}
 		
 		public static Ped CreatePed(PedHash hash, Vector3 position, float heading = 0f)
@@ -264,9 +222,10 @@ namespace RDR2
 			{
 				return null;
 			}
-			var id = PED.CREATE_PED((uint)hash, position.X, position.Y, position.Z, heading, true, true, false, false);
-			PED._SET_RANDOM_OUTFIT_VARIATION(id, true);
-			return id == 0 ? null : (Ped)Entity.FromHandle(id);
+			int ped = PED.CREATE_PED((uint)hash, position.X, position.Y, position.Z, heading, true, true, false, false);
+			PED._SET_RANDOM_OUTFIT_VARIATION(ped, true);
+			PED._UPDATE_PED_VARIATION(ped, false, true, true, true, false);
+			return ped == 0 ? null : (Ped)Entity.FromHandle(ped);
 		}
 		
 		public static Vehicle CreateVehicle(VehicleHash hash, Vector3 position, float heading = 0f)

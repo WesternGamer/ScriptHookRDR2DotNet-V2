@@ -126,7 +126,7 @@ namespace RDR2.UI
 
 		public static void RequestLetterBoxImmediately(bool bEnabled)
 		{
-			CAM._REQUEST_LETTER_BOX_NOW(bEnabled, bEnabled);
+			HasLetterBox = bEnabled;
 		}
 
 		// Post Processing Effects

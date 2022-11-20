@@ -70,8 +70,7 @@ namespace RDR2
 
         #region Performance & Driving
 
-
-        public float Speed
+        public new float Speed
         {
             get => ENTITY.GET_ENTITY_SPEED(Handle);
             set

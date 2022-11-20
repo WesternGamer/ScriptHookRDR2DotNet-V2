@@ -6,7 +6,7 @@ namespace RDR2.UI
 	public sealed class Prompt : PoolObject, IEquatable<Prompt>
 	{
 
-		Prompt CreatePrompt(eInputType control, eUseContextMode mode, string text, int numMashes = 0, int holdTime = 1000, int depletionTime = 1000, int fillTime = 1000, uint timedEvent = 0)
+		public Prompt CreatePrompt(eInputType control, eUseContextMode mode, string text, int numMashes = 0, int holdTime = 1000, int depletionTime = 1000, int fillTime = 1000, uint timedEvent = 0)
 		{
 			int prompt = HUD._UI_PROMPT_REGISTER_BEGIN();
 			HUD._UI_PROMPT_SET_CONTROL_ACTION(prompt, (uint)control);
@@ -133,6 +133,15 @@ namespace RDR2.UI
 		public override void Delete()
 		{
 			HUD._UI_PROMPT_DELETE(Handle);
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Prompt"/> is not <see langword="null"/>, and exists in the game.
+		/// </summary>
+		/// <returns><see langword="true"/> if <see cref="Prompt"/> is not <see langword="null"/> and exists in the game; otherwise, <see langword="false"/>.</returns>
+		public override bool IsValid()
+		{
+			return this != null && this.Exists();
 		}
 
 		public override bool Equals(object obj)

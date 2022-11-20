@@ -37,11 +37,13 @@ namespace RDR2
 
 		public bool IsOnMinimap => MAP.IS_BLIP_ON_MINIMAP(Handle);
 
-		public override bool Exists() {
+		public override bool Exists()
+		{
 			return MAP.DOES_BLIP_EXIST(Handle);
 		}
 
-		public override void Delete() {
+		public override void Delete()
+		{
 			unsafe
 			{
 				int blip = Handle;
@@ -49,15 +51,27 @@ namespace RDR2
 			}
 		}
 
-		public bool Equals( Blip other ) {
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Blip"/> is not <see langword="null"/>, and exists in the game.
+		/// </summary>
+		/// <returns><see langword="true"/> if <see cref="Blip"/> is not <see langword="null"/> and exists in the game; otherwise, <see langword="false"/>.</returns>
+		public override bool IsValid()
+		{
+			return this != null && this.Exists();
+		}
+
+		public bool Equals( Blip other )
+		{
 			return !ReferenceEquals( null, other ) && other.Handle == Handle;
 		}
 
-		public override bool Equals( object obj ) {
+		public override bool Equals( object obj )
+		{
 			return ReferenceEquals( this, obj ) || obj is Blip other && Equals( other );
 		}
 
-		public override int GetHashCode() {
+		public override int GetHashCode()
+		{
 			return Handle.GetHashCode();
 		}
 	}

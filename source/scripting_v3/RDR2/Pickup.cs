@@ -33,9 +33,19 @@ namespace RDR2
 		{
 			return OBJECT.DOES_PICKUP_EXIST(Handle);
 		}
+
 		public static bool Exists(Pickup pickup)
 		{
 			return pickup != null && pickup.Exists();
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Pickup"/> is not <see langword="null"/>, and exists in the game world.
+		/// </summary>
+		/// <returns><see langword="true"/> if <see cref="Pickup"/> is not <see langword="null"/> and exists in the game world; otherwise, <see langword="false"/>.</returns>
+		public override bool IsValid()
+		{
+			return this != null && this.Exists();
 		}
 
 		public bool Equals(Pickup obj)

@@ -92,7 +92,7 @@ namespace RDR2
 			}
 		}
 
-		public Vector3 Forward => Direction;
+		public Vector3 ForwardVector => Direction;
 
 		public Vector3 GetOffsetInWorldCoords(Vector3 offset)
 		{
@@ -215,9 +215,19 @@ namespace RDR2
 		{
 			return CAM.DOES_CAM_EXIST(Handle);
 		}
+
 		public static bool Exists(Camera camera)
 		{
 			return camera != null && camera.Exists();
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Camera"/> is not <see langword="null"/>, and exists in the game.
+		/// </summary>
+		/// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/> and exists in the game; otherwise, <see langword="false"/>.</returns>
+		public override bool IsValid()
+		{
+			return this != null && this.Exists();
 		}
 
 		public bool Equals(Camera obj)

@@ -12,27 +12,15 @@ namespace RDR2
 {
 	public sealed class Player : INativeValue
 	{
-		#region Fields
-		Ped ped;
+		private Ped _pedPlayer;
 
-        /*struct StatIDArgs
-        {
-            long BaseId;
-            long PermutationId;
-        }*/ // for money, will fix later
-		
-        #endregion
-
-        public Player(int handle)
+		public Player(int handle)
 		{
 			Handle = handle;
 		}
 
-		public int Handle
-		{
-			get;
-			private set;
-		}
+		public int Handle { get; private set; }
+		public int ID => Handle;
 
 		public ulong NativeValue
 		{
@@ -40,43 +28,116 @@ namespace RDR2
 			set => Handle = unchecked((int)value);
 		}
 
-		public string Name					=> PLAYER.GET_PLAYER_NAME(Handle);
+		/// <summary>
+		/// Gets the Social Club name of this <see cref="Player"/>.
+		/// </summary>
+		public string Name => PLAYER.GET_PLAYER_NAME(Handle);
 
-		public bool IsDead					=> PLAYER.IS_PLAYER_DEAD(Handle);
-		public bool IsAlive					=> !IsDead;
-		public bool IsAiming				=> PLAYER.IS_PLAYER_FREE_AIMING(Handle);
-		public bool IsClimbing				=> PLAYER.IS_PLAYER_CLIMBING(Handle);
-		public bool IsRidingTrain			=> PLAYER.IS_PLAYER_RIDING_TRAIN(Handle);
-		public bool IsTargettingAnything	=> PLAYER.IS_PLAYER_TARGETTING_ANYTHING(Handle);
-		public bool IsInDeadEye				=> PLAYER._IS_SPECIAL_ABILITY_ACTIVE(Handle);
-		public bool IsInEagleEye			=> PLAYER._IS_SECONDARY_SPECIAL_ABILITY_ACTIVE(Handle);
-		public bool IsWanted				=> LAW.IS_LAW_INCIDENT_ACTIVE(Handle);
-		public bool IsPlaying				=> PLAYER.IS_PLAYER_PLAYING(Handle);
-		public bool CanStartMission			=> PLAYER.CAN_PLAYER_START_MISSION(Handle);
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is dead.
+		/// </summary>
+		public bool IsDead => PLAYER.IS_PLAYER_DEAD(Handle);
 
-		public Vehicle LastVehicle			=> (Vehicle)Vehicle.FromHandle(PLAYER.GET_PLAYERS_LAST_VEHICLE());
-		public Ped ActiveHorse				=> (Ped)Ped.FromHandle(PLAYER._GET_SADDLE_HORSE_FOR_PLAYER(Handle));
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is alive.
+		/// </summary>
+		public bool IsAlive => !IsDead;
 
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is aiming with a weapon.
+		/// </summary>
+		public bool IsAiming => PLAYER.IS_PLAYER_FREE_AIMING(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is climbing.
+		/// </summary>
+		public bool IsClimbing => PLAYER.IS_PLAYER_CLIMBING(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is riding a train.
+		/// </summary>
+		public bool IsRidingTrain => PLAYER.IS_PLAYER_RIDING_TRAIN(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is targetting something.
+		/// </summary>
+		public bool IsTargettingAnything => PLAYER.IS_PLAYER_TARGETTING_ANYTHING(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is free focusing on something.
+		/// </summary>
+		public bool IsFreeFocusing => PLAYER._IS_PLAYER_FREE_FOCUSING(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is currently in Dead Eye.
+		/// </summary>
+		public bool IsInDeadEye => PLAYER._IS_SPECIAL_ABILITY_ACTIVE(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is currently in Eagle Eye.
+		/// </summary>
+		public bool IsInEagleEye => PLAYER._IS_SECONDARY_SPECIAL_ABILITY_ACTIVE(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is currently wanted by police/lawmen.
+		/// </summary>
+		public bool IsWanted => LAW.IS_LAW_INCIDENT_ACTIVE(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is playing.
+		/// </summary>
+		public bool IsPlaying => PLAYER.IS_PLAYER_PLAYING(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> can start a story mission.
+		/// </summary>
+		public bool CanStartMission => PLAYER.CAN_PLAYER_START_MISSION(Handle);
+
+		/// <summary>
+		/// Gets the <see cref="Vehicle"/> that this <see cref="Player"/> last entered.
+		/// </summary>
+		public Vehicle LastVehicle => (Vehicle)Vehicle.FromHandle(PLAYER.GET_PLAYERS_LAST_VEHICLE());
+
+		/// <summary>
+		/// Gets the <see cref="Player"/>'s currently active horse
+		/// </summary>
+		public Ped ActiveHorse => (Ped)Ped.FromHandle(PLAYER._GET_SADDLE_HORSE_FOR_PLAYER(Handle));
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> can control himself.
+		/// <remarks>Use <see cref="SetPlayerControl(bool, eSetPlayerControlFlags, bool)"/> to change this value.</remarks>
+		/// </summary>
+		public bool IsControlOn => PLAYER.IS_PLAYER_CONTROL_ON(Handle);
+
+		/// <summary>
+		/// Gets the <see cref="RDR2.Ped"/> this <see cref="RDR2.Player"/> is controlling.
+		/// </summary>
 		public Ped Character
 		{
 			get
 			{
-				int handle = PLAYER.GET_PLAYER_PED(Handle);
-
-				if (ped == null || handle != ped.Handle)
-				{
-					ped = new Ped(handle);
+				int ped = PLAYER.PLAYER_PED_ID();
+				if (_pedPlayer == null || ped != _pedPlayer.Handle) {
+					_pedPlayer = new Ped(ped);
 				}
-
-				return ped;
+				return _pedPlayer;
 			}
 		}
+
+		/// <summary>
+		/// Gets the <see cref="RDR2.Ped"/> this <see cref="RDR2.Player"/> is controlling.
+		/// <remarks>This is an alias for <see cref="Character"/></remarks>
+		/// </summary>
 		public Ped Ped => Character;
 
-		public static int Money
+		/// <summary>
+		/// Gets or sets how much money this <see cref="Player"/> has.
+		/// </summary>
+		public int Money
 		{
 			get => MONEY._MONEY_GET_CASH_BALANCE();
-			set {
+			set
+			{
 				var source = Money;
 				var target = value;
 				if (target < source) {
@@ -87,40 +148,76 @@ namespace RDR2
 			}
 		}
 
-		public int WantedLevel
+		/// <summary>
+		/// Gets or sets how much money this <see cref="Player"/> has.
+		/// <remarks>This is an alias for <see cref="Money"/></remarks>
+		/// </summary>
+		public int Cash
 		{
-			get => PLAYER.GET_PLAYER_WANTED_LEVEL(Handle);
-			set => PLAYER.SET_PLAYER_WANTED_LEVEL(Handle, value, false);
+			get => Money;
+			set => Money = value;
 		}
 
+		/// <summary>
+		/// Gets or sets this <see cref="Player"/>'s bounty amount.
+		/// </summary>
+		public int Bounty
+		{
+			get => LAW.GET_BOUNTY(Handle);
+			set => LAW.SET_BOUNTY(Handle, value);
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Player"/> is invincible.
+		/// </summary>
 		public bool Invincible
 		{
 			get => PLAYER.GET_PLAYER_INVINCIBLE(Handle);
 			set => PLAYER.SET_PLAYER_INVINCIBLE(Handle, value);
 		}
 
-		public bool Ignored
+		/// <summary>
+		/// Sets a value indicating whether this <see cref="Player"/> is ignored by everyone.
+		/// <remarks>This should be set every frame (if possible) to take full effect</remarks>
+		/// </summary>
+		public bool IgnoredByEveryone
 		{
-			set => PLAYER.SET_EVERYONE_IGNORE_PLAYER(Handle, value);
+			set
+			{
+				PLAYER.SET_EVERYONE_IGNORE_PLAYER(Handle, value);
+				PED.SET_PED_CONFIG_FLAG(Ped.Handle, (int)ePedScriptConfigFlags.PCF_DisableShockingEvents, value);
+				PED.SET_PED_CONFIG_FLAG(Ped.Handle, (int)ePedScriptConfigFlags.PCF_SupressShockingEvents, value);
+				PED.SET_PED_RESET_FLAG(Ped.Handle, (int)ePedScriptResetFlags.PRF_CannotBeTargetedByAI, value);
+				EVENT.SUPPRESS_SHOCKING_EVENTS_NEXT_FRAME();
+				EVENT.REMOVE_ALL_SHOCKING_EVENTS(value);
+			}
 		}
 
+		/// <summary>
+		/// Sets a value indicating whether this <see cref="Player"/> can use cover.
+		/// </summary>
 		public bool CanUseCover
 		{
 			set => PLAYER.SET_PLAYER_CAN_USE_COVER(Handle, value);
 		}
 
-		public bool CanControl
+		/// <summary>
+		/// Set whether this <see cref="Player"/> can control himself or not.
+		/// </summary>
+		/// <param name="bEnabled">Whether control is enabled or not.</param>
+		/// <param name="iFlags">Flags that affect how player control is handled</param>
+		/// <param name="bPreventHeadingChange">Whether the player can still rotate his <see cref="Character"/>.</param>
+		public void SetPlayerControl(bool bEnabled, eSetPlayerControlFlags iFlags = eSetPlayerControlFlags.SPC_NONE, bool bPreventHeadingChange = true)
 		{
-			get => PLAYER.IS_PLAYER_CONTROL_ON(Handle);
-			//set => PLAYER.SET_PLAYER_CONTROL(Handle, value, 0, false);
-		}
-
-		public void SetControl(bool bHasControl, ePlayerControlFlags flags = ePlayerControlFlags.SPC_NONE, bool bPreventHeadingChange = true)
-		{
-			PLAYER.SET_PLAYER_CONTROL(Handle, bHasControl, (int)flags, bPreventHeadingChange);
+			PLAYER.SET_PLAYER_CONTROL(Handle, bEnabled, (int)iFlags, bPreventHeadingChange);
 		}
 
 		// TODO: Fix this.
+		/// <summary>
+		/// Attempts to change the <see cref="Model"/> of this <see cref="Player"/>.
+		/// </summary>
+		/// <param name="model">The <see cref="Model"/> to change this <see cref="Player"/> to.</param>
+		/// <returns><see langword="true" /> if the change was successful; otherwise, <see langword="false" />.</returns>
 		public bool ChangeModel(Model model)
 		{
 			if (!model.IsInCdImage || !model.IsPed || !model.Request(1000))
@@ -133,18 +230,51 @@ namespace RDR2
 			return true;
 		}
 
-
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Player"/> is aiming at the passed <see cref="Entity"/>.
+		/// </summary>
 		public bool IsAimingAtEntity(Entity entity)
 		{
 			return PLAYER.IS_PLAYER_FREE_AIMING_AT_ENTITY(Handle, entity.Handle);
 		}
 
+		/// <summary>
+		/// Gets the <see cref="Entity"/> that this <see cref="Player"/> is aiming at.
+		/// </summary>
+		public Entity GetFreeAimEntity()
+		{
+			int entity = 0;
+			unsafe { PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Handle, &entity); }
+			if (!ENTITY.DOES_ENTITY_EXIST(entity)) {
+				return null;
+			}
+			return Entity.FromHandle(entity);
+		}
 
+		/// <summary>
+		/// Gets the <see cref="Entity"/> that this <see cref="Player"/> is locking onto via interaction.
+		/// </summary>
+		public Entity GetInteractionLockonTargetEntity()
+		{
+			int entity = 0;
+			unsafe { PLAYER.GET_PLAYER_INTERACTION_TARGET_ENTITY(Handle, &entity, false, false); }
+			if (!ENTITY.DOES_ENTITY_EXIST(entity)) {
+				return null;
+			}
+			return Entity.FromHandle(entity);
+		}
+
+		/// <summary>
+		/// Prevents this <see cref="Player"/> from firing for one frame.
+		/// </summary>
 		public void DisableFiringThisFrame(bool toggle)
 		{
 			PLAYER.DISABLE_PLAYER_FIRING(Handle, toggle);
 		}
 
+		/// <summary>
+		/// Allows this <see cref="Player"/> jump really high for one frame.
+		/// </summary>
 		public void SetSuperJumpThisFrame()
 		{
 			MISC.SET_SUPER_JUMP_THIS_FRAME(Handle);
@@ -183,15 +313,21 @@ namespace RDR2
 
 
 	[Flags]
-	public enum ePlayerControlFlags : int
+	public enum eSetPlayerControlFlags : int
 	{
-		SPC_NONE = 0,
-		_SPC_CLEAR_TASKS = 4,
-		SPC_REMOVE_FIRES = 8,
-		SPC_REMOVE_EXPLOSIONS = 16,
-		SPC_REMOVE_PROJECTILES = 32,
-		_SPC_LEAVE_CAMERA = 256,
-		SPC_PREVENT_EVERYBODY_BACKOFF = 2048,
-		_SPC_UNK = 4480,
+		SPC_NONE								= 0,
+		// Where's 1?
+		SPC_AMBIENT_SCRIPT						= (1 << 1),
+		SPC_CLEAR_TASKS							= (1 << 2),
+		SPC_REMOVE_FIRES						= (1 << 3),
+		SPC_REMOVE_EXPLOSIONS					= (1 << 4),
+		SPC_REMOVE_PROJECTILES					= (1 << 5),
+		SPC_DEACTIVATE_GADGETS					= (1 << 6),
+		SPC_REENABLE_CONTROL_ON_DEATH			= (1 << 7),
+		SPC_LEAVE_CAMERA_CONTROL_ON				= (1 << 8),
+		SPC_ALLOW_PLAYER_DAMAGE					= (1 << 9),
+		SPC_DONT_STOP_OTHER_CARS_AROUND_PLAYER	= (1 << 10),
+		SPC_PREVENT_EVERYBODY_BACKOFF			= (1 << 11),
+		SPC_ALLOW_PAD_SHAKE						= (1 << 12),
 	}
 }
