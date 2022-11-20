@@ -150,11 +150,11 @@ namespace RDR2
 		{
 			TASK.TASK_JUMP(_ped.Handle, true);
 		}
-		public void LeaveVehicle(eExitConfigFlag flags = eExitConfigFlag.ECF_NONE)
+		public void LeaveVehicle(eEnterExitConfigFlags flags = eEnterExitConfigFlags.ECF_NONE)
 		{
 			TASK.TASK_LEAVE_ANY_VEHICLE(_ped.Handle, 0, (int)flags);
 		}
-		public void LeaveVehicle(Vehicle vehicle, eExitConfigFlag flags)
+		public void LeaveVehicle(Vehicle vehicle, eEnterExitConfigFlags flags)
 		{
 			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, (int)flags, 0);
 		}
@@ -414,7 +414,7 @@ namespace RDR2
 			AICOVERPOINT.TASK_EXIT_COVER(_ped.Handle);
 		}
 
-		public void ExitVehicle(Vehicle vehicle, eExitConfigFlag flag = eExitConfigFlag.ECF_NONE)
+		public void ExitVehicle(Vehicle vehicle, eEnterExitConfigFlags flag = eEnterExitConfigFlags.ECF_NONE)
 		{
 			TASK.TASK_LEAVE_VEHICLE(_ped.Handle, vehicle.Handle, (int)flag, 0);
 		}

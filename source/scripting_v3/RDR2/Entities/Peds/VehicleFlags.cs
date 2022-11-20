@@ -3,7 +3,7 @@ using System;
 namespace RDR2
 {
 	[Flags]
-	public enum eExitConfigFlag
+	public enum eEnterExitConfigFlags
 	{
 		ECF_NONE = 0,
 		ECF_RESUME_IF_INTERRUPTED = (1 << 0),

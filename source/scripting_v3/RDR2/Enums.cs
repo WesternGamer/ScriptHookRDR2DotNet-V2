@@ -1,10 +1,9 @@
 ﻿namespace RDR2
 {
-	public enum eInputGroup
+	public enum InputMethod
 	{
-		INPUT_GROUP_KEYBOARD,
-		INPUT_GROUP_UNK2,
-		INPUT_GROUP_CONTROLLER, // Gamepad
+		Keyboard,
+		GamePad, // Controller
 	};
 
 	public enum eInputType : uint

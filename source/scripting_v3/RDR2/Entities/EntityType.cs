@@ -7,9 +7,10 @@ namespace RDR2
 {
 	public enum eEntityType
 	{
-		ET_NONE = 0,
-		ET_PED = 1,
-		ET_VEHICLE = 2,
-		ET_OBJECT = 3,
+		None = 0,
+		Ped = 1,
+		Vehicle = 2,
+		Object = 3,
+		Prop = 3,
 	}
 }
