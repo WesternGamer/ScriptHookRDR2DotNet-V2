@@ -25,7 +25,7 @@ namespace RDR2DN
 		bool isOpen = false;
 		string input = string.Empty;
 		List<string> lineHistory = new List<string>();
-		List<string> commandHistory = new List<string>();
+		List<string> commandHistory = new List<string>(); // This must be set via CommandHistory property
 		ConcurrentQueue<string[]> outputQueue = new ConcurrentQueue<string[]>();
 		Dictionary<string, List<ConsoleCommand>> commands = new Dictionary<string, List<ConsoleCommand>>();
 		DateTime lastClosed;
@@ -62,6 +62,15 @@ namespace RDR2DN
 				if (!isOpen)
 					lastClosed = DateTime.UtcNow.AddMilliseconds(200); // Hack so the input gets blocked long enough
 			}
+		}
+
+		/// <summary>
+		/// Gets or sets the command history. This is used to avoid losing the command history on RDR2DN reloading.
+		/// </summary>
+		public List<string> CommandHistory
+		{
+			get => commandHistory;
+			set => commandHistory = value;
 		}
 
 		/// <summary>
@@ -150,7 +159,7 @@ namespace RDR2DN
 				return;
 
 			input = input.Insert(cursorPos, text);
-			cursorPos++;
+			cursorPos += text.Length;
 		}
 		/// <summary>
 		/// Paste clipboard content into the console input line.
@@ -189,7 +198,7 @@ namespace RDR2DN
 		{
 			if (args.Length > 0)
 				msg = String.Format(msg, args);
-			AddLines("[~b~INFO~w~] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+			AddLines("[<b>~COLOR_BLUE~INFO~s~</b>] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		}
 		/// <summary>
 		/// Writes an error message to the console.
@@ -200,7 +209,7 @@ namespace RDR2DN
 		{
 			if (args.Length > 0)
 				msg = String.Format(msg, args);
-			AddLines("[~r~ERROR~w~] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+			AddLines("[<b>~COLOR_RED~ERROR~s~</b>] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		}
 		/// <summary>
 		/// Writes a warning message to the console.
@@ -211,7 +220,7 @@ namespace RDR2DN
 		{
 			if (args.Length > 0)
 				msg = String.Format(msg, args);
-			AddLines("[~o~WARNING~w~] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+			AddLines("[<b>~COLOR_YELLOW~WARNING~s~</b>] ", msg.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		}
 
 		/// <summary>
@@ -400,11 +409,23 @@ namespace RDR2DN
 					else
 						goto default;
 					break;
+				case Keys.D:
+					if (e.Control)
+						RemoveCharRight();
+					else
+						goto default;
+					break;
 				case Keys.F:
 					if (e.Control)
 						MoveCursorRight();
 					else if (e.Alt)
 						ForwardWord();
+					else
+						goto default;
+					break;
+				case Keys.H:
+					if (e.Control)
+						RemoveCharLeft();
 					else
 						goto default;
 					break;
@@ -426,6 +447,12 @@ namespace RDR2DN
 					else
 						goto default;
 					break;
+				case Keys.K:
+					if (e.Control)
+						RemoveAllCharsRight();
+					else
+						goto default;
+					break;
 				case Keys.N:
 					if (e.Control)
 						GoDownCommandList();
@@ -435,6 +462,18 @@ namespace RDR2DN
 				case Keys.L:
 					if (e.Control)
 						Clear();
+					else
+						goto default;
+					break;
+				case Keys.T:
+					if (e.Control)
+						TransposeTwoChars();
+					else
+						goto default;
+					break;
+				case Keys.U:
+					if (e.Control)
+						RemoveAllCharsLeft();
 					else
 						goto default;
 					break;
@@ -502,17 +541,61 @@ namespace RDR2DN
 		}
 		void RemoveCharLeft()
 		{
-			if (input.Length > 0 && cursorPos > 0)
-			{
+			if (input.Length > 0 && cursorPos > 0) {
 				input = input.Remove(cursorPos - 1, 1);
 				cursorPos--;
 			}
 		}
 		void RemoveCharRight()
 		{
-			if (input.Length > 0 && cursorPos < input.Length)
-			{
+			if (input.Length > 0 && cursorPos < input.Length) {
 				input = input.Remove(cursorPos, 1);
+			}
+		}
+		void RemoveAllCharsLeft()
+		{
+			if (input.Length > 0 && cursorPos > 0) {
+				input = input.Remove(0, cursorPos);
+				cursorPos = 0;
+			}
+		}
+		void RemoveAllCharsRight()
+		{
+			if (input.Length > 0 && cursorPos < input.Length) {
+				input = input.Remove(cursorPos, input.Length - cursorPos);
+			}
+		}
+
+		void TransposeTwoChars()
+		{
+			var inputLength = input.Length;
+			if (inputLength < 2) {
+				return;
+			}
+
+			if (cursorPos == 0) {
+				SwapTwoCharacters(input, 0);
+				cursorPos = 2;
+			}
+			else if (cursorPos < inputLength) {
+				SwapTwoCharacters(input, cursorPos - 1);
+				cursorPos += 1;
+			}
+			else {
+				SwapTwoCharacters(input, cursorPos - 2);
+			}
+
+			void SwapTwoCharacters(string str, int index)
+			{
+				unsafe
+				{
+					fixed (char* stringPtr = str)
+					{
+						char tmp = stringPtr[index];
+						stringPtr[index] = stringPtr[index + 1];
+						stringPtr[index + 1] = tmp;
+					}
+				}
 			}
 		}
 
@@ -613,14 +696,14 @@ namespace RDR2DN
 		}
 		static unsafe void DrawText(float x, float y, string text, Color color)
 		{
-            float fX = x / (float)1280;
-            float fY = y / (float)720;
+			float fX = x / (float)1280;
+			float fY = y / (float)720;
 			NativeFunc.Invoke(0x4170B650590B3B00  /*SET_TEXT_SCALE*/, 0.35f, 0.35f);
-            NativeFunc.Invoke(0x50A41AD966910F03  /*SET_TEXT_COLOR*/, color.R, color.G, color.B, color.A);
-            var res = NativeFunc.Invoke(0xFA925AC00EB830B9, 10, "LITERAL_STRING", text);
-            NativeFunc.Invoke(0xD79334A4BB99BAD1, *res, fX, fY);
+			NativeFunc.Invoke(0x50A41AD966910F03  /*SET_TEXT_COLOR*/, color.R, color.G, color.B, color.A);
+			var res = NativeFunc.Invoke(0xFA925AC00EB830B9, 10, "LITERAL_STRING", text);
+			NativeFunc.Invoke(0xD79334A4BB99BAD1, *res, fX, fY);
 
-        }
+		}
 
 		static unsafe void DisableControlsThisFrame()
 		{
