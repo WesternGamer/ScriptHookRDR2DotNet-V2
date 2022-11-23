@@ -114,10 +114,8 @@
     <Compile Include="RDR2\Script.cs" />
     <Compile Include="RDR2\ScriptSettings.cs" />
     <Compile Include="RDR2\Weapons\Weapon.cs" />
-    <Compile Include="RDR2\Weapons\WeaponAsset.cs" />
     <Compile Include="RDR2\Weapons\WeaponCollection.cs" />
-    <Compile Include="RDR2\Weapons\WeaponComponent.cs" />
-    <Compile Include="RDR2\Weapons\WeaponTint.cs" />
+    <Compile Include="RDR2\Weapons\WeaponEnums.cs" />
     <Compile Include="RDR2\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

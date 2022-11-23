@@ -93,7 +93,7 @@ namespace RDR2
 		{
 			get
 			{
-				if (Current.Hash == eWeapon.WEAPON_UNARMED)
+				if (Current.Hash == eWeapon.Unarmed)
 				{
 					return null;
 				}
@@ -143,7 +143,7 @@ namespace RDR2
 			}
 			else
 			{
-				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(owner.Handle, (uint)weapon.Hash, ammoCount, false, 752097756); // ADD_REASON_DEFAULT
+				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(owner.Handle, (uint)weapon.Hash, ammoCount, false, (uint)eAddItemReason.Default);
 			}
 
 			return weapon;
@@ -163,7 +163,7 @@ namespace RDR2
 		}
 		public void Remove(uint wHash)
 		{
-			WEAPON.REMOVE_WEAPON_FROM_PED(owner.Handle, (uint)wHash, false, unchecked((uint)-142743235)); // REMOVE_REASON_DEFAULT
+			WEAPON.REMOVE_WEAPON_FROM_PED(owner.Handle, (uint)wHash, false, (uint)eRemoveItemReason.Default);
 		}
 
 		public void RemoveAll()
