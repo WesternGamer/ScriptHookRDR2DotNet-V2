@@ -6,6 +6,7 @@ bool sGameReloaded = false;
 #using "ScriptHookRDRDotNet.netmodule"
 
 using namespace System;
+using namespace System::Collections::Generic;
 using namespace System::Reflection;
 namespace WinForms = System::Windows::Forms;
 
@@ -14,6 +15,12 @@ namespace WinForms = System::Windows::Forms;
 [assembly:AssemblyProductAttribute("ScriptHookRDRDotNet")];
 [assembly:AssemblyDescriptionAttribute("An ASI plugin for Red Dead Redemption 2, which allows running scripts written in any .NET language in-game.")];
 [assembly:AssemblyVersionAttribute("1.5.5.4")];
+
+/*
+[assembly:AssemblyVersion("1.5.5.4")];
+[assembly:AssemblyFileVersion("1.5.5.4")];
+*/
+
 [assembly:AssemblyCopyrightAttribute("Copyright © 2015 crosire | Copyright © 2019 Salty")];
 // Sign with a strong name to distinguish from older versions and cause .NET framework runtime to bind the correct assemblies
 // There is no version check performed for assemblies without strong names (https://docs.microsoft.com/en-us/dotnet/framework/deployment/how-the-runtime-locates-assemblies)
@@ -29,7 +36,7 @@ public:
 		console->PrintInfo("~c~--- Help ---");
 		console->PrintInfo("The console accepts ~h~C# expressions~h~ as input and has full access to the scripting API. To print the result of an expression, simply add \"return\" in front of it.");
 		console->PrintInfo("You can use \"P\" as a shortcut for the player character and \"V\" for the current vehicle (without the quotes).");
-		console->PrintInfo("Example: \"return P.IsInVehicle()\" will print a boolean value indicating whether the player is currently sitting in a vehicle to the console.");
+		console->PrintInfo("Example: \"return P.IsAlive\" will print a boolean value to the console indicating whether the player is currently alive.");
 		console->PrintInfo("~c~--- Commands ---");
 		console->PrintHelpText();
 	}
@@ -48,7 +55,7 @@ public:
 	[RDR2DN::ConsoleCommand("Reload all scripts from the scripts directory")]
 	static void Reload()
 	{
-		//console->PrintInfo("~y~Reloading ...");
+		console->PrintInfo("~y~Reloading ...");
 
 		// Force a reload on next tick
 		sGameReloaded = true;
@@ -118,10 +125,20 @@ static void ScriptHookRDRDotNet_ManagedInit()
 {
 	RDR2DN::Console^% console = ScriptHookRDRDotNet::console;
 	RDR2DN::ScriptDomain^% domain = ScriptHookRDRDotNet::domain;
+	List<String^>^ stashedConsoleCommandHistory = gcnew List<String^>();
 
 	// Unload previous domain (this unloads all script assemblies too)
 	if (domain != nullptr)
+	{
+		// Stash the command history if console is loaded 
+		if (console != nullptr)
+		{
+			stashedConsoleCommandHistory = console->CommandHistory;
+		}
+
 		RDR2DN::ScriptDomain::Unload(domain);
+	}
+		
 
 	// Clear log from previous runs
 	RDR2DN::Log::Clear();
@@ -160,7 +177,6 @@ static void ScriptHookRDRDotNet_ManagedInit()
 	}
 
 	// Create a separate script domain
-	
 	String^ directory = IO::Path::GetDirectoryName(Assembly::GetExecutingAssembly()->Location);
 	domain = RDR2DN::ScriptDomain::Load(directory, scriptPath);
 	if (domain == nullptr)
@@ -169,13 +185,15 @@ static void ScriptHookRDRDotNet_ManagedInit()
 		return;
 	}
 
-
 	// Console Stuff
 	try
 	{
 		// Instantiate console inside script domain, so that it can access the scripting API
 		console = (RDR2DN::Console^)domain->AppDomain->CreateInstanceFromAndUnwrap(
 			RDR2DN::Console::typeid->Assembly->Location, RDR2DN::Console::typeid->FullName);
+
+		// Restore the console command history (set a empty history for the first time)
+		console->CommandHistory = stashedConsoleCommandHistory;
 
 		// Print welcome message
 		console->PrintInfo("~c~--- Community Script Hook RDR2 .NET V2 ---");
@@ -230,6 +248,12 @@ static void ScriptHookRDRDotNet_ManagedKeyboardMessage(unsigned long keycode, bo
 	RDR2DN::Console^ console = ScriptHookRDRDotNet::console;
 	if (console != nullptr)
 	{
+		if (keydown && keys == ScriptHookRDRDotNet::reloadKey)
+		{
+			// Force a reload
+			ScriptHookRDRDotNet::Reload();
+			return;
+		}
 		if (keydown && keys == ScriptHookRDRDotNet::consoleKey)
 		{
 			// Toggle open state
