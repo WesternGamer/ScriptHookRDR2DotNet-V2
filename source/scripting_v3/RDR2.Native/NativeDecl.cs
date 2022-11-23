@@ -46,18 +46,22 @@ namespace RDR2.Native
 		/// Calculates the magnitude of a vector.
 		/// </summary>
 		public static float VMAG(float x, float y, float z) { return Function.Call<float>(0x652D2EEEF1D3E62C, x, y, z); }
+		public static float VMAG(Vector3 vec) { return Function.Call<float>(0x652D2EEEF1D3E62C, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Calculates the magnitude of a vector but does not perform Sqrt operations. (Its way faster)
 		/// </summary>
 		public static float VMAG2(float x, float y, float z) { return Function.Call<float>(0xA8CEACB4F35AE058, x, y, z); }
+		public static float VMAG2(Vector3 vec) { return Function.Call<float>(0xA8CEACB4F35AE058, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Calculates distance between vectors.
 		/// </summary>
 		public static float VDIST(float x1, float y1, float z1, float x2, float y2, float z2) { return Function.Call<float>(0x2A488C176D52CCA5, x1, y1, z1, x2, y2, z2); }
+		public static float VDIST(Vector3 vec1, Vector3 vec2) { return Function.Call<float>(0x2A488C176D52CCA5, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		/// <summary>
 		/// Calculates distance between vectors but does not perform Sqrt operations. (Its way faster)
 		/// </summary>
 		public static float VDIST2(float x1, float y1, float z1, float x2, float y2, float z2) { return Function.Call<float>(0xB7A628320EFF8E47, x1, y1, z1, x2, y2, z2); }
+		public static float VDIST2(Vector3 vec1, Vector3 vec2) { return Function.Call<float>(0xB7A628320EFF8E47, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		public static int SHIFT_LEFT(int value, int bitShift) { return Function.Call<int>(0xEDD95A39E5544DE8, value, bitShift); }
 		public static int SHIFT_RIGHT(int value, int bitShift) { return Function.Call<int>(0x97EF1E5BCE9DC075, value, bitShift); }
 		/// <summary>
@@ -282,6 +286,7 @@ namespace RDR2.Native
 		public static void FADE_ANIM_SCENE_AUDIO_OUT(AnimScene animScene, float p1) { Function.Call(0x323E3AD772BA5D57, animScene, p1); }
 		public static void BLOCK_ANIM_SCENE_FADING_NEXT_FRAME(bool p0, bool p1) { Function.Call(0x1B70811D3BF75DB9, p0, p1); }
 		public static void SET_ANIM_SCENE_ORIGIN(AnimScene animScene, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, int order) { Function.Call(0x020894BF17A02EF2, animScene, posX, posY, posZ, rotX, rotY, rotZ, order); }
+		public static void SET_ANIM_SCENE_ORIGIN(AnimScene animScene, Vector3 vec, Vector3 rotation, int order) { Function.Call(0x020894BF17A02EF2, animScene, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, order); }
 		public static unsafe void GET_ANIM_SCENE_ORIGIN(AnimScene animScene, Vector3* position, Vector3* rotation, int order) { Function.Call(0xADF1D53F3B1FE0A7, animScene, position, rotation, order); }
 		public static void SET_ANIM_SCENE_PAUSED(AnimScene animScene, bool toggle) { Function.Call(0xD6824B7D24DC0CE0, animScene, toggle); }
 		public static bool _IS_ANIM_SCENE_PAUSED(AnimScene animScene) { return Function.Call<bool>(0x4B4038796F0D6566, animScene); }
@@ -662,6 +667,7 @@ namespace RDR2.Native
 		public static void _PLAY_SOUND_FROM_ITEM(Hash item, Hash soundSet, Any p2) { Function.Call(0xE8EAFF7B41EDD291, item, soundSet, p2); }
 		public static void PLAY_SOUND_FROM_ENTITY(string audioName, int entity, string audioRef, bool isNetwork, Any p4, Any p5) { Function.Call(0x6FB1DA3CA9DA7D90, audioName, entity, audioRef, isNetwork, p4, p5); }
 		public static void _PLAY_SOUND_FROM_POSITION(string audioName, float x, float y, float z, string audioRef, bool isNetwork, Any p6, bool p7, Any p8) { Function.Call(0xCCE219C922737BFA, audioName, x, y, z, audioRef, isNetwork, p6, p7, p8); }
+		public static void _PLAY_SOUND_FROM_POSITION(string audioName, Vector3 vec, string audioRef, bool isNetwork, Any p6, bool p7, Any p8) { Function.Call(0xCCE219C922737BFA, audioName, vec.X, vec.Y, vec.Z, audioRef, isNetwork, p6, p7, p8); }
 		public static void _STOP_SOUND_WITH_NAME(string audioName, string audioRef) { Function.Call(0x0F2A2175734926D8, audioName, audioRef); }
 		/// <summary>
 		/// _IS_SOUND_RUNNING(?)
@@ -692,10 +698,12 @@ namespace RDR2.Native
 		/// _PLAY_SOUND_FROM_ENTITY* - _PLAY_SOUND_FRONTEND*
 		/// </summary>
 		public static void _PLAY_SOUND_FROM_POSITION_WITH_ID(int soundId, string soundName, float x, float y, float z, string soundsetName, bool p6, int p7, bool p8) { Function.Call(0xDCF5BA95BBF0FABA, soundId, soundName, x, y, z, soundsetName, p6, p7, p8); }
+		public static void _PLAY_SOUND_FROM_POSITION_WITH_ID(int soundId, string soundName, Vector3 vec, string soundsetName, bool p6, int p7, bool p8) { Function.Call(0xDCF5BA95BBF0FABA, soundId, soundName, vec.X, vec.Y, vec.Z, soundsetName, p6, p7, p8); }
 		/// <summary>
 		/// Only used in R* SP Scripts
 		/// </summary>
 		public static void _UPDATE_SOUND_POSITION(int soundId, float x, float y, float z) { Function.Call(0x0286617C8FC50A53, soundId, x, y, z); }
+		public static void _UPDATE_SOUND_POSITION(int soundId, Vector3 vec) { Function.Call(0x0286617C8FC50A53, soundId, vec.X, vec.Y, vec.Z); }
 		public static void _STOP_SOUND_WITH_ID(int soundId) { Function.Call(0x3210BCB36AF7621B, soundId); }
 		public static void _SET_VARIABLE_ON_SOUND_WITH_ID(int soundId, string variableName, float variableValue) { Function.Call(0x503703EC1781B7D6, soundId, variableName, variableValue); }
 		public static bool PREPARE_SOUND(string soundName, string soundsetName, int soundId) { return Function.Call<bool>(0xE368E8422C860BA7, soundName, soundsetName, soundId); }
@@ -738,6 +746,7 @@ namespace RDR2.Native
 		/// Old name: _PLAY_AMBIENT_SPEECH_AT_COORDS
 		/// </summary>
 		public static unsafe bool PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE(float x, float y, float z, Any* _params) { return Function.Call<bool>(0xED640017ED337E45, x, y, z, _params); }
+		public static unsafe bool PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE(Vector3 vec, Any* _params) { return Function.Call<bool>(0xED640017ED337E45, vec.X, vec.Y, vec.Z, _params); }
 		public static Any _0x72E4D1C4639BC465(int p0, Any p1) { return Function.Call<Any>(0x72E4D1C4639BC465, p0, p1); }
 		public static Any _0xB18FEC133C7C6C69(Any p0) { return Function.Call<Any>(0xB18FEC133C7C6C69, p0); }
 		public static void _0xDC93F0948F2C28F4(Any p0) { Function.Call(0xDC93F0948F2C28F4, p0); }
@@ -800,6 +809,7 @@ namespace RDR2.Native
 		public static void PLAY_END_CREDITS_MUSIC(bool play) { Function.Call(0xCD536C4D33DCC900, play); }
 		public static Any _0x7678FE0455ED1145(Any p0, Any p1, Any p2) { return Function.Call<Any>(0x7678FE0455ED1145, p0, p1, p2); }
 		public static Any _0xFFE9C53DEEA3DB0B(Any p0, Any p1, float x, float y, float z, bool isSrlLoaded, Any p6) { return Function.Call<Any>(0xFFE9C53DEEA3DB0B, p0, p1, x, y, z, isSrlLoaded, p6); }
+		public static Any _0xFFE9C53DEEA3DB0B(Any p0, Any p1, Vector3 vec, bool isSrlLoaded, Any p6) { return Function.Call<Any>(0xFFE9C53DEEA3DB0B, p0, p1, vec.X, vec.Y, vec.Z, isSrlLoaded, p6); }
 		public static void _0x5E3CCF03995388B5(Any p0, Any p1, Any p2, Any p3) { Function.Call(0x5E3CCF03995388B5, p0, p1, p2, p3); }
 		public static void _0x43037ABFE214A851() { Function.Call(0x43037ABFE214A851); }
 		public static void SET_AMBIENT_ZONE_STATE(string zoneName, bool isEnabled, bool p2) { Function.Call(0xBDA07E5950085E46, zoneName, isEnabled, p2); }
@@ -809,6 +819,7 @@ namespace RDR2.Native
 		public static void SET_AMBIENT_ZONE_STATE_PERSISTENT(string ambientZone, bool p1, bool p2) { Function.Call(0x1D6650420CEC9D3B, ambientZone, p1, p2); }
 		public static void SET_AMBIENT_ZONE_LIST_STATE_PERSISTENT(string ambientZone, bool p1, bool p2) { Function.Call(0xF3638DAE8C4045E1, ambientZone, p1, p2); }
 		public static void _SET_AMBIENT_ZONE_POSITION(string ambientZone, float x, float y, float z, float heading) { Function.Call(0x3743CE6948194349, ambientZone, x, y, z, heading); }
+		public static void _SET_AMBIENT_ZONE_POSITION(string ambientZone, Vector3 vec, float heading) { Function.Call(0x3743CE6948194349, ambientZone, vec.X, vec.Y, vec.Z, heading); }
 		/// <summary>
 		/// Checks whether the horn of a vehicle is currently played.
 		/// </summary>
@@ -819,6 +830,7 @@ namespace RDR2.Native
 		public static void PLAY_STREAM_FROM_PED(int ped, int streamId) { Function.Call(0x89049DD63C08B5D1, ped, streamId); }
 		public static void PLAY_STREAM_FRONTEND(int streamId) { Function.Call(0x58FCE43488F9F5F4, streamId); }
 		public static void PLAY_STREAM_FROM_POSITION(float x, float y, float z, int streamId) { Function.Call(0x21442F412E8DE56B, x, y, z, streamId); }
+		public static void PLAY_STREAM_FROM_POSITION(Vector3 vec, int streamId) { Function.Call(0x21442F412E8DE56B, vec.X, vec.Y, vec.Z, streamId); }
 		public static void _0x3A3BE6B920525237(Any p0, Any p1) { Function.Call(0x3A3BE6B920525237, p0, p1); }
 		public static void STOP_STREAM(int streamId) { Function.Call(0xA4718A1419D18151, streamId); }
 		public static void STOP_PED_SPEAKING(int ped, bool shaking) { Function.Call(0x9D64D7405520E3D3, ped, shaking); }
@@ -934,6 +946,7 @@ namespace RDR2.Native
 		public static void _0x569ABC36E28DDEAA() { Function.Call(0x569ABC36E28DDEAA); }
 		public static void _0x839C9F124BE74D94(Any p0, Any p1, Any p2, Any p3, Any p4) { Function.Call(0x839C9F124BE74D94, p0, p1, p2, p3, p4); }
 		public static void AUDIO_TRIGGER_EXPLOSION(string name, float x, float y, float z) { Function.Call(0x374F0E716BFCDE82, name, x, y, z); }
+		public static void AUDIO_TRIGGER_EXPLOSION(string name, Vector3 vec) { Function.Call(0x374F0E716BFCDE82, name, vec.X, vec.Y, vec.Z); }
 		public static void _0x3E98AC9D8C56C62C(Any p0) { Function.Call(0x3E98AC9D8C56C62C, p0); }
 		public static void _0xCBF2BEBB468A34F3(Any p0) { Function.Call(0xCBF2BEBB468A34F3, p0); }
 		public static void _0xA2B851605748AD0E() { Function.Call(0xA2B851605748AD0E); }
@@ -1055,8 +1068,10 @@ namespace RDR2.Native
 		public static void STOP_RENDERING_SCRIPT_CAMS_USING_CATCH_UP(bool render, float distance, int blendBackSmoothingType, bool p3, bool p4, bool p5) { Function.Call(0x8C7C7FF7CF0E5153, render, distance, blendBackSmoothingType, p3, p4, p5); }
 		public static Cam CREATE_CAM(string camName, bool p1) { return Function.Call<Cam>(0xE72CDBA7F0A02DD6, camName, p1); }
 		public static Cam CREATE_CAM_WITH_PARAMS(string camName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float fov, bool p8, int p9) { return Function.Call<Cam>(0x40C23491CE83708E, camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9); }
+		public static Cam CREATE_CAM_WITH_PARAMS(string camName, Vector3 vec, Vector3 rotation, float fov, bool p8, int p9) { return Function.Call<Cam>(0x40C23491CE83708E, camName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, fov, p8, p9); }
 		public static Cam CREATE_CAMERA(Hash camHash, bool p1) { return Function.Call<Cam>(0x57CDF879EA466C46, camHash, p1); }
 		public static Cam CREATE_CAMERA_WITH_PARAMS(Hash camHash, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float fov, bool p8, Any p9) { return Function.Call<Cam>(0x98B99B9F27E2D60B, camHash, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9); }
+		public static Cam CREATE_CAMERA_WITH_PARAMS(Hash camHash, Vector3 vec, Vector3 rotation, float fov, bool p8, Any p9) { return Function.Call<Cam>(0x98B99B9F27E2D60B, camHash, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, fov, p8, p9); }
 		/// <summary>
 		/// BOOL param indicates whether the cam should be destroyed if it belongs to the calling script.
 		/// </summary>
@@ -1083,14 +1098,17 @@ namespace RDR2.Native
 		public static Vector3 GET_CAM_ROT(Cam cam, int rotationOrder) { return Function.Call<Vector3>(0x9BF96B57254E7889, cam, rotationOrder); }
 		public static float GET_CAM_FOV(Cam cam) { return Function.Call<float>(0x8101D32A0A6B0F60, cam); }
 		public static void SET_CAM_PARAMS(Cam cam, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float fieldOfView, Any p8, int p9, int p10, int p11, Any p12, Any p13) { Function.Call(0xA47BBFFFB83D4D0A, cam, posX, posY, posZ, rotX, rotY, rotZ, fieldOfView, p8, p9, p10, p11, p12, p13); }
+		public static void SET_CAM_PARAMS(Cam cam, Vector3 vec, Vector3 rotation, float fieldOfView, Any p8, int p9, int p10, int p11, Any p12, Any p13) { Function.Call(0xA47BBFFFB83D4D0A, cam, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, fieldOfView, p8, p9, p10, p11, p12, p13); }
 		/// <summary>
 		/// Sets the position of the cam.
 		/// </summary>
 		public static void SET_CAM_COORD(Cam cam, float posX, float posY, float posZ) { Function.Call(0xF9EE7D419EE49DE6, cam, posX, posY, posZ); }
+		public static void SET_CAM_COORD(Cam cam, Vector3 vec) { Function.Call(0xF9EE7D419EE49DE6, cam, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Sets the rotation of the cam.
 		/// </summary>
 		public static void SET_CAM_ROT(Cam cam, float rotX, float rotY, float rotZ, int rotationOrder) { Function.Call(0x63DFA6810AD78719, cam, rotX, rotY, rotZ, rotationOrder); }
+		public static void SET_CAM_ROT(Cam cam, Vector3 rotation, int rotationOrder) { Function.Call(0x63DFA6810AD78719, cam, rotation.X, rotation.Y, rotation.Z, rotationOrder); }
 		/// <summary>
 		/// Sets the field of view of the cam.
 		/// 
@@ -1108,12 +1126,15 @@ namespace RDR2.Native
 		/// Last param determines if its relative to the Entity
 		/// </summary>
 		public static void ATTACH_CAM_TO_ENTITY(Cam cam, int entity, float xOffset, float yOffset, float zOffset, bool isRelative) { Function.Call(0xFDC0DF7F6FB0A592, cam, entity, xOffset, yOffset, zOffset, isRelative); }
+		public static void ATTACH_CAM_TO_ENTITY(Cam cam, int entity, Vector3 offset, bool isRelative) { Function.Call(0xFDC0DF7F6FB0A592, cam, entity, offset.X, offset.Y, offset.Z, isRelative); }
 		/// <summary>
 		/// boneIndex: https://github.com/femga/rdr3_discoveries/tree/master/boneNames
 		/// </summary>
 		public static void ATTACH_CAM_TO_PED_BONE(Cam cam, int ped, int boneIndex, float x, float y, float z, bool heading) { Function.Call(0xDFC1E4A44C0324CA, cam, ped, boneIndex, x, y, z, heading); }
+		public static void ATTACH_CAM_TO_PED_BONE(Cam cam, int ped, int boneIndex, Vector3 vec, bool heading) { Function.Call(0xDFC1E4A44C0324CA, cam, ped, boneIndex, vec.X, vec.Y, vec.Z, heading); }
 		public static void DETACH_CAM(Cam cam) { Function.Call(0x05B41DDBEB559556, cam); }
 		public static void POINT_CAM_AT_COORD(Cam cam, float x, float y, float z) { Function.Call(0x948B39341C3A40C2, cam, x, y, z); }
+		public static void POINT_CAM_AT_COORD(Cam cam, Vector3 vec) { Function.Call(0x948B39341C3A40C2, cam, vec.X, vec.Y, vec.Z); }
 		public static void POINT_CAM_AT_ENTITY(Cam cam, int entity, float p2, float p3, float p4, bool p5) { Function.Call(0xFC2867E6074D3A61, cam, entity, p2, p3, p4, p5); }
 		public static void STOP_CAM_POINTING(Cam cam) { Function.Call(0xCA1B30A3357C71F1, cam); }
 		public static void _SET_CAM_FOCUS_DISTANCE(Cam cam, float distance) { Function.Call(0x11F32BB61B756732, cam, distance); }
@@ -1132,6 +1153,7 @@ namespace RDR2.Native
 		/// p9 != 0 seems to override the rotation/pitch (bool?)
 		/// </summary>
 		public static void ADD_CAM_SPLINE_NODE(Cam camera, float x, float y, float z, float xRot, float yRot, float zRot, int length, int p8, int p9) { Function.Call(0xF1F57F9D230F9CD1, camera, x, y, z, xRot, yRot, zRot, length, p8, p9); }
+		public static void ADD_CAM_SPLINE_NODE(Cam camera, Vector3 vec, Vector3 rotation, int length, int p8, int p9) { Function.Call(0xF1F57F9D230F9CD1, camera, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, length, p8, p9); }
 		public static void SET_CAM_SPLINE_PHASE(Cam cam, float p1) { Function.Call(0xF1898A68E7C15636, cam, p1); }
 		/// <summary>
 		/// Can use this with SET_CAM_SPLINE_PHASE to set the float it this native returns.
@@ -1147,6 +1169,7 @@ namespace RDR2.Native
 		public static bool IS_CAM_SHAKING(Cam cam) { return Function.Call<bool>(0x2EEB402BD7320159, cam); }
 		public static void STOP_CAM_SHAKING(Cam cam, bool p1) { Function.Call(0xB78CC4B4706614B0, cam, p1); }
 		public static bool PLAY_CAM_ANIM(Cam cam, string animName, string animDictionary, float x, float y, float z, float xRot, float yRot, float zRot, bool p9, int p10) { return Function.Call<bool>(0xA263DDF694D563F6, cam, animName, animDictionary, x, y, z, xRot, yRot, zRot, p9, p10); }
+		public static bool PLAY_CAM_ANIM(Cam cam, string animName, string animDictionary, Vector3 vec, Vector3 rotation, bool p9, int p10) { return Function.Call<bool>(0xA263DDF694D563F6, cam, animName, animDictionary, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p9, p10); }
 		public static void _0xCF69EA05CD9C33C9() { Function.Call(0xCF69EA05CD9C33C9); }
 		/// <summary>
 		/// Only used in R* Script camera_photomode
@@ -1264,6 +1287,7 @@ namespace RDR2.Native
 		public static void _0x3C8F74E8FE751614() { Function.Call(0x3C8F74E8FE751614); }
 		public static void _0x06557F6D96C86881() { Function.Call(0x06557F6D96C86881); }
 		public static bool IS_SPHERE_VISIBLE(float x, float y, float z, float radius) { return Function.Call<bool>(0x2E941B5FFA2989C6, x, y, z, radius); }
+		public static bool IS_SPHERE_VISIBLE(Vector3 vec, float radius) { return Function.Call<bool>(0x2E941B5FFA2989C6, vec.X, vec.Y, vec.Z, radius); }
 		public static Any _0x190F7DA1AC09A8EF() { return Function.Call<Any>(0x190F7DA1AC09A8EF); }
 		/// <summary>
 		/// Used in Script Function SHOP_CAMERA_SUPPORT_START_NEW_ORBIT
@@ -1350,13 +1374,16 @@ namespace RDR2.Native
 		public static Vector3 GET_FINAL_RENDERED_CAM_ROT(int rotationOrder) { return Function.Call<Vector3>(0x602685BD85DD26CA, rotationOrder); }
 		public static float GET_FINAL_RENDERED_CAM_FOV() { return Function.Call<float>(0x04AF77971E508F6A); }
 		public static void SET_GAMEPLAY_COORD_HINT(float x, float y, float z, int duration, int blendOutDuration, int blendInDuration, int unk) { Function.Call(0xFA33B8C69A4A6A0F, x, y, z, duration, blendOutDuration, blendInDuration, unk); }
+		public static void SET_GAMEPLAY_COORD_HINT(Vector3 vec, int duration, int blendOutDuration, int blendInDuration, int unk) { Function.Call(0xFA33B8C69A4A6A0F, vec.X, vec.Y, vec.Z, duration, blendOutDuration, blendInDuration, unk); }
 		public static void SET_GAMEPLAY_PED_HINT(int p0, float x1, float y1, float z1, bool p4, Any p5, Any p6, Any p7) { Function.Call(0x90FB951648851733, p0, x1, y1, z1, p4, p5, p6, p7); }
+		public static void SET_GAMEPLAY_PED_HINT(int p0, Vector3 vec1, bool p4, Any p5, Any p6, Any p7) { Function.Call(0x90FB951648851733, p0, vec1.X, vec1.Y, vec1.Z, p4, p5, p6, p7); }
 		public static void SET_GAMEPLAY_VEHICLE_HINT(Any p0, float p1, float p2, float p3, bool p4, Any p5, Any p6, Any p7) { Function.Call(0xE2B2BB7DAC280515, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void SET_GAMEPLAY_OBJECT_HINT(Any p0, float p1, float p2, float p3, bool p4, Any p5, Any p6, Any p7) { Function.Call(0xC40551D65F2BF297, p0, p1, p2, p3, p4, p5, p6, p7); }
 		/// <summary>
 		/// p6 & p7 - possibly length or time
 		/// </summary>
 		public static void SET_GAMEPLAY_ENTITY_HINT(int entity, float xOffset, float yOffset, float zOffset, bool p4, int p5, int p6, int p7, Any p8) { Function.Call(0xD1F7F32640ADFD12, entity, xOffset, yOffset, zOffset, p4, p5, p6, p7, p8); }
+		public static void SET_GAMEPLAY_ENTITY_HINT(int entity, Vector3 offset, bool p4, int p5, int p6, int p7, Any p8) { Function.Call(0xD1F7F32640ADFD12, entity, offset.X, offset.Y, offset.Z, p4, p5, p6, p7, p8); }
 		public static bool IS_GAMEPLAY_HINT_ACTIVE() { return Function.Call<bool>(0x2E04AB5FEE042D4A); }
 		public static void STOP_GAMEPLAY_HINT(bool p0) { Function.Call(0x1BCEC33D54CFCA8A, p0); }
 		public static void STOP_CODE_GAMEPLAY_HINT(bool p0) { Function.Call(0x93759A83D0D844E7, p0); }
@@ -1470,6 +1497,7 @@ namespace RDR2.Native
 		public static bool _0xC3AEBB276825A359(string dictionary, string shotName, int duration) { return Function.Call<bool>(0xC3AEBB276825A359, dictionary, shotName, duration); }
 		public static bool _0x1D931B7CC0EE3956(string dictionary, string shotName, string cameraName) { return Function.Call<bool>(0x1D931B7CC0EE3956, dictionary, shotName, cameraName); }
 		public static void _CINEMATIC_LOCATION_SET_LOCATION_AND_ROTATION(string name, float x, float y, float z, float rotX, float rotY, float rotZ) { Function.Call(0x0E94C95EC3185FA9, name, x, y, z, rotX, rotY, rotZ); }
+		public static void _CINEMATIC_LOCATION_SET_LOCATION_AND_ROTATION(string name, Vector3 vec, Vector3 rotation) { Function.Call(0x0E94C95EC3185FA9, name, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z); }
 		/// <summary>
 		/// Only used in R* Script fm_mission_controller
 		/// </summary>
@@ -1658,6 +1686,7 @@ namespace RDR2.Native
 		public static int COMPENDIUM_GET_ENTRY_BY_STAT_ITEM(Hash category, Hash animalType) { return Function.Call<int>(0x66EC938394D76C85, category, animalType); }
 		public static Any COMPENDIUM_GET_SUBCATEGORY_TOAST_APP_ID(Hash category, Hash subcategory) { return Function.Call<Any>(0x2BF30D9D4D680112, category, subcategory); }
 		public static Hash COMPENDIUM_GET_MAP_DISCOVERABLE_FROM_STAT_ITEM(Hash animalStatItem, float x, float y, float z) { return Function.Call<Hash>(0x729D54121A5E9E20, animalStatItem, x, y, z); }
+		public static Hash COMPENDIUM_GET_MAP_DISCOVERABLE_FROM_STAT_ITEM(Hash animalStatItem, Vector3 vec) { return Function.Call<Hash>(0x729D54121A5E9E20, animalStatItem, vec.X, vec.Y, vec.Z); }
 		public static void COMPENDIUM_ANIMAL_OBSERVED_BY_STAT_NAME(Hash animalType, bool disableCompendiumToast) { Function.Call(0x725D52F26A5E9E10, animalType, disableCompendiumToast); }
 		public static bool COMPENDIUM_WAS_ANIMAL_OBSERVED(int ped) { return Function.Call<bool>(0x23B5E9C5160BC04F, ped); }
 		public static void COMPENDIUM_ANIMAL_SET_DISCOVERED(int compendiumEntry) { Function.Call(0x67F35C7C9F2BDCFE, compendiumEntry); }
@@ -1681,6 +1710,7 @@ namespace RDR2.Native
 		/// Vector3: Player Location
 		/// </summary>
 		public static void COMPENDIUM_HERB_PICKED(Hash herbType, float x, float y, float z) { Function.Call(0x725D52F21A5E9E09, herbType, x, y, z); }
+		public static void COMPENDIUM_HERB_PICKED(Hash herbType, Vector3 vec) { Function.Call(0x725D52F21A5E9E09, herbType, vec.X, vec.Y, vec.Z); }
 		public static void COMPENDIUM_HORSE_BONDING(int ped, int bondingLevel) { Function.Call(0x725D52F21A5E9E50, ped, bondingLevel); }
 		/// <summary>
 		/// NET_PLAYER_HORSE_PROCESS_EVENT_HORSE_BREAKING
@@ -1703,6 +1733,7 @@ namespace RDR2.Native
 		public static bool _0xE72E234B30DA7B7A(int p0) { return Function.Call<bool>(0xE72E234B30DA7B7A, p0); }
 		public static bool _0x87F005C969EF1563(float p0) { return Function.Call<bool>(0x87F005C969EF1563, p0); }
 		public static bool _0x23CCAB8F40B9CBEE(float x, float y, float z) { return Function.Call<bool>(0x23CCAB8F40B9CBEE, x, y, z); }
+		public static bool _0x23CCAB8F40B9CBEE(Vector3 vec) { return Function.Call<bool>(0x23CCAB8F40B9CBEE, vec.X, vec.Y, vec.Z); }
 		public static bool _0xF0D545C1EEAD614A() { return Function.Call<bool>(0xF0D545C1EEAD614A); }
 		public static bool _0x33C1D63E55FA4284(string p0) { return Function.Call<bool>(0x33C1D63E55FA4284, p0); }
 		public static void _0x4E42CA5BCD45444A() { Function.Call(0x4E42CA5BCD45444A); }
@@ -2028,6 +2059,7 @@ namespace RDR2.Native
 		public static int _0xAF72EC7E1B54539B(int entity) { return Function.Call<int>(0xAF72EC7E1B54539B, entity); }
 		public static bool HAS_ENTITY_CLEAR_LOS_TO_ENTITY(int entity1, int entity2, int traceType) { return Function.Call<bool>(0xFCDFF7B72D23A1AC, entity1, entity2, traceType); }
 		public static bool HAS_ENTITY_CLEAR_LOS_TO_COORD(int entity, float x, float y, float z, int flags) { return Function.Call<bool>(0x0C9DBF48C6BA6E4C, entity, x, y, z, flags); }
+		public static bool HAS_ENTITY_CLEAR_LOS_TO_COORD(int entity, Vector3 vec, int flags) { return Function.Call<bool>(0x0C9DBF48C6BA6E4C, entity, vec.X, vec.Y, vec.Z, flags); }
 		/// <summary>
 		/// Has the entity1 got a clear line of sight to the other entity2 from the direction entity1 is facing.
 		/// </summary>
@@ -2075,6 +2107,7 @@ namespace RDR2.Native
 		public static int GET_ENTITY_MAX_HEALTH(int entity, bool p1) { return Function.Call<int>(0x15D757606D170C3C, entity, p1); }
 		public static void SET_ENTITY_MAX_HEALTH(int entity, int value) { Function.Call(0x166E7CF68597D8B5, entity, value); }
 		public static float GET_ENTITY_HEIGHT(int entity, float X, float Y, float Z, bool atTop, bool inWorldCoords) { return Function.Call<float>(0x296DEBC84474B375, entity, X, Y, Z, atTop, inWorldCoords); }
+		public static float GET_ENTITY_HEIGHT(int entity, Vector3 vec, bool atTop, bool inWorldCoords) { return Function.Call<float>(0x296DEBC84474B375, entity, vec.X, vec.Y, vec.Z, atTop, inWorldCoords); }
 		public static float GET_ENTITY_HEIGHT_ABOVE_GROUND(int entity) { return Function.Call<float>(0x0D3B5BAEA08F63E9, entity); }
 		public static unsafe void _GET_ENTITY_WORLD_POSITION_OF_DIMENSIONS(int entity, Vector3* minimum, Vector3* maximum) { Function.Call(0xF3FDA9A617A15145, entity, minimum, maximum); }
 		public static unsafe void GET_ENTITY_MATRIX(int entity, Vector3* rightVector, Vector3* forwardVector, Vector3* upVector, Vector3* position) { Function.Call(0x3A9B1120AF13FBF2, entity, rightVector, forwardVector, upVector, position); }
@@ -2091,6 +2124,7 @@ namespace RDR2.Native
 		public static bool _GET_IS_BIRD(int entity) { return Function.Call<bool>(0xC346A546612C49A9, entity); }
 		public static bool _GET_IS_PREDATOR(int entity) { return Function.Call<bool>(0x5594AFE9DE0C01B7, entity); }
 		public static Vector3 GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(int entity, float posX, float posY, float posZ) { return Function.Call<Vector3>(0x497C6B1A2C9AE69C, entity, posX, posY, posZ); }
+		public static Vector3 GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(int entity, Vector3 vec) { return Function.Call<Vector3>(0x497C6B1A2C9AE69C, entity, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Offset values are relative to the entity.
 		/// 
@@ -2099,6 +2133,7 @@ namespace RDR2.Native
 		/// z = up/down
 		/// </summary>
 		public static Vector3 GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(int entity, float offsetX, float offsetY, float offsetZ) { return Function.Call<Vector3>(0x1899F328B0E12848, entity, offsetX, offsetY, offsetZ); }
+		public static Vector3 GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(int entity, Vector3 offset) { return Function.Call<Vector3>(0x1899F328B0E12848, entity, offset.X, offset.Y, offset.Z); }
 		public static float GET_ENTITY_PITCH(int entity) { return Function.Call<float>(0xEF355ABEFF7F5005, entity); }
 		/// <summary>
 		/// Displays the current ROLL axis of the entity [-180.0000/180.0000+]
@@ -2161,6 +2196,7 @@ namespace RDR2.Native
 		/// Last three are unknown ints, almost always p7 = 0, p8 = 1, p9 = 0
 		/// </summary>
 		public static bool IS_ENTITY_AT_COORD(int entity, float xPos, float yPos, float zPos, float xSize, float ySize, float zSize, bool p7, bool p8, int p9) { return Function.Call<bool>(0x5E58342602E94718, entity, xPos, yPos, zPos, xSize, ySize, zSize, p7, p8, p9); }
+		public static bool IS_ENTITY_AT_COORD(int entity, Vector3 vec, float xSize, float ySize, float zSize, bool p7, bool p8, int p9) { return Function.Call<bool>(0x5E58342602E94718, entity, vec.X, vec.Y, vec.Z, xSize, ySize, zSize, p7, p8, p9); }
 		/// <summary>
 		/// Checks if entity1 is within the box defined by x/y/zSize of entity2.
 		/// 
@@ -2182,6 +2218,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static bool IS_ENTITY_IN_ANGLED_AREA(int entity, float originX, float originY, float originZ, float edgeX, float edgeY, float edgeZ, float angle, bool p8, bool p9, Any p10) { return Function.Call<bool>(0xD3151E53134595E5, entity, originX, originY, originZ, edgeX, edgeY, edgeZ, angle, p8, p9, p10); }
 		public static bool IS_ENTITY_IN_AREA(int entity, float x1, float y1, float z1, float x2, float y2, float z2, bool p7, bool p8, Any p9) { return Function.Call<bool>(0x0C2634C40A16193E, entity, x1, y1, z1, x2, y2, z2, p7, p8, p9); }
+		public static bool IS_ENTITY_IN_AREA(int entity, Vector3 vec1, Vector3 vec2, bool p7, bool p8, Any p9) { return Function.Call<bool>(0x0C2634C40A16193E, entity, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p7, p8, p9); }
 		public static bool IS_ENTITY_IN_VOLUME(int entity, ScrHandle volume, bool p2, int p3) { return Function.Call<bool>(0x5A5526BC09C06623, entity, volume, p2, p3); }
 		public static bool IS_ENTITY_IN_WATER(int entity) { return Function.Call<bool>(0xDDE5C125AC446723, entity); }
 		public static bool _IS_ENTITY_UNDERWATER(int entity, bool p1) { return Function.Call<bool>(0xD4E5C1E93C466127, entity, p1); }
@@ -2213,6 +2250,7 @@ namespace RDR2.Native
 		public static bool _IS_TRACKED_ENTITY_VISIBLE(int entity) { return Function.Call<bool>(0xC8CCDB712FBCBA92, entity); }
 		public static bool IS_ENTITY_OCCLUDED(int entity) { return Function.Call<bool>(0x140188E884645624, entity); }
 		public static bool WOULD_ENTITY_BE_OCCLUDED(Hash entityModelHash, float x, float y, float z, bool p4) { return Function.Call<bool>(0x3546FAB293FF2981, entityModelHash, x, y, z, p4); }
+		public static bool WOULD_ENTITY_BE_OCCLUDED(Hash entityModelHash, Vector3 vec, bool p4) { return Function.Call<bool>(0x3546FAB293FF2981, entityModelHash, vec.X, vec.Y, vec.Z, p4); }
 		public static bool IS_ENTITY_WAITING_FOR_WORLD_COLLISION(int entity) { return Function.Call<bool>(0x5E1CC2E8DC3111DD, entity); }
 		public static bool _IS_ENTITY_ON_TRAIN_TRACK(int entity) { return Function.Call<bool>(0x857ACB0AB4BD0D55, entity); }
 		public static void _0xCDB682BB47C02F0A(int entity, Hash p1) { Function.Call(0xCDB682BB47C02F0A, entity, p1); }
@@ -2325,7 +2363,9 @@ namespace RDR2.Native
 		/// p7/highForce - setting false will make the force really low
 		/// </summary>
 		public static void APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(int entity, int forceType, float x, float y, float z, bool p5, bool isDirectionRel, bool isForceRel, bool p8) { Function.Call(0x31DA7CEC5334DB37, entity, forceType, x, y, z, p5, isDirectionRel, isForceRel, p8); }
+		public static void APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(int entity, int forceType, Vector3 vec, bool p5, bool isDirectionRel, bool isForceRel, bool p8) { Function.Call(0x31DA7CEC5334DB37, entity, forceType, vec.X, vec.Y, vec.Z, p5, isDirectionRel, isForceRel, p8); }
 		public static void APPLY_FORCE_TO_ENTITY(int entity, int forceFlags, float x, float y, float z, float offX, float offY, float offZ, int boneIndex, bool isDirectionRel, bool ignoreUpVec, bool isForceRel, bool p12, bool p13) { Function.Call(0xF15E8F5D333F09C4, entity, forceFlags, x, y, z, offX, offY, offZ, boneIndex, isDirectionRel, ignoreUpVec, isForceRel, p12, p13); }
+		public static void APPLY_FORCE_TO_ENTITY(int entity, int forceFlags, Vector3 vec, Vector3 offset, int boneIndex, bool isDirectionRel, bool ignoreUpVec, bool isForceRel, bool p12, bool p13) { Function.Call(0xF15E8F5D333F09C4, entity, forceFlags, vec.X, vec.Y, vec.Z, offset.X, offset.Y, offset.Z, boneIndex, isDirectionRel, ignoreUpVec, isForceRel, p12, p13); }
 		/// <summary>
 		/// Attaches entity1 to bone (boneIndex) of entity2.
 		/// 
@@ -2339,7 +2379,9 @@ namespace RDR2.Native
 		/// fixedRot - if false it ignores entity vector
 		/// </summary>
 		public static void ATTACH_ENTITY_TO_ENTITY(int entity1, int entity2, int boneIndex, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, bool p9, bool useSoftPinning, bool collision, bool isPed, int vertexIndex, bool fixedRot, bool p15, bool p16) { Function.Call(0x6B9BBD38AB0796DF, entity1, entity2, boneIndex, xPos, yPos, zPos, xRot, yRot, zRot, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot, p15, p16); }
+		public static void ATTACH_ENTITY_TO_ENTITY(int entity1, int entity2, int boneIndex, Vector3 vec, Vector3 rotation, bool p9, bool useSoftPinning, bool collision, bool isPed, int vertexIndex, bool fixedRot, bool p15, bool p16) { Function.Call(0x6B9BBD38AB0796DF, entity1, entity2, boneIndex, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot, p15, p16); }
 		public static void ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(int entity1, int entity2, int p2, int boneIndex, float offsetX, float offsetY, float offsetZ, float p7, float p8, float p9, float p10, float p11, float p12, float p13, bool p14, bool p15, bool p16, bool p17, int p18, bool p19, float p20, float p21) { Function.Call(0xB629A43CA1643481, entity1, entity2, p2, boneIndex, offsetX, offsetY, offsetZ, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21); }
+		public static void ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(int entity1, int entity2, int p2, int boneIndex, Vector3 offset, float p7, float p8, float p9, float p10, float p11, float p12, float p13, bool p14, bool p15, bool p16, bool p17, int p18, bool p19, float p20, float p21) { Function.Call(0xB629A43CA1643481, entity1, entity2, p2, boneIndex, offset.X, offset.Y, offset.Z, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21); }
 		public static void _0x445D7D8EA66E373E(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15) { Function.Call(0x445D7D8EA66E373E, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15); }
 		public static void _0x16908E859C3AB698(Any p0, Any p1, Any p2, Any p3, Any p4) { Function.Call(0x16908E859C3AB698, p0, p1, p2, p3, p4); }
 		public static int GET_ENTITY_BONE_INDEX_BY_NAME(int entity, string boneName) { return Function.Call<int>(0xBACA8FE9C76C124E, entity, boneName); }
@@ -2407,14 +2449,18 @@ namespace RDR2.Native
 		public static void SET_ENTITY_COLLISION(int entity, bool toggle, bool keepPhysics) { Function.Call(0xF66F820909453B8C, entity, toggle, keepPhysics); }
 		public static void SET_ENTITY_COMPLETELY_DISABLE_COLLISION(int entity, bool toggle, bool keepPhysics) { Function.Call(0xE0580EC84813875A, entity, toggle, keepPhysics); }
 		public static void SET_ENTITY_COORDS(int entity, float xPos, float yPos, float zPos, bool xAxis, bool yAxis, bool zAxis, bool clearArea) { Function.Call(0x06843DA7060A026B, entity, xPos, yPos, zPos, xAxis, yAxis, zAxis, clearArea); }
+		public static void SET_ENTITY_COORDS(int entity, Vector3 vec, bool xAxis, bool yAxis, bool zAxis, bool clearArea) { Function.Call(0x06843DA7060A026B, entity, vec.X, vec.Y, vec.Z, xAxis, yAxis, zAxis, clearArea); }
 		/// <summary>
 		/// Axis - Invert Axis Flags
 		/// </summary>
 		public static void SET_ENTITY_COORDS_NO_OFFSET(int entity, float xPos, float yPos, float zPos, bool xAxis, bool yAxis, bool zAxis) { Function.Call(0x239A3351AC1DA385, entity, xPos, yPos, zPos, xAxis, yAxis, zAxis); }
+		public static void SET_ENTITY_COORDS_NO_OFFSET(int entity, Vector3 vec, bool xAxis, bool yAxis, bool zAxis) { Function.Call(0x239A3351AC1DA385, entity, vec.X, vec.Y, vec.Z, xAxis, yAxis, zAxis); }
 		public static void SET_ENTITY_DYNAMIC(int entity, bool toggle) { Function.Call(0xFBFC4473F66CE344, entity, toggle); }
 		public static void SET_ENTITY_HEADING(int entity, float heading) { Function.Call(0xCF2B9C0645C4651B, entity, heading); }
 		public static void _SET_ENTITY_COORDS_AND_HEADING(int entity, float xPos, float yPos, float zPos, float heading, bool xAxis, bool yAxis, bool zAxis) { Function.Call(0x203BEFFDBE12E96A, entity, xPos, yPos, zPos, heading, xAxis, yAxis, zAxis); }
+		public static void _SET_ENTITY_COORDS_AND_HEADING(int entity, Vector3 vec, float heading, bool xAxis, bool yAxis, bool zAxis) { Function.Call(0x203BEFFDBE12E96A, entity, vec.X, vec.Y, vec.Z, heading, xAxis, yAxis, zAxis); }
 		public static void _SET_ENTITY_COORDS_AND_HEADING_NO_OFFSET(int entity, float xPos, float yPos, float zPos, float heading, bool p5, bool p6) { Function.Call(0x0918E3565C20F03C, entity, xPos, yPos, zPos, heading, p5, p6); }
+		public static void _SET_ENTITY_COORDS_AND_HEADING_NO_OFFSET(int entity, Vector3 vec, float heading, bool p5, bool p6) { Function.Call(0x0918E3565C20F03C, entity, vec.X, vec.Y, vec.Z, heading, p5, p6); }
 		/// <summary>
 		/// Sets the entity's health. healthAmount sets the health value to that, and sets the maximum health core value. Setting healthAmount to 0 will kill the entity. entityKilledBy parameter can also be 0
 		/// </summary>
@@ -2442,6 +2488,7 @@ namespace RDR2.Native
 		/// Old name: _HAS_COLLISION_LOADED_AT_COORDS
 		/// </summary>
 		public static bool HAS_COLLISION_LOADED_AROUND_POSITION(float xPos, float yPos, float zPos) { return Function.Call<bool>(0x6BFBDC46139C45AB, xPos, yPos, zPos); }
+		public static bool HAS_COLLISION_LOADED_AROUND_POSITION(Vector3 vec) { return Function.Call<bool>(0x6BFBDC46139C45AB, vec.X, vec.Y, vec.Z); }
 		public static void SET_ENTITY_ONLY_DAMAGED_BY_PLAYER(int entity, bool toggle) { Function.Call(0x473598683095D430, entity, toggle); }
 		public static void SET_ENTITY_ONLY_DAMAGED_BY_RELATIONSHIP_GROUP(int entity, bool p1, Hash relationshipGroup) { Function.Call(0x6C1F6AA2F0ADD104, entity, p1, relationshipGroup); }
 		/// <summary>
@@ -2454,7 +2501,9 @@ namespace RDR2.Native
 		/// </summary>
 		public static int _GET_ENTITY_PROOFS(int entity) { return Function.Call<int>(0x6CF0DAD7FA1088EA, entity); }
 		public static void SET_ENTITY_QUATERNION(int entity, float x, float y, float z, float w) { Function.Call(0x100E7007D13E3687, entity, x, y, z, w); }
+		public static void SET_ENTITY_QUATERNION(int entity, Vector3 vec, float w) { Function.Call(0x100E7007D13E3687, entity, vec.X, vec.Y, vec.Z, w); }
 		public static void SET_ENTITY_ROTATION(int entity, float pitch, float roll, float yaw, int rotationOrder, bool p5) { Function.Call(0x9CC8314DFEDE441E, entity, pitch, roll, yaw, rotationOrder, p5); }
+		public static void SET_ENTITY_ROTATION(int entity, Vector3 rotation, int rotationOrder, bool p5) { Function.Call(0x9CC8314DFEDE441E, entity, rotation.X, rotation.Y, rotation.Z, rotationOrder, p5); }
 		public static void _0xD45BB89B53FC0CFD(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0xD45BB89B53FC0CFD, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void SET_ENTITY_VISIBLE(int entity, bool toggle) { Function.Call(0x1794B4FCC84D812F, entity, toggle); }
 		public static void _0x80FDEB3A9E9AA578(int entity, bool p1) { Function.Call(0x80FDEB3A9E9AA578, entity, p1); }
@@ -2463,6 +2512,7 @@ namespace RDR2.Native
 		/// Note that the third parameter(denoted as z) is "up and down" with positive numbers encouraging upwards movement.
 		/// </summary>
 		public static void SET_ENTITY_VELOCITY(int entity, float x, float y, float z) { Function.Call(0x1C99BB7B6E96D16F, entity, x, y, z); }
+		public static void SET_ENTITY_VELOCITY(int entity, Vector3 vec) { Function.Call(0x1C99BB7B6E96D16F, entity, vec.X, vec.Y, vec.Z); }
 		public static void SET_ENTITY_HAS_GRAVITY(int entity, bool toggle) { Function.Call(0x0CEDB728A1083FA7, entity, toggle); }
 		/// <summary>
 		/// LOD distance can be 0 to 0xFFFF (higher values will result in 0xFFFF) as it is actually stored as a 16-bit value (aka uint16_t).
@@ -2492,12 +2542,17 @@ namespace RDR2.Native
 		/// Only works with objects!
 		/// </summary>
 		public static void CREATE_MODEL_SWAP(float x, float y, float z, float radius, Hash originalModel, Hash newModel, bool p6) { Function.Call(0x10B2218320B6F5AC, x, y, z, radius, originalModel, newModel, p6); }
+		public static void CREATE_MODEL_SWAP(Vector3 vec, float radius, Hash originalModel, Hash newModel, bool p6) { Function.Call(0x10B2218320B6F5AC, vec.X, vec.Y, vec.Z, radius, originalModel, newModel, p6); }
 		public static void REMOVE_MODEL_SWAP(float x, float y, float z, float radius, Hash originalModel, Hash newModel, bool p6) { Function.Call(0x824E1C26A14CB817, x, y, z, radius, originalModel, newModel, p6); }
+		public static void REMOVE_MODEL_SWAP(Vector3 vec, float radius, Hash originalModel, Hash newModel, bool p6) { Function.Call(0x824E1C26A14CB817, vec.X, vec.Y, vec.Z, radius, originalModel, newModel, p6); }
 		public static void CREATE_MODEL_HIDE(float x, float y, float z, float radius, Hash model, bool p5) { Function.Call(0x069848B3FB3C4426, x, y, z, radius, model, p5); }
+		public static void CREATE_MODEL_HIDE(Vector3 vec, float radius, Hash model, bool p5) { Function.Call(0x069848B3FB3C4426, vec.X, vec.Y, vec.Z, radius, model, p5); }
 		public static void CREATE_MODEL_HIDE_EXCLUDING_SCRIPT_OBJECTS(float x, float y, float z, float radius, Hash model, bool p5) { Function.Call(0xD136090A9AAAB17D, x, y, z, radius, model, p5); }
+		public static void CREATE_MODEL_HIDE_EXCLUDING_SCRIPT_OBJECTS(Vector3 vec, float radius, Hash model, bool p5) { Function.Call(0xD136090A9AAAB17D, vec.X, vec.Y, vec.Z, radius, model, p5); }
 		public static void REMOVE_MODEL_HIDE(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { Function.Call(0x3F38A98576F6213A, p0, p1, p2, p3, p4, p5); }
 		public static Any _0xD4636C2EDB0DEA8A(Any p0) { return Function.Call<Any>(0xD4636C2EDB0DEA8A, p0); }
 		public static void CREATE_FORCED_OBJECT(float x, float y, float z, Any p3, Hash modelHash, bool p5) { Function.Call(0x0961A905AFBC34C7, x, y, z, p3, modelHash, p5); }
+		public static void CREATE_FORCED_OBJECT(Vector3 vec, Any p3, Hash modelHash, bool p5) { Function.Call(0x0961A905AFBC34C7, vec.X, vec.Y, vec.Z, p3, modelHash, p5); }
 		public static void REMOVE_FORCED_OBJECT(Any p0, Any p1, Any p2, Any p3, Any p4) { Function.Call(0x553FA683F2BCD814, p0, p1, p2, p3, p4); }
 		public static void SET_ENTITY_NO_COLLISION_ENTITY(int entity1, int entity2, bool thisFrameOnly) { Function.Call(0xE037BF068223C38D, entity1, entity2, thisFrameOnly); }
 		public static void SET_ENTITY_MOTION_BLUR(int entity, bool toggle) { Function.Call(0x516C6ABD18322B63, entity, toggle); }
@@ -2508,6 +2563,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void SET_ENTITY_NOWEAPONDECALS(int entity, bool toggle) { Function.Call(0xC64E597783BE9A1D, entity, toggle); }
 		public static int _GET_ENTITIES_NEAR_POINT(float x, float y, float z, float radius, ItemSet itemSet, int p5) { return Function.Call<int>(0x59B57C4B06531E1E, x, y, z, radius, itemSet, p5); }
+		public static int _GET_ENTITIES_NEAR_POINT(Vector3 vec, float radius, ItemSet itemSet, int p5) { return Function.Call<int>(0x59B57C4B06531E1E, vec.X, vec.Y, vec.Z, radius, itemSet, p5); }
 		public static int GET_MATCHING_ENTITIES(Volume volume, ItemSet itemSet, int entityType, Any p3, Hash p4, string p5) { return Function.Call<int>(0x84CCF9A12942C83D, volume, itemSet, entityType, p3, p4, p5); }
 		public static int _GET_ENTITIES_IN_VOLUME(Volume volume, ItemSet itemSet, int entityType) { return Function.Call<int>(0x886171A12F400B89, volume, itemSet, entityType); }
 		/// <summary>
@@ -2553,6 +2609,7 @@ namespace RDR2.Native
 		public static void _0xF41E2979D5BC5370(Any p0) { Function.Call(0xF41E2979D5BC5370, p0); }
 		public static Any _0xAAACB74442C1BED3(Any p0) { return Function.Call<Any>(0xAAACB74442C1BED3, p0); }
 		public static Any PIN_CLOSEST_MAP_ENTITY(Hash modelHash, float x, float y, float z, int flags) { return Function.Call<Any>(0x6F3068258A499E52, modelHash, x, y, z, flags); }
+		public static Any PIN_CLOSEST_MAP_ENTITY(Hash modelHash, Vector3 vec, int flags) { return Function.Call<Any>(0x6F3068258A499E52, modelHash, vec.X, vec.Y, vec.Z, flags); }
 		public static void _UNPIN_MAP_ENTITY(int entity) { Function.Call(0xD2B9C78537ED5759, entity); }
 		public static bool IS_MAP_ENTITY_PINNED(Any p0) { return Function.Call<bool>(0x1FF441D7954F8709, p0); }
 		public static int _GET_PINNED_MAP_ENTITY(Any p0) { return Function.Call<int>(0x4735E2A4BB83D9DA, p0); }
@@ -2573,6 +2630,7 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/blob/master/AI/EVENTS
 		/// </summary>
 		public static ScrHandle ADD_SHOCKING_EVENT_AT_POSITION(Hash eventType, float x, float y, float z, float p4, float p5, float p6, float p7, float p8, int p9, int p10) { return Function.Call<ScrHandle>(0xD9F8455409B525E9, eventType, x, y, z, p4, p5, p6, p7, p8, p9, p10); }
+		public static ScrHandle ADD_SHOCKING_EVENT_AT_POSITION(Hash eventType, Vector3 vec, float p4, float p5, float p6, float p7, float p8, int p9, int p10) { return Function.Call<ScrHandle>(0xD9F8455409B525E9, eventType, vec.X, vec.Y, vec.Z, p4, p5, p6, p7, p8, p9, p10); }
 		/// <summary>
 		/// eventType: https://alloc8or.re/rdr3/doc/enums/eEventType.txt
 		/// </summary>
@@ -2581,13 +2639,16 @@ namespace RDR2.Native
 		/// eventType: https://alloc8or.re/rdr3/doc/enums/eEventType.txt
 		/// </summary>
 		public static bool IS_SHOCKING_EVENT_IN_SPHERE(Hash eventType, float x, float y, float z, float radius) { return Function.Call<bool>(0x9DB47E16060D6354, eventType, x, y, z, radius); }
+		public static bool IS_SHOCKING_EVENT_IN_SPHERE(Hash eventType, Vector3 vec, float radius) { return Function.Call<bool>(0x9DB47E16060D6354, eventType, vec.X, vec.Y, vec.Z, radius); }
 		public static bool REMOVE_SHOCKING_EVENT(ScrHandle _event) { return Function.Call<bool>(0xE8BB3CC253A34559, _event); }
 		public static void REMOVE_ALL_SHOCKING_EVENTS(bool p0) { Function.Call(0xD47A168C2AB90DC4, p0); }
 		public static void _REMOVE_ALL_SHOCKING_EVENTS_IN_AREA(float x, float y, float z, float radius, bool p4) { Function.Call(0xB4C71BA9CAB097BD, x, y, z, radius, p4); }
+		public static void _REMOVE_ALL_SHOCKING_EVENTS_IN_AREA(Vector3 vec, float radius, bool p4) { Function.Call(0xB4C71BA9CAB097BD, vec.X, vec.Y, vec.Z, radius, p4); }
 		/// <summary>
 		/// eventType: https://alloc8or.re/rdr3/doc/enums/eEventType.txt
 		/// </summary>
 		public static void _REMOVE_ALL_SHOCKING_EVENTS_OF_TYPE_IN_AREA(Hash eventType, float x, float y, float z, float radius, bool p5) { Function.Call(0x6A648D42BF271DC7, eventType, x, y, z, radius, p5); }
+		public static void _REMOVE_ALL_SHOCKING_EVENTS_OF_TYPE_IN_AREA(Hash eventType, Vector3 vec, float radius, bool p5) { Function.Call(0x6A648D42BF271DC7, eventType, vec.X, vec.Y, vec.Z, radius, p5); }
 		/// <summary>
 		/// eventType: https://alloc8or.re/rdr3/doc/enums/eEventType.txt
 		/// </summary>
@@ -2680,15 +2741,20 @@ namespace RDR2.Native
 		/// isGasFire: Whether or not the fire is powered by gasoline.
 		/// </summary>
 		public static FireId START_SCRIPT_FIRE(float x, float y, float z, int p3, float p4, bool p5, string soundsetName, float p7, int p8) { return Function.Call<FireId>(0x6B83617E04503888, x, y, z, p3, p4, p5, soundsetName, p7, p8); }
+		public static FireId START_SCRIPT_FIRE(Vector3 vec, int p3, float p4, bool p5, string soundsetName, float p7, int p8) { return Function.Call<FireId>(0x6B83617E04503888, vec.X, vec.Y, vec.Z, p3, p4, p5, soundsetName, p7, p8); }
 		public static void REMOVE_SCRIPT_FIRE(FireId fireHandle) { Function.Call(0x790125C36E194069, fireHandle); }
 		public static void START_ENTITY_FIRE(Any p0, Any p1, Any p2, Any p3) { Function.Call(0xC4DC7418A44D6822, p0, p1, p2, p3); }
 		public static void STOP_ENTITY_FIRE(Any p0, Any p1) { Function.Call(0x8390751DC40C1E98, p0, p1); }
 		public static bool IS_ENTITY_ON_FIRE(int entity) { return Function.Call<bool>(0x1BD7C371CE257C3E, entity); }
 		public static void _0x754937C28271BC65(Any p0) { Function.Call(0x754937C28271BC65, p0); }
 		public static int GET_NUMBER_OF_FIRES_IN_RANGE(float x, float y, float z, float radius) { return Function.Call<int>(0xF9617BC6FAE61E08, x, y, z, radius); }
+		public static int GET_NUMBER_OF_FIRES_IN_RANGE(Vector3 vec, float radius) { return Function.Call<int>(0xF9617BC6FAE61E08, vec.X, vec.Y, vec.Z, radius); }
 		public static void STOP_FIRE_IN_RANGE(float x, float y, float z, float radius) { Function.Call(0xDB38F247BD421708, x, y, z, radius); }
+		public static void STOP_FIRE_IN_RANGE(Vector3 vec, float radius) { Function.Call(0xDB38F247BD421708, vec.X, vec.Y, vec.Z, radius); }
 		public static void _STOP_FIRE_IN_BOX(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { Function.Call(0xB7C7BDC375AEA9A4, posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static void _STOP_FIRE_IN_BOX(Vector3 vec, Vector3 rotation, Vector3 scale) { Function.Call(0xB7C7BDC375AEA9A4, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static unsafe bool GET_CLOSEST_FIRE_POS(Vector3* outPosition, float x, float y, float z) { return Function.Call<bool>(0xB646FB657F448261, outPosition, x, y, z); }
+		public static unsafe bool GET_CLOSEST_FIRE_POS(Vector3* outPosition, Vector3 vec) { return Function.Call<bool>(0xB646FB657F448261, outPosition, vec.X, vec.Y, vec.Z); }
 		public static Any _0x559FC1D310813031(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9) { return Function.Call<Any>(0x559FC1D310813031, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static Any _0x41B87A6495EE13DD(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9) { return Function.Call<Any>(0x41B87A6495EE13DD, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static Any _0xA4454592DCF7C992(Any p0) { return Function.Call<Any>(0xA4454592DCF7C992, p0); }
@@ -2739,36 +2805,44 @@ namespace RDR2.Native
 		/// };
 		/// </summary>
 		public static void ADD_EXPLOSION(float x, float y, float z, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0x7D6F58F69DA92530, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
+		public static void ADD_EXPLOSION(Vector3 vec, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0x7D6F58F69DA92530, vec.X, vec.Y, vec.Z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static void ADD_OWNED_EXPLOSION(int ped, float x, float y, float z, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0xD84A917A64D4D016, ped, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
+		public static void ADD_OWNED_EXPLOSION(int ped, Vector3 vec, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0xD84A917A64D4D016, ped, vec.X, vec.Y, vec.Z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
 		/// <summary>
 		/// _ADD_EXPLOSION_*(ON ENTITY?)
 		/// </summary>
 		public static void _0xB7DF150605EEDC9B(int entity, int p1, float x, float y, float z, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0xB7DF150605EEDC9B, entity, p1, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
+		public static void _0xB7DF150605EEDC9B(int entity, int p1, Vector3 vec, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0xB7DF150605EEDC9B, entity, p1, vec.X, vec.Y, vec.Z, explosionType, damageScale, isAudible, isInvisible, cameraShake); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// Change explosionFx (Visual Effect) for specified explosionType
 		/// </summary>
 		public static void ADD_EXPLOSION_WITH_USER_VFX(float x, float y, float z, int explosionType, Hash explosionFx, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0x53BA259F3A67A99E, x, y, z, explosionType, explosionFx, damageScale, isAudible, isInvisible, cameraShake); }
+		public static void ADD_EXPLOSION_WITH_USER_VFX(Vector3 vec, int explosionType, Hash explosionFx, float damageScale, bool isAudible, bool isInvisible, float cameraShake) { Function.Call(0x53BA259F3A67A99E, vec.X, vec.Y, vec.Z, explosionType, explosionFx, damageScale, isAudible, isInvisible, cameraShake); }
 		public static void _0x34AE85C7CA4857AA(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10) { Function.Call(0x34AE85C7CA4857AA, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static bool IS_EXPLOSION_IN_AREA(int explosionType, float x1, float y1, float z1, float x2, float y2, float z2) { return Function.Call<bool>(0x8391BA4313A25AD3, explosionType, x1, y1, z1, x2, y2, z2); }
+		public static bool IS_EXPLOSION_IN_AREA(int explosionType, Vector3 vec1, Vector3 vec2) { return Function.Call<bool>(0x8391BA4313A25AD3, explosionType, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static bool IS_EXPLOSION_ACTIVE_IN_AREA(int explosionType, float x1, float y1, float z1, float x2, float y2, float z2) { return Function.Call<bool>(0xD96E82AEBFFAAFF0, explosionType, x1, y1, z1, x2, y2, z2); }
+		public static bool IS_EXPLOSION_ACTIVE_IN_AREA(int explosionType, Vector3 vec1, Vector3 vec2) { return Function.Call<bool>(0xD96E82AEBFFAAFF0, explosionType, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static bool IS_EXPLOSION_IN_SPHERE(int explosionType, float x, float y, float z, float radius) { return Function.Call<bool>(0xD62DD846D82CBB90, explosionType, x, y, z, radius); }
+		public static bool IS_EXPLOSION_IN_SPHERE(int explosionType, Vector3 vec, float radius) { return Function.Call<bool>(0xD62DD846D82CBB90, explosionType, vec.X, vec.Y, vec.Z, radius); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static bool IS_EXPLOSION_IN_ANGLED_AREA(int explosionType, float x1, float y1, float z1, float x2, float y2, float z2, float angle) { return Function.Call<bool>(0x5AE661ECD18524C9, explosionType, x1, y1, z1, x2, y2, z2, angle); }
+		public static bool IS_EXPLOSION_IN_ANGLED_AREA(int explosionType, Vector3 vec1, Vector3 vec2, float angle) { return Function.Call<bool>(0x5AE661ECD18524C9, explosionType, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, angle); }
 		/// <summary>
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
@@ -2777,7 +2851,9 @@ namespace RDR2.Native
 		/// explosionType: see ADD_EXPLOSION
 		/// </summary>
 		public static int GET_OWNER_OF_EXPLOSION_IN_ANGLED_AREA(int explosionType, float x1, float y1, float z1, float x2, float y2, float z2, float radius) { return Function.Call<int>(0x8002DDAB58594D78, explosionType, x1, y1, z1, x2, y2, z2, radius); }
+		public static int GET_OWNER_OF_EXPLOSION_IN_ANGLED_AREA(int explosionType, Vector3 vec1, Vector3 vec2, float radius) { return Function.Call<int>(0x8002DDAB58594D78, explosionType, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, radius); }
 		public static void _0x68F6A75FDF5A70D6(float x, float y, float z, float p3) { Function.Call(0x68F6A75FDF5A70D6, x, y, z, p3); }
+		public static void _0x68F6A75FDF5A70D6(Vector3 vec, float p3) { Function.Call(0x68F6A75FDF5A70D6, vec.X, vec.Y, vec.Z, p3); }
 		/// <summary>
 		/// Only used in R* SP Related Camp Scripts
 		/// </summary>
@@ -2814,6 +2890,7 @@ namespace RDR2.Native
 		/// species: SPECIES_BIRD_CROW
 		/// </summary>
 		public static void _0xF2CCA7B68CFAB2B9(Hash species, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float p10, float p11, float p12, float p13) { Function.Call(0xF2CCA7B68CFAB2B9, species, x1, y1, z1, x2, y2, z2, x3, y3, z3, p10, p11, p12, p13); }
+		public static void _0xF2CCA7B68CFAB2B9(Hash species, Vector3 vec1, Vector3 vec2, Vector3 vec3, float p10, float p11, float p12, float p13) { Function.Call(0xF2CCA7B68CFAB2B9, species, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, vec3.X, vec3.Y, vec3.Z, p10, p11, p12, p13); }
 		public static void _0xFB16F08F47B83B4C(Any p0) { Function.Call(0xFB16F08F47B83B4C, p0); }
 		/// <summary>
 		/// Ped (horse) will run away from players and mounting will trigger them to buck until disabled.
@@ -2916,6 +2993,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static int GET_STATUS_OF_SORTED_LIST_OPERATION() { return Function.Call<int>(0xB28894CD7408BD0C); }
 		public static void DRAW_LIGHT_WITH_RANGE(float posX, float posY, float posZ, int colorR, int colorG, int colorB, float range, float intensity) { Function.Call(0xD2D9E04C0DF927F4, posX, posY, posZ, colorR, colorG, colorB, range, intensity); }
+		public static void DRAW_LIGHT_WITH_RANGE(Vector3 vec, int colorR, int colorG, int colorB, float range, float intensity) { Function.Call(0xD2D9E04C0DF927F4, vec.X, vec.Y, vec.Z, colorR, colorG, colorB, range, intensity); }
 		public static void UPDATE_LIGHTS_ON_ENTITY(int entity) { Function.Call(0xBDBACB52A03CC760, entity); }
 		/// <summary>
 		/// https://gfycat.com/meagerfaireyra
@@ -2930,7 +3008,9 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/blob/master/graphics/markers/marker_types.lua
 		/// </summary>
 		public static void _DRAW_MARKER(Hash type, float posX, float posY, float posZ, float dirX, float dirY, float dirZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, int p19, bool rotate, string textureDict, string textureName, bool drawOnEnts) { Function.Call(0x2A32FAA57B937173, type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts); }
+		public static void _DRAW_MARKER(Hash type, Vector3 vec, Vector3 direction, Vector3 rotation, Vector3 scale, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, int p19, bool rotate, string textureDict, string textureName, bool drawOnEnts) { Function.Call(0x2A32FAA57B937173, type, vec.X, vec.Y, vec.Z, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts); }
 		public static int CREATE_CHECKPOINT_WITH_NAMEHASH(Hash typeHash, float posX1, float posY1, float posZ1, float posX2, float posY2, float posZ2, float radius, int red, int green, int blue, int alpha, int reserved) { return Function.Call<int>(0x175668836B44CBB0, typeHash, posX1, posY1, posZ1, posX2, posY2, posZ2, radius, red, green, blue, alpha, reserved); }
+		public static int CREATE_CHECKPOINT_WITH_NAMEHASH(Hash typeHash, Vector3 vec1, Vector3 vec2, float radius, int red, int green, int blue, int alpha, int reserved) { return Function.Call<int>(0x175668836B44CBB0, typeHash, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, radius, red, green, blue, alpha, reserved); }
 		public static bool _DOES_CHECKPOINT_HAVE_FX(int checkpoint) { return Function.Call<bool>(0x4C11CCACB7C02B6E, checkpoint); }
 		/// <summary>
 		/// Sets the checkpoint color.
@@ -3005,6 +3085,7 @@ namespace RDR2.Native
 		public static Any _0xC28F62AC9774FC1B() { return Function.Call<Any>(0xC28F62AC9774FC1B); }
 		public static void _0xEB48CE48EEC41FD4(Any p0) { Function.Call(0xEB48CE48EEC41FD4, p0); }
 		public static unsafe bool GET_SCREEN_COORD_FROM_WORLD_COORD(float worldX, float worldY, float worldZ, float* screenX, float* screenY) { return Function.Call<bool>(0xCB50D7AFCC8B0EC6, worldX, worldY, worldZ, screenX, screenY); }
+		public static unsafe bool GET_SCREEN_COORD_FROM_WORLD_COORD(Vector3 vec, float* screenX, float* screenY) { return Function.Call<bool>(0xCB50D7AFCC8B0EC6, vec.X, vec.Y, vec.Z, screenX, screenY); }
 		public static bool _IS_TEXTURE_IN_DICT(Hash txdHash, Hash dict) { return Function.Call<bool>(0xA2A51869BDED733B, txdHash, dict); }
 		/// <summary>
 		/// Does not affect weapons, particles, fire/explosions, flashlights or the sun.
@@ -3025,6 +3106,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static int CREATE_TRACKED_POINT() { return Function.Call<int>(0xFB405CB357C69CB9); }
 		public static void SET_TRACKED_POINT_INFO(int point, float x, float y, float z, float radius) { Function.Call(0xF6FDA3D4404D4F2C, point, x, y, z, radius); }
+		public static void SET_TRACKED_POINT_INFO(int point, Vector3 vec, float radius) { Function.Call(0xF6FDA3D4404D4F2C, point, vec.X, vec.Y, vec.Z, radius); }
 		public static bool IS_TRACKED_POINT_VISIBLE(int point) { return Function.Call<bool>(0xCBB056BA159FB48D, point); }
 		/// <summary>
 		/// Returns iNumPixels, iPixelsVisible
@@ -3036,6 +3118,7 @@ namespace RDR2.Native
 		/// Returns handle to be used with REMOVE_GRASS_CULL_SPHERE
 		/// </summary>
 		public static int SET_GRASS_CULL_SPHERE(float x, float y, float z, float p3, int p4) { return Function.Call<int>(0x27219300C36A8D40, x, y, z, p3, p4); }
+		public static int SET_GRASS_CULL_SPHERE(Vector3 vec, float p3, int p4) { return Function.Call<int>(0x27219300C36A8D40, vec.X, vec.Y, vec.Z, p3, p4); }
 		public static void REMOVE_GRASS_CULL_SPHERE(int handle) { Function.Call(0xAE7BF7CA9E4BA48D, handle); }
 		/// <summary>
 		/// Adds Vegetation Blocking Zone, Added Snow Flattening veg mod Zone
@@ -3046,6 +3129,7 @@ namespace RDR2.Native
 		/// Returns veg modifier handle
 		/// </summary>
 		public static int ADD_VEG_MODIFIER_SPHERE(float x, float y, float z, float radius, int modType, int flags, int p6) { return Function.Call<int>(0xFA50F79257745E74, x, y, z, radius, modType, flags, p6); }
+		public static int ADD_VEG_MODIFIER_SPHERE(Vector3 vec, float radius, int modType, int flags, int p6) { return Function.Call<int>(0xFA50F79257745E74, vec.X, vec.Y, vec.Z, radius, modType, flags, p6); }
 		public static void REMOVE_VEG_MODIFIER_SPHERE(int vegModifierHandle, int p1) { Function.Call(0x9CF1836C03FB67A2, vegModifierHandle, p1); }
 		public static void _ENABLE_STATIC_VEG_MODIFIER(Hash p0) { Function.Call(0xDFEA23EC90113657, p0); }
 		public static void _DISABLE_STATIC_VEG_MODIFIER(Hash p0) { Function.Call(0xDD0BC0EDCB2162F6, p0); }
@@ -3127,11 +3211,17 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/blob/master/graphics/ptfx/ptfx_assets_non_looped.lua
 		/// </summary>
 		public static int START_PARTICLE_FX_NON_LOOPED_AT_COORD(string effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x2E80BF72EF7C87AC, effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis); }
+		public static int START_PARTICLE_FX_NON_LOOPED_AT_COORD(string effectName, Vector3 vec, Vector3 rotation, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x2E80BF72EF7C87AC, effectName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale, xAxis, yAxis, zAxis); }
 		public static bool START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(string effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<bool>(0xFB97618457994A62, effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis); }
+		public static bool START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(string effectName, Vector3 vec, Vector3 rotation, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<bool>(0xFB97618457994A62, effectName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale, xAxis, yAxis, zAxis); }
 		public static bool START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(string effectName, int ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0x3FAA72BD940C3AC0, effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ); }
+		public static bool START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(string effectName, int ped, Vector3 offset, Vector3 rotation, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0x3FAA72BD940C3AC0, effectName, ped, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, boneIndex, scale, axisX, axisY, axisZ); }
 		public static bool START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(string effectName, int entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xFF4C64C513388C12, effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ); }
+		public static bool START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(string effectName, int entity, Vector3 offset, Vector3 rotation, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xFF4C64C513388C12, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, scale, axisX, axisY, axisZ); }
 		public static bool START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(string effectName, int entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xE6CFE43937061143, effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ); }
+		public static bool START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(string effectName, int entity, Vector3 offset, Vector3 rotation, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xE6CFE43937061143, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, scale, axisX, axisY, axisZ); }
 		public static bool _START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE_2(string effectName, int ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xC695870B8A149B96, effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ); }
+		public static bool _START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE_2(string effectName, int ped, Vector3 offset, Vector3 rotation, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ) { return Function.Call<bool>(0xC695870B8A149B96, effectName, ped, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, boneIndex, scale, axisX, axisY, axisZ); }
 		public static void SET_PARTICLE_FX_NON_LOOPED_COLOUR(float r, float g, float b) { Function.Call(0x60B85BED6577A35B, r, g, b); }
 		public static void SET_PARTICLE_FX_NON_LOOPED_ALPHA(float alpha) { Function.Call(0xE8A35938A7026CEA, alpha); }
 		public static void _SET_PARTICLE_FX_NON_LOOPED_EMITTER_SCALE(float p0, float p1, float p2) { Function.Call(0x56C392C2BD78B024, p0, p1, p2); }
@@ -3139,14 +3229,21 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/blob/master/graphics/ptfx/ptfx_assets_looped.lua
 		/// </summary>
 		public static int START_PARTICLE_FX_LOOPED_AT_COORD(string effectName, float x, float y, float z, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11) { return Function.Call<int>(0xBA32867E86125D3A, effectName, x, y, z, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11); }
+		public static int START_PARTICLE_FX_LOOPED_AT_COORD(string effectName, Vector3 vec, Vector3 rotation, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11) { return Function.Call<int>(0xBA32867E86125D3A, effectName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale, xAxis, yAxis, zAxis, p11); }
 		public static int START_PARTICLE_FX_LOOPED_ON_PED_BONE(string effectName, int ped, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xE689C1B1432BB8AF, effectName, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis); }
+		public static int START_PARTICLE_FX_LOOPED_ON_PED_BONE(string effectName, int ped, Vector3 offset, Vector3 rotation, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xE689C1B1432BB8AF, effectName, ped, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, boneIndex, scale, xAxis, yAxis, zAxis); }
 		public static int START_PARTICLE_FX_LOOPED_ON_ENTITY(string effectName, int entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xBD41E1440CE39800, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis); }
+		public static int START_PARTICLE_FX_LOOPED_ON_ENTITY(string effectName, int entity, Vector3 offset, Vector3 rotation, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xBD41E1440CE39800, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, scale, xAxis, yAxis, zAxis); }
 		public static int START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(string effectName, int entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xD3BA6EC7F2FBD5E9, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis); }
+		public static int START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(string effectName, int entity, Vector3 offset, Vector3 rotation, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0xD3BA6EC7F2FBD5E9, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, boneIndex, scale, xAxis, yAxis, zAxis); }
 		public static int START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(string effectName, int entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x8F90AB32E1944BDE, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis); }
+		public static int START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(string effectName, int entity, Vector3 offset, Vector3 rotation, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x8F90AB32E1944BDE, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, scale, xAxis, yAxis, zAxis); }
 		public static int START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(string effectName, int entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x9C56621462FFE7A6, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis); }
+		public static int START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(string effectName, int entity, Vector3 offset, Vector3 rotation, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis) { return Function.Call<int>(0x9C56621462FFE7A6, effectName, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, boneIndex, scale, xAxis, yAxis, zAxis); }
 		public static void STOP_PARTICLE_FX_LOOPED(int ptfxHandle, bool p1) { Function.Call(0x22970F3A088B133B, ptfxHandle, p1); }
 		public static bool DOES_PARTICLE_FX_LOOPED_EXIST(int ptfxHandle) { return Function.Call<bool>(0x9DD5AFF561E88F2A, ptfxHandle); }
 		public static void SET_PARTICLE_FX_LOOPED_OFFSETS(int ptfxHandle, float x, float y, float z, float rotX, float rotY, float rotZ) { Function.Call(0xD3A4A95FC94FE83B, ptfxHandle, x, y, z, rotX, rotY, rotZ); }
+		public static void SET_PARTICLE_FX_LOOPED_OFFSETS(int ptfxHandle, Vector3 vec, Vector3 rotation) { Function.Call(0xD3A4A95FC94FE83B, ptfxHandle, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z); }
 		public static void SET_PARTICLE_FX_LOOPED_EVOLUTION(int ptfxHandle, string propertyName, float amount, bool noNetwork) { Function.Call(0x3674F389B0FACD80, ptfxHandle, propertyName, amount, noNetwork); }
 		public static void SET_PARTICLE_FX_LOOPED_COLOUR(int ptfxHandle, float r, float g, float b, bool p4) { Function.Call(0x239879FC61C610CC, ptfxHandle, r, g, b, p4); }
 		public static void SET_PARTICLE_FX_LOOPED_ALPHA(int ptfxHandle, float alpha) { Function.Call(0x88786E76234F7054, ptfxHandle, alpha); }
@@ -3159,6 +3256,7 @@ namespace RDR2.Native
 		public static void REMOVE_PARTICLE_FX(int ptfxHandle, bool p1) { Function.Call(0x459598F579C98929, ptfxHandle, p1); }
 		public static void REMOVE_PARTICLE_FX_FROM_ENTITY(int entity) { Function.Call(0x92884B4A49D81325, entity); }
 		public static void REMOVE_PARTICLE_FX_IN_RANGE(float X, float Y, float Z, float radius) { Function.Call(0x87B5905ECA623B68, X, Y, Z, radius); }
+		public static void REMOVE_PARTICLE_FX_IN_RANGE(Vector3 vec, float radius) { Function.Call(0x87B5905ECA623B68, vec.X, vec.Y, vec.Z, radius); }
 		/// <summary>
 		/// fxName: see data_0/data/effects/ptfx/fxlists/
 		/// </summary>
@@ -3208,6 +3306,7 @@ namespace RDR2.Native
 		/// Removes all decals in range from a position, it includes the bullet holes, blood pools, petrol...
 		/// </summary>
 		public static void REMOVE_DECALS_IN_RANGE(float x, float y, float z, float range) { Function.Call(0x86DE59FA02902B40, x, y, z, range); }
+		public static void REMOVE_DECALS_IN_RANGE(Vector3 vec, float range) { Function.Call(0x86DE59FA02902B40, vec.X, vec.Y, vec.Z, range); }
 		public static void REMOVE_DECALS_FROM_OBJECT(Object obj) { Function.Call(0xFB8972BAE0013140, obj); }
 		public static int ADD_DECAL(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15, Any p16, Any p17, Any p18, Any p19, Any p20, Any p21) { return Function.Call<int>(0x57CB267624EF85C0, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21); }
 		/// <summary>
@@ -3215,11 +3314,13 @@ namespace RDR2.Native
 		/// More rounded and small puddle
 		/// </summary>
 		public static void _ADD_BLOOD_POOL(float x, float y, float z, bool unused) { Function.Call(0xFA2ECC78A6014D4F, x, y, z, unused); }
+		public static void _ADD_BLOOD_POOL(Vector3 vec, bool unused) { Function.Call(0xFA2ECC78A6014D4F, vec.X, vec.Y, vec.Z, unused); }
 		/// <summary>
 		/// https://i.imgur.com/rPITUCV.jpg
 		/// More customizable and more like quadrants
 		/// </summary>
 		public static void _ADD_BLOOD_POOL_2(float x, float y, float z, float p3, float size, float p5, bool permanent, float p7, bool p8) { Function.Call(0xF708298675ABDC6A, x, y, z, p3, size, p5, permanent, p7, p8); }
+		public static void _ADD_BLOOD_POOL_2(Vector3 vec, float p3, float size, float p5, bool permanent, float p7, bool p8) { Function.Call(0xF708298675ABDC6A, vec.X, vec.Y, vec.Z, p3, size, p5, permanent, p7, p8); }
 		/// <summary>
 		/// Creates blood pools for the given ped in some interval for a few seconds.
 		/// </summary>
@@ -3227,6 +3328,7 @@ namespace RDR2.Native
 		public static void _ADD_BLOOD_POOLS_FOR_PED_WITH_PARAMS(int ped, float p1, float size, float p3) { Function.Call(0xC349EE1E6EFA494B, ped, p1, size, p3); }
 		public static void START_PETROL_TRAIL_DECALS(Any p0, Any p1) { Function.Call(0x46F246D6504F0031, p0, p1); }
 		public static void ADD_PETROL_TRAIL_DECAL_INFO(float x, float y, float z, float p3) { Function.Call(0x73354FB6D03D2E8A, x, y, z, p3); }
+		public static void ADD_PETROL_TRAIL_DECAL_INFO(Vector3 vec, float p3) { Function.Call(0x73354FB6D03D2E8A, vec.X, vec.Y, vec.Z, p3); }
 		public static void END_PETROL_TRAIL_DECALS() { Function.Call(0x0E126AAE933F3B56); }
 		public static Any _0xE63D68F455CA0B47(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0xE63D68F455CA0B47, p0, p1, p2, p3, p4, p5, p6); }
 		public static void REMOVE_DECAL(int decal) { Function.Call(0x49A720552EB0BB88, decal); }
@@ -3249,6 +3351,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _BLOOD_TRAIL_FOR_WAYPOINT(string waypointRecording, float p1) { Function.Call(0xB9C92616929CC25D, waypointRecording, p1); }
 		public static void _ADD_BLOOD_TRAIL_POINT(float x, float y, float z) { Function.Call(0xDD9DC1AB63D513CE, x, y, z); }
+		public static void _ADD_BLOOD_TRAIL_POINT(Vector3 vec) { Function.Call(0xDD9DC1AB63D513CE, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Used in CREATE_BEZIER_BLOOD_TRAIL_OF_TYPE
 		/// _ENABLE_*
@@ -3259,6 +3362,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _0x4BD66B4E3427689B(string p0) { Function.Call(0x4BD66B4E3427689B, p0); }
 		public static void _ADD_BLOOD_TRAIL_SPLAT(float x, float y, float z) { Function.Call(0xF5E45CB1CF965D2D, x, y, z); }
+		public static void _ADD_BLOOD_TRAIL_SPLAT(Vector3 vec) { Function.Call(0xF5E45CB1CF965D2D, vec.X, vec.Y, vec.Z); }
 		public static void _0xF2F543D48F319A3A() { Function.Call(0xF2F543D48F319A3A); }
 		/// <summary>
 		/// _RESET_*
@@ -3425,6 +3529,7 @@ namespace RDR2.Native
 		/// Only used in R* SP Script spd_agnesdown1
 		/// </summary>
 		public static bool _0x402E1A61D2587FCD(Any p0, float x, float y, float z, float p4, float p5, float heading) { return Function.Call<bool>(0x402E1A61D2587FCD, p0, x, y, z, p4, p5, heading); }
+		public static bool _0x402E1A61D2587FCD(Any p0, Vector3 vec, float p4, float p5, float heading) { return Function.Call<bool>(0x402E1A61D2587FCD, p0, vec.X, vec.Y, vec.Z, p4, p5, heading); }
 		/// <summary>
 		/// Only used in R* SP Script spd_agnesdown1
 		/// </summary>
@@ -3444,11 +3549,13 @@ namespace RDR2.Native
 		public static void _0xC489FE31AC726512(Any p0, Any p1) { Function.Call(0xC489FE31AC726512, p0, p1); }
 		public static void _SET_CLOUD_LAYER(float x, float y, int p2) { Function.Call(0xB8C984C0D47F4F07, x, y, p2); }
 		public static void _SET_CLOUD_NOISE(float x, float y, float z) { Function.Call(0xFE7966DF01452F32, x, y, z); }
+		public static void _SET_CLOUD_NOISE(Vector3 vec) { Function.Call(0xFE7966DF01452F32, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Only used in finale2, smuggler2, winter4
 		/// _SET_CLOUD_A* - _SET_CLOUD_H*
 		/// </summary>
 		public static void _SET_CLOUD_POSITION(float x, float y, float z) { Function.Call(0x10C1767B93257480, x, y, z); }
+		public static void _SET_CLOUD_POSITION(Vector3 vec) { Function.Call(0x10C1767B93257480, vec.X, vec.Y, vec.Z); }
 		public static void _SET_CLOUD_HEIGHT(float height) { Function.Call(0xC332C91388F5580B, height); }
 		public static void _0x085C5B61A0114F32(Any p0, Any p1) { Function.Call(0x085C5B61A0114F32, p0, p1); }
 		public static void _0x1FF8731BE1DFC0C0(Any p0, Any p1) { Function.Call(0x1FF8731BE1DFC0C0, p0, p1); }
@@ -3648,6 +3755,7 @@ namespace RDR2.Native
 		public static void SET_MISSION_NAME_FOR_UGC_MISSION(bool p0, string name) { Function.Call(0xD98630CE73C61E98, p0, name); }
 		public static void _0xCE0D2F5586627CCE(Any p0, Any p1, Any p2, Any p3, Any p4) { Function.Call(0xCE0D2F5586627CCE, p0, p1, p2, p3, p4); }
 		public static unsafe bool GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(float worldX, float worldY, float worldZ, float* screenX, float* screenY) { return Function.Call<bool>(0xB39C81628EF10B42, worldX, worldY, worldZ, screenX, screenY); }
+		public static unsafe bool GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(Vector3 vec, float* screenX, float* screenY) { return Function.Call<bool>(0xB39C81628EF10B42, vec.X, vec.Y, vec.Z, screenX, screenY); }
 		public static void _HIDE_HUD_THIS_FRAME() { Function.Call(0xBF4F34A85CA2970D); }
 		public static void DISABLE_FRONTEND_THIS_FRAME() { Function.Call(0x56CE42A528156A67); }
 		public static void _0x5651516D947ABC53() { Function.Call(0x5651516D947ABC53); }
@@ -3802,6 +3910,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _UI_PROMPT_CONTEXT_SET_VOLUME(Prompt prompt, Volume volume) { Function.Call(0x4D107406667423BE, prompt, volume); }
 		public static void _UI_PROMPT_CONTEXT_SET_POINT(Prompt prompt, float x, float y, float z) { Function.Call(0xAE84C5EE2C384FB3, prompt, x, y, z); }
+		public static void _UI_PROMPT_CONTEXT_SET_POINT(Prompt prompt, Vector3 vec) { Function.Call(0xAE84C5EE2C384FB3, prompt, vec.X, vec.Y, vec.Z); }
 		public static void _UI_PROMPT_CONTEXT_SET_RADIUS(Prompt prompt, float radius) { Function.Call(0x0C718001B77CA468, prompt, radius); }
 		public static bool _UI_PROMPT_IS_PRESSED(Prompt prompt) { return Function.Call<bool>(0x21E60E230086697F, prompt); }
 		public static bool _UI_PROMPT_IS_JUST_PRESSED(Prompt prompt) { return Function.Call<bool>(0x2787CC611D3FACC5, prompt); }
@@ -3947,6 +4056,7 @@ namespace RDR2.Native
 		public static void CLEAR_ROOM_FOR_GAME_VIEWPORT() { Function.Call(0x951A049765E0D450); }
 		public static Interior GET_INTERIOR_FROM_PRIMARY_VIEW() { return Function.Call<Interior>(0xBC8A281FF125C655); }
 		public static Interior GET_INTERIOR_AT_COORDS(float x, float y, float z) { return Function.Call<Interior>(0xCDD36C9E5C469070, x, y, z); }
+		public static Interior GET_INTERIOR_AT_COORDS(Vector3 vec) { return Function.Call<Interior>(0xCDD36C9E5C469070, vec.X, vec.Y, vec.Z); }
 		public static void PIN_INTERIOR_IN_MEMORY(Interior interior) { Function.Call(0xBD3D33EABF680168, interior); }
 		/// <summary>
 		/// Does something similar to INTERIOR::DISABLE_INTERIOR.
@@ -3960,15 +4070,19 @@ namespace RDR2.Native
 		/// </summary>
 		public static bool SET_INTERIOR_IN_USE(Interior interior) { return Function.Call<bool>(0xB5EF6FEF2DC9EBED, interior); }
 		public static Interior GET_INTERIOR_AT_COORDS_WITH_TYPE(float x, float y, float z, string interiorType) { return Function.Call<Interior>(0xAAD6170AA33B13C0, x, y, z, interiorType); }
+		public static Interior GET_INTERIOR_AT_COORDS_WITH_TYPE(Vector3 vec, string interiorType) { return Function.Call<Interior>(0xAAD6170AA33B13C0, vec.X, vec.Y, vec.Z, interiorType); }
 		/// <summary>
 		/// Hashed version of GET_INTERIOR_AT_COORDS_WITH_TYPE
 		/// </summary>
 		public static Interior GET_INTERIOR_AT_COORDS_WITH_TYPEHASH(float x, float y, float z, Hash typeHash) { return Function.Call<Interior>(0x3543AEA1816D1D2B, x, y, z, typeHash); }
+		public static Interior GET_INTERIOR_AT_COORDS_WITH_TYPEHASH(Vector3 vec, Hash typeHash) { return Function.Call<Interior>(0x3543AEA1816D1D2B, vec.X, vec.Y, vec.Z, typeHash); }
 		/// <summary>
 		/// Returns true if the collision at the specified coords is marked as being outside (false if there's an interior)
 		/// </summary>
 		public static bool IS_COLLISION_MARKED_OUTSIDE(float x, float y, float z) { return Function.Call<bool>(0xF291396B517E25B2, x, y, z); }
+		public static bool IS_COLLISION_MARKED_OUTSIDE(Vector3 vec) { return Function.Call<bool>(0xF291396B517E25B2, vec.X, vec.Y, vec.Z); }
 		public static int GET_INTERIOR_FROM_COLLISION(float x, float y, float z) { return Function.Call<int>(0x5054D1A5218FA696, x, y, z); }
+		public static int GET_INTERIOR_FROM_COLLISION(Vector3 vec) { return Function.Call<int>(0x5054D1A5218FA696, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/tree/master/interiors/interior_sets
 		/// </summary>
@@ -4584,12 +4698,14 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _0xEDFC6C1FD1C964F5(int player, Hash crimeType, int bounty, float p3, float p4, bool p5, float p6, float p7, Any p8) { Function.Call(0xEDFC6C1FD1C964F5, player, crimeType, bounty, p3, p4, p5, p6, p7, p8); }
 		public static bool _LAW_WITNESS_RESPONSE_TASK(int pedGroup1, int ped, int pedGroup2, float x, float y, float z, Hash crimeType) { return Function.Call<bool>(0xF0B67BAD53C35BD9, pedGroup1, ped, pedGroup2, x, y, z, crimeType); }
+		public static bool _LAW_WITNESS_RESPONSE_TASK(int pedGroup1, int ped, int pedGroup2, Vector3 vec, Hash crimeType) { return Function.Call<bool>(0xF0B67BAD53C35BD9, pedGroup1, ped, pedGroup2, vec.X, vec.Y, vec.Z, crimeType); }
 		public static unsafe Any _0x018F30D762E62DF8(int ped, Any* p1) { return Function.Call<Any>(0x018F30D762E62DF8, ped, p1); }
 		/// <summary>
 		/// Only used in R* SP Script av_amb_camp_robbery
 		/// </summary>
 		public static unsafe Any _0x318F0F9A4426CFA2(int ped, Any* p1) { return Function.Call<Any>(0x318F0F9A4426CFA2, ped, p1); }
 		public static Any _0x95878B13E272EF1F(int entity, int ped, bool p2, float x, float y, float z, Hash crimeType) { return Function.Call<Any>(0x95878B13E272EF1F, entity, ped, p2, x, y, z, crimeType); }
+		public static Any _0x95878B13E272EF1F(int entity, int ped, bool p2, Vector3 vec, Hash crimeType) { return Function.Call<Any>(0x95878B13E272EF1F, entity, ped, p2, vec.X, vec.Y, vec.Z, crimeType); }
 		public static void _ADD_WITNESS_RESPONSE(int player, Hash crimeType, int pedGroup) { Function.Call(0x10827B5A0AAC56A7, player, crimeType, pedGroup); }
 		/// <summary>
 		/// Only used in R* SP Scripts
@@ -4665,6 +4781,7 @@ namespace RDR2.Native
 		/// dispatchResponseHash: see common/data/dispatchresponses/..
 		/// </summary>
 		public static Any _CREATE_LAW_DISPATCH_RESPONSE_FOR_COORDS(float x, float y, float z, Hash dispatchResponseHash) { return Function.Call<Any>(0x75CBF20BA47E4F89, x, y, z, dispatchResponseHash); }
+		public static Any _CREATE_LAW_DISPATCH_RESPONSE_FOR_COORDS(Vector3 vec, Hash dispatchResponseHash) { return Function.Call<Any>(0x75CBF20BA47E4F89, vec.X, vec.Y, vec.Z, dispatchResponseHash); }
 		/// <summary>
 		/// Force clears local player's wanted level
 		/// </summary>
@@ -4734,6 +4851,7 @@ namespace RDR2.Native
 		public static void _SET_PED_LAW_BEHAVIOUR(int ped, int behaviour) { Function.Call(0x819ADD5EF1742F47, ped, behaviour); }
 		public static void _0x00DB0BC05E3FAA4E(int ped, int bitset) { Function.Call(0x00DB0BC05E3FAA4E, ped, bitset); }
 		public static void _0x0C392DB374655176(float x, float y, float z, float p3, ItemSet itemSet) { Function.Call(0x0C392DB374655176, x, y, z, p3, itemSet); }
+		public static void _0x0C392DB374655176(Vector3 vec, float p3, ItemSet itemSet) { Function.Call(0x0C392DB374655176, vec.X, vec.Y, vec.Z, p3, itemSet); }
 		public static unsafe Any _0xC687A23E166DCF68(Any* p0) { return Function.Call<Any>(0xC687A23E166DCF68, p0); }
 		public static void _SET_DISPATCH_MULTIPLIER_OVERRIDE(float multiplier) { Function.Call(0x002BABE0B7D53136, multiplier); }
 		public static bool _0x26934083D3F2579C(int player) { return Function.Call<bool>(0x26934083D3F2579C, player); }
@@ -4774,13 +4892,16 @@ namespace RDR2.Native
 		/// Returns true when investigation creation was successful
 		/// </summary>
 		public static bool _CREATE_GUARD_ZONE_FOR_ENTITY(string guardZoneName, int entity, float x, float y, float z) { return Function.Call<bool>(0x0D4B77E862475ED3, guardZoneName, entity, x, y, z); }
+		public static bool _CREATE_GUARD_ZONE_FOR_ENTITY(string guardZoneName, int entity, Vector3 vec) { return Function.Call<bool>(0x0D4B77E862475ED3, guardZoneName, entity, vec.X, vec.Y, vec.Z); }
 		public static void _SET_GUARD_ZONE_VOLUME_REGISTRATION_START(string name, Volume volume) { Function.Call(0x8C598A930F471938, name, volume); }
 		public static void _SET_GUARD_ZONE_VOLUME_RESTRICTED(string name, Volume volume) { Function.Call(0x35815F372D43E1E5, name, volume); }
 		public static void _SET_GUARD_ZONE_VOLUME_THREAT(string name, Volume volume) { Function.Call(0xA1B0E6301E2E02A6, name, volume); }
 		public static void _SET_GUARD_ZONE_VOLUME_WARNING(string name, Volume volume) { Function.Call(0xAD3E07C37A7C1ADC, name, volume); }
 		public static void _SET_GUARD_ZONE_VOLUME_REGISTRATION_END(string name, Volume volume) { Function.Call(0xA8A74AA79FB67159, name, volume); }
 		public static void _SET_GUARD_ZONE_POSITION(string name, float x, float y, float z) { Function.Call(0x7E7BF59F89FC6C6D, name, x, y, z); }
+		public static void _SET_GUARD_ZONE_POSITION(string name, Vector3 vec) { Function.Call(0x7E7BF59F89FC6C6D, name, vec.X, vec.Y, vec.Z); }
 		public static void _SET_GUARD_ZONE_POSITION_2(string name, float x, float y, float z) { Function.Call(0x2F9005E2EA4E5EE4, name, x, y, z); }
+		public static void _SET_GUARD_ZONE_POSITION_2(string name, Vector3 vec) { Function.Call(0x2F9005E2EA4E5EE4, name, vec.X, vec.Y, vec.Z); }
 	}
 
 	public static class LOCALIZATION
@@ -4832,10 +4953,13 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/tree/master/useful_info_from_rpfs/textures/blips_mp
 		/// </summary>
 		public static int BLIP_ADD_FOR_COORDS(Hash blipHash, float x, float y, float z) { return Function.Call<int>(0x554D9D53F696D002, blipHash, x, y, z); }
+		public static int BLIP_ADD_FOR_COORDS(Hash blipHash, Vector3 vec) { return Function.Call<int>(0x554D9D53F696D002, blipHash, vec.X, vec.Y, vec.Z); }
 		public static int BLIP_ADD_FOR_ENTITY(Hash blipHash, int entity) { return Function.Call<int>(0x23F74C2FDA6E7C61, blipHash, entity); }
 		public static int BLIP_ADD_FOR_PICKUP_PLACEMENT(Hash blipHash, int pickup) { return Function.Call<int>(0xA486008892065FB9, blipHash, pickup); }
 		public static int BLIP_ADD_FOR_RADIUS(Hash blipHash, float x, float y, float z, float radius) { return Function.Call<int>(0x45F13B7E0A15C880, blipHash, x, y, z, radius); }
+		public static int BLIP_ADD_FOR_RADIUS(Hash blipHash, Vector3 vec, float radius) { return Function.Call<int>(0x45F13B7E0A15C880, blipHash, vec.X, vec.Y, vec.Z, radius); }
 		public static int _BLIP_ADD_FOR_AREA(Hash blipHash, float x, float y, float z, float scaleX, float scaleY, float scaleZ, int p7) { return Function.Call<int>(0xEC174ADBCB611ECC, blipHash, x, y, z, scaleX, scaleY, scaleZ, p7); }
+		public static int _BLIP_ADD_FOR_AREA(Hash blipHash, Vector3 vec, Vector3 scale, int p7) { return Function.Call<int>(0xEC174ADBCB611ECC, blipHash, vec.X, vec.Y, vec.Z, scale.X, scale.Y, scale.Z, p7); }
 		public static int _BLIP_ADD_FOR_VOLUME(Hash blipHash, Volume volume) { return Function.Call<int>(0xA6EF0C54A3443E70, blipHash, volume); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/tree/master/useful_info_from_rpfs/blip_styles
@@ -4858,9 +4982,11 @@ namespace RDR2.Native
 		public static void SET_BLIP_FLASH_TIMER(int blip, int blipType, Hash blipHash) { Function.Call(0x02FF4CF43B7209D1, blip, blipType, blipHash); }
 		public static unsafe bool SET_BLIP_FLASHES(int blip, int* p1, Hash* p2) { return Function.Call<bool>(0x0DF2B55F717DDB10, blip, p1, p2); }
 		public static void TRIGGER_SONAR_BLIP(Hash typeHash, float x, float y, float z) { Function.Call(0x72DD432F3CDFC0EE, typeHash, x, y, z); }
+		public static void TRIGGER_SONAR_BLIP(Hash typeHash, Vector3 vec) { Function.Call(0x72DD432F3CDFC0EE, typeHash, vec.X, vec.Y, vec.Z); }
 		public static void _TRIGGER_SONAR_BLIP_ON_ENTITY(Hash typeHash, int entity) { Function.Call(0x0C7A2289A5C4D7C9, typeHash, entity); }
 		public static void ALLOW_SONAR_BLIPS(bool toggle) { Function.Call(0x6E6E64788C07D2E0, toggle); }
 		public static void SET_BLIP_COORDS(int blip, float posX, float posY, float posZ) { Function.Call(0x4FF674F5E23D49CE, blip, posX, posY, posZ); }
+		public static void SET_BLIP_COORDS(int blip, Vector3 vec) { Function.Call(0x4FF674F5E23D49CE, blip, vec.X, vec.Y, vec.Z); }
 		public static Vector3 GET_BLIP_COORDS(int blip) { return Function.Call<Vector3>(0x201C319797BDA603, blip); }
 		public static void SET_BLIP_SPRITE(int blip, Hash hash, bool p2) { Function.Call(0x74F74D3207ED525C, blip, hash, p2); }
 		/// <summary>
@@ -4898,6 +5024,7 @@ namespace RDR2.Native
 		public static void CLEAR_GPS_CUSTOM_ROUTE() { Function.Call(0x1EAA5674B4D181C5); }
 		public static void START_GPS_MULTI_ROUTE(Hash colorNameHash, bool onFoot, bool inVehicle) { Function.Call(0x3D3D15AF7BCAAF83, colorNameHash, onFoot, inVehicle); }
 		public static void ADD_POINT_TO_GPS_MULTI_ROUTE(float x, float y, float z, bool p3) { Function.Call(0x64C59DD6834FA942, x, y, z, p3); }
+		public static void ADD_POINT_TO_GPS_MULTI_ROUTE(Vector3 vec, bool p3) { Function.Call(0x64C59DD6834FA942, vec.X, vec.Y, vec.Z, p3); }
 		public static void SET_GPS_MULTI_ROUTE_RENDER(bool toggle) { Function.Call(0x4426D65E029A4DC0, toggle); }
 		/// <summary>
 		/// Does the same as SET_GPS_MULTI_ROUTE_RENDER(false);
@@ -4914,6 +5041,7 @@ namespace RDR2.Native
 		public static void _SHOW_ACTIVE_POINTS_OF_INTEREST() { Function.Call(0x3FBB838AEA30C1D8); }
 		public static Any _0xF47A1EB2A538A3A3() { return Function.Call<Any>(0xF47A1EB2A538A3A3); }
 		public static unsafe bool _FIND_CLOSEST_GPS_POSITION(float x, float y, float z, Vector3* outPosition) { return Function.Call<bool>(0x3FDA2B79AEEE351C, x, y, z, outPosition); }
+		public static unsafe bool _FIND_CLOSEST_GPS_POSITION(Vector3 vec, Vector3* outPosition) { return Function.Call<bool>(0x3FDA2B79AEEE351C, vec.X, vec.Y, vec.Z, outPosition); }
 		/// <summary>
 		/// If Minimap / Radar should be displayed.
 		/// </summary>
@@ -4938,6 +5066,7 @@ namespace RDR2.Native
 		public static void _SET_MINIMAP_FOW_OVERRIDE_REVEAL_SCALE(float scale, Hash p1) { Function.Call(0xE5A7F70B7C0F3271, scale, p1); }
 		public static void _SET_MINIMAP_FOW_SHOULD_UPDATE(bool toggle, Hash p1) { Function.Call(0x632AA10BF7EA53D3, toggle, p1); }
 		public static void SET_MINIMAP_FOW_REVEAL_COORDINATE(float x, float y, float z, Hash p3) { Function.Call(0x73348402566ECB6E, x, y, z, p3); }
+		public static void SET_MINIMAP_FOW_REVEAL_COORDINATE(Vector3 vec, Hash p3) { Function.Call(0x73348402566ECB6E, vec.X, vec.Y, vec.Z, p3); }
 		public static void SET_MINIMAP_FOW_REVEAL_VOLUME(Volume volume, Hash p1) { Function.Call(0x63CBBD6CA6F321F9, volume, p1); }
 		public static void RESET_MINIMAP_FOW(Hash hash) { Function.Call(0xEB3CB3386C775D72, hash); }
 		public static void _REVEAL_MINIMAP_FOW(Hash hash) { Function.Call(0xF8096DF9B87246E3, hash); }
@@ -4962,6 +5091,7 @@ namespace RDR2.Native
 		public static void _MAP_DISCOVERY_SET_ENABLED(Hash discoveryHash) { Function.Call(0xDA98246C7A3C2189, discoveryHash); }
 		public static bool _MAP_IS_DISCOVERY_ACTIVE(Hash discoveryHash) { return Function.Call<bool>(0x3F81EA4275D39D6F, discoveryHash); }
 		public static void _SET_PAUSEMAP_COORDS_WITH_RADIUS(float x, float y, float z, float radius) { Function.Call(0xE0884C184728C75B, x, y, z, radius); }
+		public static void _SET_PAUSEMAP_COORDS_WITH_RADIUS(Vector3 vec, float radius) { Function.Call(0xE0884C184728C75B, vec.X, vec.Y, vec.Z, radius); }
 		public static void _0x7C9F4CDF402CA82A() { Function.Call(0x7C9F4CDF402CA82A); }
 		/// <summary>
 		/// _CLEAR*
@@ -5149,6 +5279,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void WATER_OVERRIDE_SET_OCEANWAVEMAXAMPLITUDE(float maxAmplitude) { Function.Call(0xF06C5B66DE20B2B8, maxAmplitude); }
 		public static float _GET_TEMPERATURE_AT_COORDS(float x, float y, float z) { return Function.Call<float>(0xB98B78C3768AF6E0, x, y, z); }
+		public static float _GET_TEMPERATURE_AT_COORDS(Vector3 vec) { return Function.Call<float>(0xB98B78C3768AF6E0, vec.X, vec.Y, vec.Z); }
 		public static void SET_WIND_SPEED(float speed) { Function.Call(0xD00C2D82DC04A99F, speed); }
 		public static float GET_WIND_SPEED() { return Function.Call<float>(0xFFB7E74E041150A4); }
 		public static void SET_WIND_DIRECTION(float direction) { Function.Call(0xB56C4F5F57A45600, direction); }
@@ -5169,6 +5300,7 @@ namespace RDR2.Native
 		/// p3 is always -1.0f in the scripts
 		/// </summary>
 		public static void _FORCE_LIGHTNING_FLASH_AT_COORDS(float x, float y, float z, float p3) { Function.Call(0x67943537D179597C, x, y, z, p3); }
+		public static void _FORCE_LIGHTNING_FLASH_AT_COORDS(Vector3 vec, float p3) { Function.Call(0x67943537D179597C, vec.X, vec.Y, vec.Z, p3); }
 		/// <summary>
 		/// nullsub, doesn't do anything
 		/// </summary>
@@ -5197,7 +5329,9 @@ namespace RDR2.Native
 		public static float GET_RANDOM_FLOAT_IN_RANGE(float startRange, float endRange) { return Function.Call<float>(0xE29F927A961F8AAA, startRange, endRange); }
 		public static int GET_RANDOM_INT_IN_RANGE(int startRange, int endRange) { return Function.Call<int>(0xD53343AA4FB7DD28, startRange, endRange); }
 		public static unsafe bool GET_GROUND_Z_FOR_3D_COORD(float x, float y, float z, float* groundZ, bool p4) { return Function.Call<bool>(0x24FA4267BB8D2431, x, y, z, groundZ, p4); }
+		public static unsafe bool GET_GROUND_Z_FOR_3D_COORD(Vector3 vec, float* groundZ, bool p4) { return Function.Call<bool>(0x24FA4267BB8D2431, vec.X, vec.Y, vec.Z, groundZ, p4); }
 		public static unsafe bool GET_GROUND_Z_AND_NORMAL_FOR_3D_COORD(float x, float y, float z, float* groundZ, Vector3* normal) { return Function.Call<bool>(0x2A29CA9A6319E6AB, x, y, z, groundZ, normal); }
+		public static unsafe bool GET_GROUND_Z_AND_NORMAL_FOR_3D_COORD(Vector3 vec, float* groundZ, Vector3* normal) { return Function.Call<bool>(0x2A29CA9A6319E6AB, vec.X, vec.Y, vec.Z, groundZ, normal); }
 		public static Any _0xBBE5B63EFFB08E68(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0xBBE5B63EFFB08E68, p0, p1, p2, p3, p4, p5, p6); }
 		public static float ASIN(float p0) { return Function.Call<float>(0x6E3C15D296C15583, p0); }
 		public static float ACOS(float p0) { return Function.Call<float>(0x586690F0176DC575, p0); }
@@ -5210,6 +5344,7 @@ namespace RDR2.Native
 		/// Consider using this faster native instead: BUILTIN::VDIST - DVIST always takes in consideration the 3D coordinates.
 		/// </summary>
 		public static float GET_DISTANCE_BETWEEN_COORDS(float x1, float y1, float z1, float x2, float y2, float z2, bool useZ) { return Function.Call<float>(0x0BE7F4E3CDBAFB28, x1, y1, z1, x2, y2, z2, useZ); }
+		public static float GET_DISTANCE_BETWEEN_COORDS(Vector3 vec1, Vector3 vec2, bool useZ) { return Function.Call<float>(0x0BE7F4E3CDBAFB28, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, useZ); }
 		public static float GET_ANGLE_BETWEEN_2D_VECTORS(float x1, float y1, float x2, float y2) { return Function.Call<float>(0xD0DFE1C486097BBB, x1, y1, x2, y2); }
 		/// <summary>
 		/// dx = x1 - x2
@@ -5271,11 +5406,13 @@ namespace RDR2.Native
 		/// </summary>
 		public static float _GET_EASING_CURVE_VALUE(float t, float b, float d, int easingCurveType) { return Function.Call<float>(0xEF50E344A8F93784, t, b, d, easingCurveType); }
 		public static bool IS_POSITION_OCCUPIED(float x, float y, float z, float range, bool p4, bool p5, bool p6, bool p7, bool p8, Any p9, bool p10) { return Function.Call<bool>(0x825CA3ED43831015, x, y, z, range, p4, p5, p6, p7, p8, p9, p10); }
+		public static bool IS_POSITION_OCCUPIED(Vector3 vec, float range, bool p4, bool p5, bool p6, bool p7, bool p8, Any p9, bool p10) { return Function.Call<bool>(0x825CA3ED43831015, vec.X, vec.Y, vec.Z, range, p4, p5, p6, p7, p8, p9, p10); }
 		/// <summary>
 		/// flag |= 1 | 1048576 | 524288
 		/// ALL_BASE, PROJECTILES, AMBIENT_POPULATION, BROADCAST
 		/// </summary>
 		public static void CLEAR_AREA(float x, float y, float z, float radius, int flag) { Function.Call(0x3B882A96EA77D5B1, x, y, z, radius, flag); }
+		public static void CLEAR_AREA(Vector3 vec, float radius, int flag) { Function.Call(0x3B882A96EA77D5B1, vec.X, vec.Y, vec.Z, radius, flag); }
 		public static void _CLEAR_VOLUME_AREA(Volume volume, int flag) { Function.Call(0x2FCD528A397E5C88, volume, flag); }
 		public static void CLEAR_ANGLED_AREA_OF_VEHICLES(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0xA4D83115C1E02F8A, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void SET_CREDITS_ACTIVE(bool toggle) { Function.Call(0xD37BECF862DA726F, toggle); }
@@ -5289,6 +5426,7 @@ namespace RDR2.Native
 		public static void SET_FADE_IN_AFTER_LOAD(bool toggle) { Function.Call(0xAC806C4CAB973517, toggle); }
 		public static bool OVERRIDE_SAVE_HOUSE(bool p0, float p1, float p2, float p3, float p4, bool p5, float p6, float p7) { return Function.Call<bool>(0xB2C69E11A37B5AF0, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void SHOOT_SINGLE_BULLET_BETWEEN_COORDS(float x1, float y1, float z1, float x2, float y2, float z2, int damage, bool p7, Hash weaponHash, int ownerPed, bool isAudible, bool isInvisible, float speed, bool p13) { Function.Call(0x867654CBC7606F2C, x1, y1, z1, x2, y2, z2, damage, p7, weaponHash, ownerPed, isAudible, isInvisible, speed, p13); }
+		public static void SHOOT_SINGLE_BULLET_BETWEEN_COORDS(Vector3 vec1, Vector3 vec2, int damage, bool p7, Hash weaponHash, int ownerPed, bool isAudible, bool isInvisible, float speed, bool p13) { Function.Call(0x867654CBC7606F2C, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, damage, p7, weaponHash, ownerPed, isAudible, isInvisible, speed, p13); }
 		public static unsafe void FIRE_SINGLE_BULLET(Any* args) { Function.Call(0xCBC9A21F6A2A679C, args); }
 		public static unsafe void GET_MODEL_DIMENSIONS(Hash modelHash, Vector3* minimum, Vector3* maximum) { Function.Call(0xDCB8DDD5D054A7E7, modelHash, minimum, maximum); }
 		public static bool IS_BIT_SET(int address, int offset) { return Function.Call<bool>(0x4ED6CFDFE8D4131A, address, offset); }
@@ -5314,10 +5452,12 @@ namespace RDR2.Native
 		/// ownedByPlayer = only projectiles fired by the player will be detected.
 		/// </summary>
 		public static bool IS_PROJECTILE_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool ownedByPlayer) { return Function.Call<bool>(0x05B0061EFDFC8941, x1, y1, z1, x2, y2, z2, ownedByPlayer); }
+		public static bool IS_PROJECTILE_IN_AREA(Vector3 vec1, Vector3 vec2, bool ownedByPlayer) { return Function.Call<bool>(0x05B0061EFDFC8941, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, ownedByPlayer); }
 		/// <summary>
 		/// Determines whether there is a projectile of a specific type within the specified coordinates. The coordinates form a rectangle.
 		/// </summary>
 		public static bool IS_PROJECTILE_TYPE_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2, int type, bool p7) { return Function.Call<bool>(0x04965FB9E14235C7, x1, y1, z1, x2, y2, z2, type, p7); }
+		public static bool IS_PROJECTILE_TYPE_IN_AREA(Vector3 vec1, Vector3 vec2, int type, bool p7) { return Function.Call<bool>(0x04965FB9E14235C7, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, type, p7); }
 		public static bool IS_PROJECTILE_TYPE_IN_ANGLED_AREA(float p0, float p1, float p2, float p3, float p4, float p5, float p6, Any p7, bool p8) { return Function.Call<bool>(0x928431F4133CD3D4, p0, p1, p2, p3, p4, p5, p6, p7, p8); }
 		public static bool IS_PROJECTILE_TYPE_WITHIN_DISTANCE(float p0, float p1, float p2, Any p3, float p4, bool p5) { return Function.Call<bool>(0xF51C9BAAD9ED64C4, p0, p1, p2, p3, p4, p5); }
 		public static unsafe bool GET_COORDS_OF_PROJECTILE_TYPE_WITHIN_DISTANCE(int ped, Hash weaponHash, float distance, Vector3* outCoords, bool p4, bool mustBeOwnedByThisPed) { return Function.Call<bool>(0xD73C960A681052DF, ped, weaponHash, distance, outCoords, p4, mustBeOwnedByThisPed); }
@@ -5329,6 +5469,7 @@ namespace RDR2.Native
 		/// p3 - possibly radius?
 		/// </summary>
 		public static bool HAS_BULLET_IMPACTED_IN_AREA(float x, float y, float z, float p3, bool p4, bool p5) { return Function.Call<bool>(0xC153E5BCCF411814, x, y, z, p3, p4, p5); }
+		public static bool HAS_BULLET_IMPACTED_IN_AREA(Vector3 vec, float p3, bool p4, bool p5) { return Function.Call<bool>(0xC153E5BCCF411814, vec.X, vec.Y, vec.Z, p3, p4, p5); }
 		public static bool HAS_BULLET_IMPACTED_IN_BOX(float p0, float p1, float p2, float p3, float p4, float p5, bool p6, bool p7) { return Function.Call<bool>(0x3B6A4C05FB2B33AC, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static Any _0x7A76104CC2CC69E8(int entity, int p1, int p2) { return Function.Call<Any>(0x7A76104CC2CC69E8, entity, p1, p2); }
 		public static Any _0xDC416CA762BC4F43(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0xDC416CA762BC4F43, p0, p1, p2, p3, p4, p5); }
@@ -5373,7 +5514,13 @@ namespace RDR2.Native
 		public static void _0xF650DCF5D6F312C1(Any p0) { Function.Call(0xF650DCF5D6F312C1, p0); }
 		public static string _GET_STRING_FROM_FLOAT(float value, int digits) { return Function.Call<string>(0x2B6846401D68E563, value, digits); }
 		public static string _GET_STRING_FROM_VECTOR(float x, float y, float z) { return Function.Call<string>(0x6C4DBF553885F9EB, x, y, z); }
+		public static string _GET_STRING_FROM_VECTOR(Vector3 vec) { return Function.Call<string>(0x6C4DBF553885F9EB, vec.X, vec.Y, vec.Z); }
 		public static string _GET_STRING_FROM_BOOL(bool value) { return Function.Call<string>(0xF216F74101968DB0, value); }
+		/// <summary>
+		/// Note: The first bit in 'flags' must not be set.
+		/// It is also required to pass at least one extra argument (this must be a text label string or hash).
+		/// When passing a hash, flags should be 0.
+		/// </summary>
 		public static string VAR_STRING(int flags, params InputArgument[] args) { return Function.Call<string>(0xFA925AC00EB830B9, flags, args); }
 		/// <summary>
 		/// Returns a formatted string (0x%x)
@@ -5462,12 +5609,14 @@ namespace RDR2.Native
 		/// dispatchService: see ENABLE_DISPATCH_SERVICE
 		/// </summary>
 		public static unsafe bool CREATE_INCIDENT(int dispatchService, float x, float y, float z, int numUnits, float radius, int* outIncidentID, Any p7, Any p8) { return Function.Call<bool>(0x3F892CAF67444AE7, dispatchService, x, y, z, numUnits, radius, outIncidentID, p7, p8); }
+		public static unsafe bool CREATE_INCIDENT(int dispatchService, Vector3 vec, int numUnits, float radius, int* outIncidentID, Any p7, Any p8) { return Function.Call<bool>(0x3F892CAF67444AE7, dispatchService, vec.X, vec.Y, vec.Z, numUnits, radius, outIncidentID, p7, p8); }
 		/// <summary>
 		/// dispatchService: see ENABLE_DISPATCH_SERVICE
 		/// 
 		/// The entities must be added to itemSet.
 		/// </summary>
 		public static unsafe bool _CREATE_INCIDENT_WITH_ENTITIES(int dispatchService, float x, float y, float z, ItemSet itemSet, float radius, int* outIncidentID) { return Function.Call<bool>(0xAB3D3F45436DB1D8, dispatchService, x, y, z, itemSet, radius, outIncidentID); }
+		public static unsafe bool _CREATE_INCIDENT_WITH_ENTITIES(int dispatchService, Vector3 vec, ItemSet itemSet, float radius, int* outIncidentID) { return Function.Call<bool>(0xAB3D3F45436DB1D8, dispatchService, vec.X, vec.Y, vec.Z, itemSet, radius, outIncidentID); }
 		/// <summary>
 		/// Delete an incident with a given id.
 		/// </summary>
@@ -5475,6 +5624,7 @@ namespace RDR2.Native
 		public static bool IS_INCIDENT_VALID(int incidentId) { return Function.Call<bool>(0x39F2B1BAD412246A, incidentId); }
 		public static void _SET_INCIDENT_UNK(int incidentId) { Function.Call(0x9617B6E5F6537B63, incidentId); }
 		public static int ADD_POP_MULTIPLIER_AREA(float x1, float y1, float z1, float x2, float y2, float z2, float pedDensity, float trafficDensity, bool p8, bool p9) { return Function.Call<int>(0x5EBDA1A3B8CB5EF7, x1, y1, z1, x2, y2, z2, pedDensity, trafficDensity, p8, p9); }
+		public static int ADD_POP_MULTIPLIER_AREA(Vector3 vec1, Vector3 vec2, float pedDensity, float trafficDensity, bool p8, bool p9) { return Function.Call<int>(0x5EBDA1A3B8CB5EF7, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, pedDensity, trafficDensity, p8, p9); }
 		public static bool DOES_POP_MULTIPLIER_AREA_EXIST(int id) { return Function.Call<bool>(0x03BA619C81A646B3, id); }
 		public static void REMOVE_POP_MULTIPLIER_AREA(int id, bool p1) { Function.Call(0x88CB484364EFB37A, id, p1); }
 		/// <summary>
@@ -5503,6 +5653,7 @@ namespace RDR2.Native
 		/// Params: p3 is 0 in R* Script utopia2
 		/// </summary>
 		public static void ADD_TACTICAL_NAV_MESH_POINT(float x, float y, float z, int p3) { Function.Call(0xE4EE55E63FA9AF45, x, y, z, p3); }
+		public static void ADD_TACTICAL_NAV_MESH_POINT(Vector3 vec, int p3) { Function.Call(0xE4EE55E63FA9AF45, vec.X, vec.Y, vec.Z, p3); }
 		public static void CLEAR_TACTICAL_NAV_MESH_POINTS() { Function.Call(0xD93B6516C6878267); }
 		/// <summary>
 		/// enum eOnscreenKeyboardTextType
@@ -6163,6 +6314,7 @@ namespace RDR2.Native
 		public static unsafe bool NETWORK_GET_ASSISTED_DAMAGE_OF_ENTITY(int player, int entity, int* p2) { return Function.Call<bool>(0x4CACA84440FA26F6, player, entity, p2); }
 		public static unsafe int NETWORK_GET_ENTITY_KILLER_OF_PLAYER(int player, Hash* weaponHash) { return Function.Call<int>(0x42B2DAA6B596F5F8, player, weaponHash); }
 		public static void NETWORK_RESURRECT_LOCAL_PLAYER(float x, float y, float z, float heading, int p4, bool p5, Any p6, bool p7) { Function.Call(0xEA23C49EAA83ACFB, x, y, z, heading, p4, p5, p6, p7); }
+		public static void NETWORK_RESURRECT_LOCAL_PLAYER(Vector3 vec, float heading, int p4, bool p5, Any p6, bool p7) { Function.Call(0xEA23C49EAA83ACFB, vec.X, vec.Y, vec.Z, heading, p4, p5, p6, p7); }
 		public static unsafe void _NETWORK_RESURRECT_LOCAL_PLAYER_2(Any* args) { Function.Call(0x4154B7D8C75E5DCF, args); }
 		public static void NETWORK_SET_LOCAL_PLAYER_INVINCIBLE_TIME(int time) { Function.Call(0x2D95C7E2D7E07307, time); }
 		public static void NETWORK_SET_LOCAL_PLAYER_SYNC_LOOK_AT(bool toggle) { Function.Call(0x524FF0AEFF9C3973, toggle); }
@@ -6303,6 +6455,7 @@ namespace RDR2.Native
 		/// Params: p5 = 50.f, p6 = 0 in R* Script net_fetch (NET_FETCH_CLIENT_UPDATE_PED_ROLE_CLUE_IDLE)
 		/// </summary>
 		public static unsafe bool _0x880A7202301E282B(Any* p0, Any* p1, float x, float y, float z, float p5, Any p6) { return Function.Call<bool>(0x880A7202301E282B, p0, p1, x, y, z, p5, p6); }
+		public static unsafe bool _0x880A7202301E282B(Any* p0, Any* p1, Vector3 vec, float p5, Any p6) { return Function.Call<bool>(0x880A7202301E282B, p0, p1, vec.X, vec.Y, vec.Z, p5, p6); }
 		/// <summary>
 		/// nullsub, doesn't do anything
 		/// </summary>
@@ -6388,6 +6541,7 @@ namespace RDR2.Native
 		/// Old name: _GET_RESERVATIONS_FOR_SLOT_WORLD_POSITION
 		/// </summary>
 		public static unsafe void GET_RESERVED_MISSION_ENTITIES_IN_AREA(float x, float y, float z, bool p3, int* peds, int* vehicles, int* objects, int* pickups) { Function.Call(0x5E71E72A94985214, x, y, z, p3, peds, vehicles, objects, pickups); }
+		public static unsafe void GET_RESERVED_MISSION_ENTITIES_IN_AREA(Vector3 vec, bool p3, int* peds, int* vehicles, int* objects, int* pickups) { Function.Call(0x5E71E72A94985214, vec.X, vec.Y, vec.Z, p3, peds, vehicles, objects, pickups); }
 		/// <summary>
 		/// Note: this native was added in build 1311.23
 		/// </summary>
@@ -6495,6 +6649,7 @@ namespace RDR2.Native
 		public static unsafe void CONVERT_POSIX_TIME(int posixTime, Any* timeStructure) { Function.Call(0xAC97AF97FA68E5D5, posixTime, timeStructure); }
 		public static void NETWORK_SET_IN_SPECTATOR_MODE(bool toggle, int playerPed) { Function.Call(0x423DE3854BB50894, toggle, playerPed); }
 		public static void _NETWORK_SET_IN_STATIC_SPECTATOR_MODE(bool toggle, float x, float y, float z) { Function.Call(0xFBF1ECFB39A77B5F, toggle, x, y, z); }
+		public static void _NETWORK_SET_IN_STATIC_SPECTATOR_MODE(bool toggle, Vector3 vec) { Function.Call(0xFBF1ECFB39A77B5F, toggle, vec.X, vec.Y, vec.Z); }
 		public static bool NETWORK_IS_IN_SPECTATOR_MODE() { return Function.Call<bool>(0x048746E388762E11); }
 		public static bool _NETWORK_IS_PLAYER_IN_SPECTATOR_MODE(int player) { return Function.Call<bool>(0x5B709519997ECF0F, player); }
 		public static void NETWORK_SET_IN_MP_CUTSCENE(bool p0, bool p1, int p2, bool p3) { Function.Call(0x9CA5DE655269FEC4, p0, p1, p2, p3); }
@@ -6548,6 +6703,7 @@ namespace RDR2.Native
 		public static int _NETWORK_GET_NETWORK_ID_FROM_ROPE(int ropeId) { return Function.Call<int>(0x42871327315EDAE8, ropeId); }
 		public static int _NETWORK_GET_ROPE_FROM_NETWORK_ID(int netId) { return Function.Call<int>(0xEB1A4DD8352EC828, netId); }
 		public static void _NETWORK_SPAWN_CONFIG_ADD_SPAWN_POINT(float x, float y, float z, float heading) { Function.Call(0xFD1AC0B3858F224C, x, y, z, heading); }
+		public static void _NETWORK_SPAWN_CONFIG_ADD_SPAWN_POINT(Vector3 vec, float heading) { Function.Call(0xFD1AC0B3858F224C, vec.X, vec.Y, vec.Z, heading); }
 		public static void _0xA63E4F050F20021F() { Function.Call(0xA63E4F050F20021F); }
 		public static void _NETWORK_SPAWN_CONFIG_ADD_EXCLUSION_VOLUME(Volume volume) { Function.Call(0xEEB7818B1D307212, volume); }
 		public static void _NETWORK_SPAWN_CONFIG_REMOVE_EXCLUSION_VOLUME(Volume volume) { Function.Call(0xA35E7BF20FA269E0, volume); }
@@ -6569,6 +6725,7 @@ namespace RDR2.Native
 		public static void NETWORK_SPAWN_CONFIG_SET_TUNING_FLOAT(Hash p0, float p1) { Function.Call(0x0608326F7B98C08D, p0, p1); }
 		public static void _0x5D3C528B7A7DF836(Hash p0) { Function.Call(0x5D3C528B7A7DF836, p0); }
 		public static void _0x2686BD9566B65EDA(float x, float y, float z) { Function.Call(0x2686BD9566B65EDA, x, y, z); }
+		public static void _0x2686BD9566B65EDA(Vector3 vec) { Function.Call(0x2686BD9566B65EDA, vec.X, vec.Y, vec.Z); }
 		public static void _0xBB1EC8C2EEF33BAA(int entity) { Function.Call(0xBB1EC8C2EEF33BAA, entity); }
 		public static bool _0x67CCDF74C4DF7169() { return Function.Call<bool>(0x67CCDF74C4DF7169); }
 		public static void _0xC8B6D18E22484643() { Function.Call(0xC8B6D18E22484643); }
@@ -6917,7 +7074,9 @@ namespace RDR2.Native
 	public static class OBJECT
 	{
 		public static Object CREATE_OBJECT(Hash modelHash, float x, float y, float z, bool isNetwork, bool bScriptHostObj, bool dynamic, bool p7, bool p8) { return Function.Call<Object>(0x509D5878EB39E842, modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic, p7, p8); }
+		public static Object CREATE_OBJECT(Hash modelHash, Vector3 vec, bool isNetwork, bool bScriptHostObj, bool dynamic, bool p7, bool p8) { return Function.Call<Object>(0x509D5878EB39E842, modelHash, vec.X, vec.Y, vec.Z, isNetwork, bScriptHostObj, dynamic, p7, p8); }
 		public static Object CREATE_OBJECT_NO_OFFSET(Hash modelHash, float x, float y, float z, bool isNetwork, bool bScriptHostObj, bool dynamic, bool p7) { return Function.Call<Object>(0x9A294B2138ABB884, modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic, p7); }
+		public static Object CREATE_OBJECT_NO_OFFSET(Hash modelHash, Vector3 vec, bool isNetwork, bool bScriptHostObj, bool dynamic, bool p7) { return Function.Call<Object>(0x9A294B2138ABB884, modelHash, vec.X, vec.Y, vec.Z, isNetwork, bScriptHostObj, dynamic, p7); }
 		/// <summary>
 		/// Deletes the specified object, then sets the handle pointed to by the pointer to NULL.
 		/// </summary>
@@ -6937,12 +7096,14 @@ namespace RDR2.Native
 		/// isMission - if true doesn't return mission objects
 		/// </summary>
 		public static Object GET_CLOSEST_OBJECT_OF_TYPE(float x, float y, float z, float radius, Hash modelHash, bool isMission, bool p6, bool p7) { return Function.Call<Object>(0xE143FA2249364369, x, y, z, radius, modelHash, isMission, p6, p7); }
+		public static Object GET_CLOSEST_OBJECT_OF_TYPE(Vector3 vec, float radius, Hash modelHash, bool isMission, bool p6, bool p7) { return Function.Call<Object>(0xE143FA2249364369, vec.X, vec.Y, vec.Z, radius, modelHash, isMission, p6, p7); }
 		public static bool HAS_OBJECT_BEEN_BROKEN(Any p0) { return Function.Call<bool>(0x8ABFB70C49CC43E2, p0); }
 		public static bool HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN(float p0, float p1, float p2, float p3, Hash modelHash, Any p5) { return Function.Call<bool>(0x761B0E69AC4D007E, p0, p1, p2, p3, modelHash, p5); }
 		/// <summary>
 		/// Old name: _GET_OBJECT_OFFSET_FROM_COORDS
 		/// </summary>
 		public static Vector3 GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS(float xPos, float yPos, float zPos, float heading, float xOffset, float yOffset, float zOffset) { return Function.Call<Vector3>(0x163E252DE035A133, xPos, yPos, zPos, heading, xOffset, yOffset, zOffset); }
+		public static Vector3 GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS(Vector3 vec, float heading, Vector3 offset) { return Function.Call<Vector3>(0x163E252DE035A133, vec.X, vec.Y, vec.Z, heading, offset.X, offset.Y, offset.Z); }
 		/// <summary>
 		/// Registers a door, hashes: https://github.com/femga/rdr3_discoveries/tree/master/doorHashes
 		/// </summary>
@@ -7002,6 +7163,7 @@ namespace RDR2.Native
 		public static Any _0xEBA314768FB35D58(Any p0) { return Function.Call<Any>(0xEBA314768FB35D58, p0); }
 		public static void _0x5230BF34EB0EC645(Any p0) { Function.Call(0x5230BF34EB0EC645, p0); }
 		public static bool DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS(float x, float y, float z, float radius, Hash hash, bool p5) { return Function.Call<bool>(0xBFA48E2FF417213F, x, y, z, radius, hash, p5); }
+		public static bool DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS(Vector3 vec, float radius, Hash hash, bool p5) { return Function.Call<bool>(0xBFA48E2FF417213F, vec.X, vec.Y, vec.Z, radius, hash, p5); }
 		public static bool IS_POINT_IN_ANGLED_AREA(float p0, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9, bool p10, bool p11) { return Function.Call<bool>(0x2A70BAE8883E4C81, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); }
 		public static void SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(Object _object, bool toggle) { Function.Call(0x4D89D607CB3DD1D2, _object, toggle); }
 		/// <summary>
@@ -7043,6 +7205,7 @@ namespace RDR2.Native
 		public static void _0x7FCD49388BC9B775(Any p0, Any p1) { Function.Call(0x7FCD49388BC9B775, p0, p1); }
 		public static Any _0xFA99E8E575F2FEF8(Any p0) { return Function.Call<Any>(0xFA99E8E575F2FEF8, p0); }
 		public static Object GET_RAYFIRE_MAP_OBJECT(float x, float y, float z, float radius, string name) { return Function.Call<Object>(0xB48FCED898292E52, x, y, z, radius, name); }
+		public static Object GET_RAYFIRE_MAP_OBJECT(Vector3 vec, float radius, string name) { return Function.Call<Object>(0xB48FCED898292E52, vec.X, vec.Y, vec.Z, radius, name); }
 		public static void SET_STATE_OF_RAYFIRE_MAP_OBJECT(Object _object, int state) { Function.Call(0x5C29F698D404C5E1, _object, state); }
 		public static int GET_STATE_OF_RAYFIRE_MAP_OBJECT(Object _object) { return Function.Call<int>(0x899BA936634A322E, _object); }
 		public static bool DOES_RAYFIRE_MAP_OBJECT_EXIST(Object _object) { return Function.Call<bool>(0x52AF537A0C5B8AAD, _object); }
@@ -7051,9 +7214,13 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/blob/master/objects/pickup_list.lua
 		/// </summary>
 		public static int CREATE_PICKUP(Hash pickupHash, float x, float y, float z, int flags, int p5, bool p6, Hash modelHash, int p8, float p9, Any p10) { return Function.Call<int>(0xFBA08C503DD5FA58, pickupHash, x, y, z, flags, p5, p6, modelHash, p8, p9, p10); }
+		public static int CREATE_PICKUP(Hash pickupHash, Vector3 vec, int flags, int p5, bool p6, Hash modelHash, int p8, float p9, Any p10) { return Function.Call<int>(0xFBA08C503DD5FA58, pickupHash, vec.X, vec.Y, vec.Z, flags, p5, p6, modelHash, p8, p9, p10); }
 		public static int CREATE_PICKUP_ROTATE(Hash pickupHash, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, int flags, int p8, int p9, bool p10, Hash modelHash, int p12, float p13, Any p14) { return Function.Call<int>(0x891804727E0A98B7, pickupHash, posX, posY, posZ, rotX, rotY, rotZ, flags, p8, p9, p10, modelHash, p12, p13, p14); }
+		public static int CREATE_PICKUP_ROTATE(Hash pickupHash, Vector3 vec, Vector3 rotation, int flags, int p8, int p9, bool p10, Hash modelHash, int p12, float p13, Any p14) { return Function.Call<int>(0x891804727E0A98B7, pickupHash, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, flags, p8, p9, p10, modelHash, p12, p13, p14); }
 		public static Object CREATE_AMBIENT_PICKUP(Hash pickupHash, float x, float y, float z, int flags, int value, Hash modelHash, bool p7, bool p8, int p9, float p10) { return Function.Call<Object>(0x673966A0C0FD7171, pickupHash, x, y, z, flags, value, modelHash, p7, p8, p9, p10); }
+		public static Object CREATE_AMBIENT_PICKUP(Hash pickupHash, Vector3 vec, int flags, int value, Hash modelHash, bool p7, bool p8, int p9, float p10) { return Function.Call<Object>(0x673966A0C0FD7171, pickupHash, vec.X, vec.Y, vec.Z, flags, value, modelHash, p7, p8, p9, p10); }
 		public static Object CREATE_PORTABLE_PICKUP(Hash pickupHash, float x, float y, float z, bool placeOnGround, Hash modelHash) { return Function.Call<Object>(0x2EAF1FDB2FB55698, pickupHash, x, y, z, placeOnGround, modelHash); }
+		public static Object CREATE_PORTABLE_PICKUP(Hash pickupHash, Vector3 vec, bool placeOnGround, Hash modelHash) { return Function.Call<Object>(0x2EAF1FDB2FB55698, pickupHash, vec.X, vec.Y, vec.Z, placeOnGround, modelHash); }
 		public static void ATTACH_PORTABLE_PICKUP_TO_PED(Object pickupObject, int ped) { Function.Call(0x8DC39368BDD57755, pickupObject, ped); }
 		public static void DETACH_PORTABLE_PICKUP_FROM_PED(Object pickupObject) { Function.Call(0xCF463D1E9A0AECB1, pickupObject); }
 		public static void _HIDE_PICKUP_OBJECT(Object pickupObject, bool toggle) { Function.Call(0x2777150CC7D9365E, pickupObject, toggle); }
@@ -7072,6 +7239,7 @@ namespace RDR2.Native
 		public static bool IS_OBJECT_A_PORTABLE_PICKUP(Object _object) { return Function.Call<bool>(0x0378C08504160D0D, _object); }
 		public static bool _IS_PICKUP_TYPE_VALID(Hash pickupHash) { return Function.Call<bool>(0x007BD043587F7C82, pickupHash); }
 		public static bool DOES_PICKUP_OF_TYPE_EXIST_IN_AREA(Hash pickupHash, float x, float y, float z, float radius) { return Function.Call<bool>(0xF9C36251F6E48E33, pickupHash, x, y, z, radius); }
+		public static bool DOES_PICKUP_OF_TYPE_EXIST_IN_AREA(Hash pickupHash, Vector3 vec, float radius) { return Function.Call<bool>(0xF9C36251F6E48E33, pickupHash, vec.X, vec.Y, vec.Z, radius); }
 		public static void SET_PICKUP_REGENERATION_TIME(int pickup, int duration) { Function.Call(0x78015C9B4B3ECC9D, pickup, duration); }
 		public static void FORCE_PICKUP_REGENERATE(Any p0) { Function.Call(0x758A5C1B3B1E1990, p0); }
 		public static void _0x94F3D956BFAEAE18(Any p0, Any p1, Any p2) { Function.Call(0x94F3D956BFAEAE18, p0, p1, p2); }
@@ -7127,6 +7295,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static Hash CONVERT_OLD_PICKUP_TYPE_TO_NEW(Hash pickupHash) { return Function.Call<Hash>(0x5EAAD83F8CFB4575, pickupHash); }
 		public static void SET_FORCE_OBJECT_THIS_FRAME(float x, float y, float z, float p3) { Function.Call(0xF538081986E49E9D, x, y, z, p3); }
+		public static void SET_FORCE_OBJECT_THIS_FRAME(Vector3 vec, float p3) { Function.Call(0xF538081986E49E9D, vec.X, vec.Y, vec.Z, p3); }
 		public static Any _0xD91E55B6C005EB09(Any p0, Any p1) { return Function.Call<Any>(0xD91E55B6C005EB09, p0, p1); }
 		/// <summary>
 		/// Old name: _MARK_OBJECT_FOR_DELETION
@@ -7274,13 +7443,20 @@ namespace RDR2.Native
 		public static void _0x6C3F12ECEB6D2E2A(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x6C3F12ECEB6D2E2A, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void _0x5A4E1A41E3A02AD0(Any p0, Any p1, Any p2) { Function.Call(0x5A4E1A41E3A02AD0, p0, p1, p2); }
 		public static unsafe bool GET_CLOSEST_VEHICLE_NODE(float x, float y, float z, Vector3* outPosition, int nodeType, float p5, float p6) { return Function.Call<bool>(0x240A18690AE96513, x, y, z, outPosition, nodeType, p5, p6); }
+		public static unsafe bool GET_CLOSEST_VEHICLE_NODE(Vector3 vec, Vector3* outPosition, int nodeType, float p5, float p6) { return Function.Call<bool>(0x240A18690AE96513, vec.X, vec.Y, vec.Z, outPosition, nodeType, p5, p6); }
 		public static Any _0xCA27A86CAA4E98ED(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0xCA27A86CAA4E98ED, p0, p1, p2, p3, p4, p5, p6); }
 		public static unsafe bool GET_CLOSEST_VEHICLE_NODE_WITH_HEADING(float x, float y, float z, Vector3* outPosition, float* outHeading, int nodeType, float p6, int p7) { return Function.Call<bool>(0x23CFFD4CCB243354, x, y, z, outPosition, outHeading, nodeType, p6, p7); }
+		public static unsafe bool GET_CLOSEST_VEHICLE_NODE_WITH_HEADING(Vector3 vec, Vector3* outPosition, float* outHeading, int nodeType, float p6, int p7) { return Function.Call<bool>(0x23CFFD4CCB243354, vec.X, vec.Y, vec.Z, outPosition, outHeading, nodeType, p6, p7); }
 		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE(float x, float y, float z, int nthClosest, Vector3* outPosition, int unknown1, float unknown2, Any unknown3) { return Function.Call<bool>(0x5A6D8DF6FBC5D0C4, x, y, z, nthClosest, outPosition, unknown1, unknown2, unknown3); }
+		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE(Vector3 vec, int nthClosest, Vector3* outPosition, int unknown1, float unknown2, Any unknown3) { return Function.Call<bool>(0x5A6D8DF6FBC5D0C4, vec.X, vec.Y, vec.Z, nthClosest, outPosition, unknown1, unknown2, unknown3); }
 		public static int GET_NTH_CLOSEST_VEHICLE_NODE_ID(float x, float y, float z, int nth, int nodetype, float p5, float p6) { return Function.Call<int>(0x116443008E5CEFC3, x, y, z, nth, nodetype, p5, p6); }
+		public static int GET_NTH_CLOSEST_VEHICLE_NODE_ID(Vector3 vec, int nth, int nodetype, float p5, float p6) { return Function.Call<int>(0x116443008E5CEFC3, vec.X, vec.Y, vec.Z, nth, nodetype, p5, p6); }
 		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(float x, float y, float z, int nthClosest, Vector3* outPosition, float* heading, Any* unknown1, int unknown2, float unknown3, float unknown4) { return Function.Call<bool>(0x591B40D4390DB54A, x, y, z, nthClosest, outPosition, heading, unknown1, unknown2, unknown3, unknown4); }
+		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(Vector3 vec, int nthClosest, Vector3* outPosition, float* heading, Any* unknown1, int unknown2, float unknown3, float unknown4) { return Function.Call<bool>(0x591B40D4390DB54A, vec.X, vec.Y, vec.Z, nthClosest, outPosition, heading, unknown1, unknown2, unknown3, unknown4); }
 		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING(float x, float y, float z, int nthClosest, Vector3* outPosition, float outHeading, Any p6, float p7, float p8) { return Function.Call<bool>(0x4114EAA8A7F7766D, x, y, z, nthClosest, outPosition, outHeading, p6, p7, p8); }
+		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING(Vector3 vec, int nthClosest, Vector3* outPosition, float outHeading, Any p6, float p7, float p8) { return Function.Call<bool>(0x4114EAA8A7F7766D, vec.X, vec.Y, vec.Z, nthClosest, outPosition, outHeading, p6, p7, p8); }
 		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(float x, float y, float z, float desiredX, float desiredY, float desiredZ, int nthClosest, Vector3* outPosition, float* outHeading, int nodetype, Any p10, Any p11) { return Function.Call<bool>(0x2FAC235A6062F14A, x, y, z, desiredX, desiredY, desiredZ, nthClosest, outPosition, outHeading, nodetype, p10, p11); }
+		public static unsafe bool GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(Vector3 vec, float desiredX, float desiredY, float desiredZ, int nthClosest, Vector3* outPosition, float* outHeading, int nodetype, Any p10, Any p11) { return Function.Call<bool>(0x2FAC235A6062F14A, vec.X, vec.Y, vec.Z, desiredX, desiredY, desiredZ, nthClosest, outPosition, outHeading, nodetype, p10, p11); }
 		/// <summary>
 		/// Returns true if the id is non zero.
 		/// </summary>
@@ -7288,20 +7464,26 @@ namespace RDR2.Native
 		public static unsafe void GET_VEHICLE_NODE_POSITION(int nodeId, Vector3* outPosition) { Function.Call(0x8E8D72FF24DEE1FB, nodeId, outPosition); }
 		public static bool GET_VEHICLE_NODE_IS_SWITCHED_OFF(int nodeID) { return Function.Call<bool>(0x28533DBDDF7C2C97, nodeID); }
 		public static unsafe Any GET_CLOSEST_ROAD(float x, float y, float z, float p3, int p4, Vector3* p5, Vector3* p6, Any* p7, Any* p8, float* p9, bool p10) { return Function.Call<Any>(0x132F52BBA570FE92, x, y, z, p3, p4, p5, p6, p7, p8, p9, p10); }
+		public static unsafe Any GET_CLOSEST_ROAD(Vector3 vec, float p3, int p4, Vector3* p5, Vector3* p6, Any* p7, Any* p8, float* p9, bool p10) { return Function.Call<Any>(0x132F52BBA570FE92, vec.X, vec.Y, vec.Z, p3, p4, p5, p6, p7, p8, p9, p10); }
 		public static bool ARE_NODES_LOADED_FOR_AREA(float x1, float y1, float x2, float y2) { return Function.Call<bool>(0xF7B79A50B905A30D, x1, y1, x2, y2); }
 		/// <summary>
 		/// Old name: REQUEST_PATHS_PREFER_ACCURATE_BOUNDINGSTRUCT
 		/// </summary>
 		public static bool REQUEST_PATH_NODES_IN_AREA_THIS_FRAME(float x1, float y1, float x2, float y2) { return Function.Call<bool>(0x07FB139B592FA687, x1, y1, x2, y2); }
 		public static unsafe bool GET_RANDOM_VEHICLE_NODE(float x, float y, float z, float radius, bool p4, bool p5, bool p6, Vector3* outPosition, int* nodeId) { return Function.Call<bool>(0x93E0DB8440B73A7D, x, y, z, radius, p4, p5, p6, outPosition, nodeId); }
+		public static unsafe bool GET_RANDOM_VEHICLE_NODE(Vector3 vec, float radius, bool p4, bool p5, bool p6, Vector3* outPosition, int* nodeId) { return Function.Call<bool>(0x93E0DB8440B73A7D, vec.X, vec.Y, vec.Z, radius, p4, p5, p6, outPosition, nodeId); }
 		public static unsafe void _GET_SPAWN_DATA_FOR_ROAD_NODE(int nodeId, float x, float y, float z, Vector3* outCoords, float* heading) { Function.Call(0xA3791B915B8B84C6, nodeId, x, y, z, outCoords, heading); }
+		public static unsafe void _GET_SPAWN_DATA_FOR_ROAD_NODE(int nodeId, Vector3 vec, Vector3* outCoords, float* heading) { Function.Call(0xA3791B915B8B84C6, nodeId, vec.X, vec.Y, vec.Z, outCoords, heading); }
 		/// <summary>
 		/// Gets a value indicating whether the specified position is on a road.
 		/// </summary>
 		public static bool IS_POINT_ON_ROAD(float x, float y, float z, int vehicle) { return Function.Call<bool>(0x125BF4ABFC536B09, x, y, z, vehicle); }
+		public static bool IS_POINT_ON_ROAD(Vector3 vec, int vehicle) { return Function.Call<bool>(0x125BF4ABFC536B09, vec.X, vec.Y, vec.Z, vehicle); }
 		public static void SET_PED_PATHS_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool unknown, Any p7) { Function.Call(0x34F060F4BF92E018, x1, y1, z1, x2, y2, z2, unknown, p7); }
+		public static void SET_PED_PATHS_IN_AREA(Vector3 vec1, Vector3 vec2, bool unknown, Any p7) { Function.Call(0x34F060F4BF92E018, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, unknown, p7); }
 		public static void _0xE5EF9DE716FF737E(Any p0, Any p1, Any p2) { Function.Call(0xE5EF9DE716FF737E, p0, p1, p2); }
 		public static unsafe bool GET_SAFE_COORD_FOR_PED(float x, float y, float z, bool onGround, Vector3* outPosition, int flags) { return Function.Call<bool>(0xB61C8E878A4199CA, x, y, z, onGround, outPosition, flags); }
+		public static unsafe bool GET_SAFE_COORD_FOR_PED(Vector3 vec, bool onGround, Vector3* outPosition, int flags) { return Function.Call<bool>(0xB61C8E878A4199CA, vec.X, vec.Y, vec.Z, onGround, outPosition, flags); }
 		public static void SET_PED_PATHS_BACK_TO_ORIGINAL(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { Function.Call(0xE04B48F2CC926253, p0, p1, p2, p3, p4, p5, p6); }
 		public static void _0xCF213A5FC3ABFC08(Any p0, Any p1, Any p2) { Function.Call(0xCF213A5FC3ABFC08, p0, p1, p2); }
 		public static void ADD_NAVMESH_REQUIRED_REGION(float x, float y, float radius) { Function.Call(0x387EAD7EE42F6685, x, y, radius); }
@@ -7309,6 +7491,7 @@ namespace RDR2.Native
 		/// Returns whether navmesh for the region is loaded.
 		/// </summary>
 		public static bool IS_NAVMESH_LOADED_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2) { return Function.Call<bool>(0xF813C7E63F9062A5, x1, y1, z1, x2, y2, z2); }
+		public static bool IS_NAVMESH_LOADED_IN_AREA(Vector3 vec1, Vector3 vec2) { return Function.Call<bool>(0xF813C7E63F9062A5, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		public static int GET_NUM_NAVMESHES_EXISTING_IN_AREA(float p0, float p1, float p2, float p3, float p4, float p5) { return Function.Call<int>(0x01708E8DD3FF8C65, p0, p1, p2, p3, p4, p5); }
 		public static bool _NAVMESH_ACTIVATE_SWAP(string name) { return Function.Call<bool>(0x7C334FF4D9215912, name); }
 		public static bool _NAVMESH_DEACTIVATE_SWAP(string name) { return Function.Call<bool>(0x527B97C203BB8606, name); }
@@ -7363,6 +7546,7 @@ namespace RDR2.Native
 		public static void _0x264E9A5CD78C338F(Any p0) { Function.Call(0x264E9A5CD78C338F, p0); }
 		public static void _0x869A7015BD4606E9(Any p0) { Function.Call(0x869A7015BD4606E9, p0); }
 		public static Any _SIMULATED_ROUTE_CREATE(float x1, float y1, float z1, float x2, float y2, float z2, int p6) { return Function.Call<Any>(0xFD5BB35AAB83FD48, x1, y1, z1, x2, y2, z2, p6); }
+		public static Any _SIMULATED_ROUTE_CREATE(Vector3 vec1, Vector3 vec2, int p6) { return Function.Call<Any>(0xFD5BB35AAB83FD48, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p6); }
 		public static void _SIMULATED_ROUTE_DELETE(Any p0) { Function.Call(0x4907D0E4FB26EE65, p0); }
 		public static bool _SIMULATED_ROUTE_EXISTS(Any p0) { return Function.Call<bool>(0x65A8196B8D7F5E0B, p0); }
 		public static bool SIMULATED_ROUTE_IS_LOADED(Any p0) { return Function.Call<bool>(0x240915043CB799D7, p0); }
@@ -7373,6 +7557,7 @@ namespace RDR2.Native
 	public static class PED
 	{
 		public static int CREATE_PED(Hash modelHash, float x, float y, float z, float heading, bool isNetwork, bool bScriptHostPed, bool p7, bool p8) { return Function.Call<int>(0xD49F9B0955C367DE, modelHash, x, y, z, heading, isNetwork, bScriptHostPed, p7, p8); }
+		public static int CREATE_PED(Hash modelHash, Vector3 vec, float heading, bool isNetwork, bool bScriptHostPed, bool p7, bool p8) { return Function.Call<int>(0xD49F9B0955C367DE, modelHash, vec.X, vec.Y, vec.Z, heading, isNetwork, bScriptHostPed, p7, p8); }
 		/// <summary>
 		/// Deletes the specified ped, then sets the handle pointed to by the pointer to NULL.
 		/// </summary>
@@ -7400,6 +7585,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static bool IS_PED_IN_ANY_VEHICLE(int ped, bool atGetIn) { return Function.Call<bool>(0x997ABD671D25CA0B, ped, atGetIn); }
 		public static void _0x9851DE7AEC10B4E1(float x, float y, float z, float p3, int p4, Any p5) { Function.Call(0x9851DE7AEC10B4E1, x, y, z, p3, p4, p5); }
+		public static void _0x9851DE7AEC10B4E1(Vector3 vec, float p3, int p4, Any p5) { Function.Call(0x9851DE7AEC10B4E1, vec.X, vec.Y, vec.Z, p3, p4, p5); }
 		/// <summary>
 		/// Gets a value indicating whether this ped's health is below its injured threshold.
 		/// 
@@ -7489,6 +7675,7 @@ namespace RDR2.Native
 		public static bool _0xB7DBB2986B87E230(int ped, float p1) { return Function.Call<bool>(0xB7DBB2986B87E230, ped, p1); }
 		public static bool _0xD355E2F1BB41087E(int ped, float p1) { return Function.Call<bool>(0xD355E2F1BB41087E, ped, p1); }
 		public static bool IS_ANY_PED_SHOOTING_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool p6, bool p7) { return Function.Call<bool>(0xA0D3D71EA1086C55, x1, y1, z1, x2, y2, z2, p6, p7); }
+		public static bool IS_ANY_PED_SHOOTING_IN_AREA(Vector3 vec1, Vector3 vec2, bool p6, bool p7) { return Function.Call<bool>(0xA0D3D71EA1086C55, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p6, p7); }
 		/// <summary>
 		/// Returns whether the specified ped is shooting.
 		/// </summary>
@@ -7595,8 +7782,10 @@ namespace RDR2.Native
 		/// The distance between these points, is the diagonal of a box (remember it's 3D).
 		/// </summary>
 		public static void SET_PED_NON_CREATION_AREA(float x1, float y1, float z1, float x2, float y2, float z2) { Function.Call(0xEE01041D559983EA, x1, y1, z1, x2, y2, z2); }
+		public static void SET_PED_NON_CREATION_AREA(Vector3 vec1, Vector3 vec2) { Function.Call(0xEE01041D559983EA, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		public static void CLEAR_PED_NON_CREATION_AREA() { Function.Call(0x2E05208086BA0651); }
 		public static void _ATTACH_VOLUME_TO_ENTITY(Volume volume, int entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int p8, bool p9) { Function.Call(0x7C00CFC48A782DC0, volume, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, p8, p9); }
+		public static void _ATTACH_VOLUME_TO_ENTITY(Volume volume, int entity, Vector3 offset, Vector3 rotation, int p8, bool p9) { Function.Call(0x7C00CFC48A782DC0, volume, entity, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, p8, p9); }
 		public static void _DETACH_VOLUME_FROM_ENTITY(Volume volume, int entity) { Function.Call(0x19C975B81BE53C28, volume, entity); }
 		public static void SET_PED_ONTO_MOUNT(int ped, int mount, int seatIndex, bool p3) { Function.Call(0x028F76B6E78246EB, ped, mount, seatIndex, p3); }
 		public static void _REMOVE_PED_FROM_MOUNT(int ped, bool p1, bool p2) { Function.Call(0x5337B721C51883A9, ped, p1, p2); }
@@ -7969,6 +8158,7 @@ namespace RDR2.Native
 		public static int COUNT_PEDS_IN_COMBAT_WITH_TARGET(int ped, int flag) { return Function.Call<int>(0x5407B7288D0478B7, ped, flag); }
 		public static int _GET_PEDS_IN_COMBAT_WITH_TARGET(int ped, ItemSet itemset, int flag) { return Function.Call<int>(0x7BE607DAFF382FD2, ped, itemset, flag); }
 		public static int COUNT_PEDS_IN_COMBAT_WITH_TARGET_WITHIN_RADIUS(int ped, float x, float y, float z, float radius, int flag) { return Function.Call<int>(0x336B3D200AB007CB, ped, x, y, z, radius, flag); }
+		public static int COUNT_PEDS_IN_COMBAT_WITH_TARGET_WITHIN_RADIUS(int ped, Vector3 vec, float radius, int flag) { return Function.Call<int>(0x336B3D200AB007CB, ped, vec.X, vec.Y, vec.Z, radius, flag); }
 		public static int GET_CURRENT_TARGET_FOR_PED(int ped) { return Function.Call<int>(0xCD66FEA29400A0B5, ped); }
 		public static void SET_PED_RELATIONSHIP_GROUP_DEFAULT_HASH(int ped, Hash hash) { Function.Call(0xADB3F206518799E8, ped, hash); }
 		public static Hash _GET_DEFAULT_RELATIONSHIP_GROUP_HASH(Hash modelHash) { return Function.Call<Hash>(0x3CC4A718C258BDD0, modelHash); }
@@ -7991,6 +8181,7 @@ namespace RDR2.Native
 		public static void _0xDC91F22F09BC6C2F(Hash group, bool p1) { Function.Call(0xDC91F22F09BC6C2F, group, p1); }
 		public static void _0x9629FAF6460D35CB(Hash group, bool p1) { Function.Call(0x9629FAF6460D35CB, group, p1); }
 		public static void _0x4E68C7EF706DF35D(int ped, float x, float y, float z, float p4, Hash relationshipGroup) { Function.Call(0x4E68C7EF706DF35D, ped, x, y, z, p4, relationshipGroup); }
+		public static void _0x4E68C7EF706DF35D(int ped, Vector3 vec, float p4, Hash relationshipGroup) { Function.Call(0x4E68C7EF706DF35D, ped, vec.X, vec.Y, vec.Z, p4, relationshipGroup); }
 		/// <summary>
 		/// Used in R* Script net_fetch (NET_FETCH_UPDATE_RECIPIENT_PROP_ILO_IN_COMBAT) and various SP Scripts
 		/// Params: p1 = 4/5/6, p5 = 40.f/100.f, coords = Player ped
@@ -7998,6 +8189,7 @@ namespace RDR2.Native
 		/// _GET_NUM_M* - _GET_PEDS_J*
 		/// </summary>
 		public static int _0x3ACCE14DFA6BA8C2(int ped, int p1, float x, float y, float z, float p5, ItemSet itemset) { return Function.Call<int>(0x3ACCE14DFA6BA8C2, ped, p1, x, y, z, p5, itemset); }
+		public static int _0x3ACCE14DFA6BA8C2(int ped, int p1, Vector3 vec, float p5, ItemSet itemset) { return Function.Call<int>(0x3ACCE14DFA6BA8C2, ped, p1, vec.X, vec.Y, vec.Z, p5, itemset); }
 		public static void SET_PED_TO_INFORM_RESPECTED_FRIENDS(int ped, float radius, int maxFriends) { Function.Call(0x112942C6E708F70B, ped, radius, maxFriends); }
 		/// <summary>
 		/// _IS_PED_RE*
@@ -8009,6 +8201,7 @@ namespace RDR2.Native
 		/// _C*
 		/// </summary>
 		public static unsafe int _0xF4860514AD354226(ScrHandle shockingEvent, float x, float y, float z, float p4, int* p5) { return Function.Call<int>(0xF4860514AD354226, shockingEvent, x, y, z, p4, p5); }
+		public static unsafe int _0xF4860514AD354226(ScrHandle shockingEvent, Vector3 vec, float p4, int* p5) { return Function.Call<int>(0xF4860514AD354226, shockingEvent, vec.X, vec.Y, vec.Z, p4, p5); }
 		/// <summary>
 		/// eventType: https://alloc8or.re/rdr3/doc/enums/eEventType.txt
 		/// </summary>
@@ -8101,6 +8294,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static bool _0xB05CC690CDE8A4A9(int groupId, float p1) { return Function.Call<bool>(0xB05CC690CDE8A4A9, groupId, p1); }
 		public static void ADD_CUSTOM_FORMATION_LOCATION(int groupId, float x, float y, float z, int position) { Function.Call(0x4E23CD07BD161E06, groupId, x, y, z, position); }
+		public static void ADD_CUSTOM_FORMATION_LOCATION(int groupId, Vector3 vec, int position) { Function.Call(0x4E23CD07BD161E06, groupId, vec.X, vec.Y, vec.Z, position); }
 		public static bool ADD_FORMATION_LOCATION(int groupId, float p1, float p2, float p3) { return Function.Call<bool>(0xB05945C1E9E60D91, groupId, p1, p2, p3); }
 		public static bool SET_FORMATION_POSITIONS_TARGET_RADIUS(int groupId, float radius) { return Function.Call<bool>(0x7CC7D3B7AF7FB71F, groupId, radius); }
 		public static void _SET_FORMATION_AUTO_ASSIGN_POSITION(int groupId, bool toggle) { Function.Call(0x478F6B9920446CE2, groupId, toggle); }
@@ -8450,7 +8644,9 @@ namespace RDR2.Native
 		/// </summary>
 		public static float _GET_PED_DRUNKNESS(int ped) { return Function.Call<float>(0x6FB76442469ABD68, ped); }
 		public static Vector3 GET_ANIM_INITIAL_OFFSET_POSITION(string animDict, string animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9) { return Function.Call<Vector3>(0xBE22B26DD764C040, animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9); }
+		public static Vector3 GET_ANIM_INITIAL_OFFSET_POSITION(string animDict, string animName, Vector3 vec, Vector3 rotation, float p8, int p9) { return Function.Call<Vector3>(0xBE22B26DD764C040, animDict, animName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p8, p9); }
 		public static Vector3 GET_ANIM_INITIAL_OFFSET_ROTATION(string animDict, string animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9) { return Function.Call<Vector3>(0x4B805E6046EE9E47, animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9); }
+		public static Vector3 GET_ANIM_INITIAL_OFFSET_ROTATION(string animDict, string animName, Vector3 vec, Vector3 rotation, float p8, int p9) { return Function.Call<Vector3>(0x4B805E6046EE9E47, animDict, animName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p8, p9); }
 		public static void SET_PED_RANDOM_COMPONENT_VARIATION(int ped, int p1) { Function.Call(0xC8A9481A01E63C28, ped, p1); }
 		public static void KNOCK_OFF_PED_PROP(int ped, bool p1, bool p2, bool p3, bool p4) { Function.Call(0x6FD7816A36615F48, ped, p1, p2, p3, p4); }
 		public static void SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(int ped, bool toggle) { Function.Call(0x9F8AA94D6D97DBF4, ped, toggle); }
@@ -8475,6 +8671,7 @@ namespace RDR2.Native
 		public static int _GET_PED_MODEL_SIZE_FROM_HASH(Hash modelHash) { return Function.Call<int>(0xA65AA1ACE81E5A77, modelHash); }
 		public static void REGISTER_TARGET(int ped, int targetPed, bool p2) { Function.Call(0x2F25D9AEFA34FBA2, ped, targetPed, p2); }
 		public static void _REGISTER_HATED_TARGETS_IN_AREA(int ped, float x, float y, float z, float radius) { Function.Call(0xD8736EFDA38EDC5C, ped, x, y, z, radius); }
+		public static void _REGISTER_HATED_TARGETS_IN_AREA(int ped, Vector3 vec, float radius) { Function.Call(0xD8736EFDA38EDC5C, ped, vec.X, vec.Y, vec.Z, radius); }
 		/// <summary>
 		/// Based on TASK_COMBAT_HATED_TARGETS_AROUND_PED, the parameters are likely similar (PedHandle, and area to attack in).
 		/// </summary>
@@ -8485,6 +8682,7 @@ namespace RDR2.Native
 		/// Gets the closest ped in a radius.
 		/// </summary>
 		public static unsafe bool GET_CLOSEST_PED(float x, float y, float z, float radius, bool p4, bool p5, int* outPed, bool p7, bool p8, bool p9, int pedType) { return Function.Call<bool>(0xC33AB876A77F8164, x, y, z, radius, p4, p5, outPed, p7, p8, p9, pedType); }
+		public static unsafe bool GET_CLOSEST_PED(Vector3 vec, float radius, bool p4, bool p5, int* outPed, bool p7, bool p8, bool p9, int pedType) { return Function.Call<bool>(0xC33AB876A77F8164, vec.X, vec.Y, vec.Z, radius, p4, p5, outPed, p7, p8, p9, pedType); }
 		public static bool CAN_PED_RAGDOLL(int ped) { return Function.Call<bool>(0x128F79EDCECE4FD5, ped); }
 		public static bool SET_PED_TO_RAGDOLL(int ped, int timeMin, int timeMax, int ragdollType, bool p4, bool p5, string p6) { return Function.Call<bool>(0xAE99FB955581844A, ped, timeMin, timeMax, ragdollType, p4, p5, p6); }
 		public static bool SET_PED_TO_RAGDOLL_WITH_FALL(int ped, int timeMin, int timeMax, int ragdollType, float falldirX, float falldirY, float falldirZ, float p7, float p8, float p9, float p10, float p11, float p12, float p13) { return Function.Call<bool>(0xD76632D99E4966C8, ped, timeMin, timeMax, ragdollType, falldirX, falldirY, falldirZ, p7, p8, p9, p10, p11, p12, p13); }
@@ -8551,11 +8749,14 @@ namespace RDR2.Native
 		public static void _0x88B2026A3B0BE33D(int ped, float p1) { Function.Call(0x88B2026A3B0BE33D, ped, p1); }
 		public static void SET_PED_DEFENSIVE_AREA_VOLUME(int ped, Volume volume, bool p2, bool p3, bool p4) { Function.Call(0xFC3DB99C8144CD81, ped, volume, p2, p3, p4); }
 		public static void SET_PED_SPHERE_DEFENSIVE_AREA(int ped, float x, float y, float z, float radius, bool p5, bool p6, bool p7) { Function.Call(0x9D3151A373974804, ped, x, y, z, radius, p5, p6, p7); }
+		public static void SET_PED_SPHERE_DEFENSIVE_AREA(int ped, Vector3 vec, float radius, bool p5, bool p6, bool p7) { Function.Call(0x9D3151A373974804, ped, vec.X, vec.Y, vec.Z, radius, p5, p6, p7); }
 		public static void _SET_PED_DEFENSIVE_SPHERE_ATTACHED_TO_ENTITY(int ped, int entity, float x, float y, float z, float radius, int p6, bool p7) { Function.Call(0x1854217C640B39EC, ped, entity, x, y, z, radius, p6, p7); }
+		public static void _SET_PED_DEFENSIVE_SPHERE_ATTACHED_TO_ENTITY(int ped, int entity, Vector3 vec, float radius, int p6, bool p7) { Function.Call(0x1854217C640B39EC, ped, entity, vec.X, vec.Y, vec.Z, radius, p6, p7); }
 		/// <summary>
 		/// _SET_PED_(A?)*
 		/// </summary>
 		public static void _SET_PED_DEFENSIVE_AREA_TO_ANGLED_AREA(int ped, float x1, float y1, float z1, float x2, float y2, float z2, Any p7, bool p8, bool p9, int entity, bool p11) { Function.Call(0xEB2BFE5D009F0331, ped, x1, y1, z1, x2, y2, z2, p7, p8, p9, entity, p11); }
+		public static void _SET_PED_DEFENSIVE_AREA_TO_ANGLED_AREA(int ped, Vector3 vec1, Vector3 vec2, Any p7, bool p8, bool p9, int entity, bool p11) { Function.Call(0xEB2BFE5D009F0331, ped, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p7, p8, p9, entity, p11); }
 		public static void SET_PED_DEFENSIVE_AREA_DIRECTION(int ped, float p1, float p2, float p3, bool p4) { Function.Call(0x413C6C763A4AFFAD, ped, p1, p2, p3, p4); }
 		/// <summary>
 		/// Ped will no longer get angry when you stay near him.
@@ -8572,6 +8773,7 @@ namespace RDR2.Native
 		/// _SET_PED_COMBAT_*
 		/// </summary>
 		public static void _0xCF0B19806473D324(int ped, float x, float y, float z) { Function.Call(0xCF0B19806473D324, ped, x, y, z); }
+		public static void _0xCF0B19806473D324(int ped, Vector3 vec) { Function.Call(0xCF0B19806473D324, ped, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// _RESET_PED_C*
 		/// </summary>
@@ -8598,6 +8800,7 @@ namespace RDR2.Native
 		/// _C*
 		/// </summary>
 		public static void _0xE1AADD0055D76603(int ped, int entity, int boneIndex1, int boneIndex2, float x, float y, float z, float p7, bool p8, bool p9, int p10) { Function.Call(0xE1AADD0055D76603, ped, entity, boneIndex1, boneIndex2, x, y, z, p7, p8, p9, p10); }
+		public static void _0xE1AADD0055D76603(int ped, int entity, int boneIndex1, int boneIndex2, Vector3 vec, float p7, bool p8, bool p9, int p10) { Function.Call(0xE1AADD0055D76603, ped, entity, boneIndex1, boneIndex2, vec.X, vec.Y, vec.Z, p7, p8, p9, p10); }
 		/// <summary>
 		/// _C*
 		/// </summary>
@@ -8702,10 +8905,12 @@ namespace RDR2.Native
 		/// offsetZ: The Z-component of the offset to add to the position relative to the bone's rotation.
 		/// </summary>
 		public static Vector3 GET_PED_BONE_COORDS(int ped, int boneId, float offsetX, float offsetY, float offsetZ) { return Function.Call<Vector3>(0x17C07FC640E86B4E, ped, boneId, offsetX, offsetY, offsetZ); }
+		public static Vector3 GET_PED_BONE_COORDS(int ped, int boneId, Vector3 offset) { return Function.Call<Vector3>(0x17C07FC640E86B4E, ped, boneId, offset.X, offset.Y, offset.Z); }
 		/// <summary>
 		/// blockingFlags: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/blob/main/ADD_SCENARIO_BLOCKING_AREA/README.md
 		/// </summary>
 		public static int ADD_SCENARIO_BLOCKING_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool p6, int blockingFlags) { return Function.Call<int>(0x1B5C85C612E5256E, x1, y1, z1, x2, y2, z2, p6, blockingFlags); }
+		public static int ADD_SCENARIO_BLOCKING_AREA(Vector3 vec1, Vector3 vec2, bool p6, int blockingFlags) { return Function.Call<int>(0x1B5C85C612E5256E, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p6, blockingFlags); }
 		public static void REMOVE_SCENARIO_BLOCKING_AREAS() { Function.Call(0xD37401D78A929A49); }
 		public static void REMOVE_SCENARIO_BLOCKING_AREA(Any p0, bool p1) { Function.Call(0x31D16B74C6E29D66, p0, p1); }
 		/// <summary>
@@ -8729,6 +8934,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static bool _0x1148F706CF4EBDDA(int ped, Hash p1, int p2) { return Function.Call<bool>(0x1148F706CF4EBDDA, ped, p1, p2); }
 		public static bool SET_PED_PANIC_EXIT_SCENARIO(int ped, float x, float y, float z) { return Function.Call<bool>(0xFE07FF6495D52E2A, ped, x, y, z); }
+		public static bool SET_PED_PANIC_EXIT_SCENARIO(int ped, Vector3 vec) { return Function.Call<bool>(0xFE07FF6495D52E2A, ped, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// If toggle is true, when the ped is using a scenario he will stop it and become scared
 		/// If toggle is false, the ped will not be scared anymore and continue his scenario
@@ -8741,6 +8947,7 @@ namespace RDR2.Native
 		/// Old name: _SET_PED_SHOULD_PLAY_DIRECTED_SCENARIO_EXIT
 		/// </summary>
 		public static bool SET_PED_SHOULD_PLAY_DIRECTED_NORMAL_SCENARIO_EXIT(int ped, float x, float y, float z) { return Function.Call<bool>(0xEC6935EBE0847B90, ped, x, y, z); }
+		public static bool SET_PED_SHOULD_PLAY_DIRECTED_NORMAL_SCENARIO_EXIT(int ped, Vector3 vec) { return Function.Call<bool>(0xEC6935EBE0847B90, ped, vec.X, vec.Y, vec.Z); }
 		public static void SET_PED_SHOULD_PLAY_NORMAL_SCENARIO_EXIT(int ped) { Function.Call(0xA3A9299C4F2ADB98, ped); }
 		public static void SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(int ped) { Function.Call(0xF1C03A5352243A30, ped); }
 		/// <summary>
@@ -8751,18 +8958,22 @@ namespace RDR2.Native
 		/// 3 - REACT_LOOK_HIGH
 		/// </summary>
 		public static bool SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(int ped, float x, float y, float z, int lookIntensity) { return Function.Call<bool>(0xEEED8FAFEC331A70, ped, x, y, z, lookIntensity); }
+		public static bool SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(int ped, Vector3 vec, int lookIntensity) { return Function.Call<bool>(0xEEED8FAFEC331A70, ped, vec.X, vec.Y, vec.Z, lookIntensity); }
 		/// <summary>
 		/// lookIntensity: see SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT
 		/// </summary>
 		public static bool SET_PED_SHOULD_PLAY_COMBAT_SCENARIO_EXIT(int ped, float x, float y, float z, int lookIntensity) { return Function.Call<bool>(0x802092B07E3B1EEA, ped, x, y, z, lookIntensity); }
+		public static bool SET_PED_SHOULD_PLAY_COMBAT_SCENARIO_EXIT(int ped, Vector3 vec, int lookIntensity) { return Function.Call<bool>(0x802092B07E3B1EEA, ped, vec.X, vec.Y, vec.Z, lookIntensity); }
 		/// <summary>
 		/// lookIntensity: see SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT
 		/// </summary>
 		public static bool SET_PED_SHOULD_PLAY_EMOTIONAL_SCENARIO_EXIT(int ped, float x, float y, float z, int lookIntensity, bool p5) { return Function.Call<bool>(0x62FDAD5E01D2DD47, ped, x, y, z, lookIntensity, p5); }
+		public static bool SET_PED_SHOULD_PLAY_EMOTIONAL_SCENARIO_EXIT(int ped, Vector3 vec, int lookIntensity, bool p5) { return Function.Call<bool>(0x62FDAD5E01D2DD47, ped, vec.X, vec.Y, vec.Z, lookIntensity, p5); }
 		/// <summary>
 		/// lookIntensity: see SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT
 		/// </summary>
 		public static bool SET_PED_SHOULD_PLAY_QUICK_SCENARIO_EXIT(int ped, float x, float y, float z, int lookIntensity, bool p5) { return Function.Call<bool>(0x463803429297117C, ped, x, y, z, lookIntensity, p5); }
+		public static bool SET_PED_SHOULD_PLAY_QUICK_SCENARIO_EXIT(int ped, Vector3 vec, int lookIntensity, bool p5) { return Function.Call<bool>(0x463803429297117C, ped, vec.X, vec.Y, vec.Z, lookIntensity, p5); }
 		public static bool _0xF9331B3A314EB49D(int ped) { return Function.Call<bool>(0xF9331B3A314EB49D, ped); }
 		public static void _0xE735A7DA22E88359(Any p0) { Function.Call(0xE735A7DA22E88359, p0); }
 		public static Any _0x82CB0F3F0C7785E5(Any p0) { return Function.Call<Any>(0x82CB0F3F0C7785E5, p0); }
@@ -8854,6 +9065,7 @@ namespace RDR2.Native
 		/// Params: p5 = -1 in R* Scripts
 		/// </summary>
 		public static Any _SHOOT_TRIGGER_AT_COORDS(int ped, float x, float y, float z, int p4, float p5, int p6, float p7) { return Function.Call<Any>(0x4C57F27D1554E6B0, ped, x, y, z, p4, p5, p6, p7); }
+		public static Any _SHOOT_TRIGGER_AT_COORDS(int ped, Vector3 vec, int p4, float p5, int p6, float p7) { return Function.Call<Any>(0x4C57F27D1554E6B0, ped, vec.X, vec.Y, vec.Z, p4, p5, p6, p7); }
 		public static bool _IS_THIS_MODEL_A_HORSE(Hash model) { return Function.Call<bool>(0x772A1969F649E902, model); }
 		public static void SET_PED_MODEL_IS_SUPPRESSED(int ped, bool toggle) { Function.Call(0xE163A4BCE4DE6F11, ped, toggle); }
 		public static bool _IS_PED_MODEL_SUPPRESSED(Hash model) { return Function.Call<bool>(0xAA9F048DCF69B6DC, model); }
@@ -8871,6 +9083,7 @@ namespace RDR2.Native
 		/// _IS_PED_IN_*
 		/// </summary>
 		public static bool _0x078076AB50FB117F(int ped, float x, float y, float z, float p4, bool p5) { return Function.Call<bool>(0x078076AB50FB117F, ped, x, y, z, p4, p5); }
+		public static bool _0x078076AB50FB117F(int ped, Vector3 vec, float p4, bool p5) { return Function.Call<bool>(0x078076AB50FB117F, ped, vec.X, vec.Y, vec.Z, p4, p5); }
 		/// <summary>
 		/// SET_PED_CAN_*
 		/// </summary>
@@ -9105,6 +9318,7 @@ namespace RDR2.Native
 		public static void SET_PED_FLEE_ATTRIBUTES(int ped, int attributeFlags, bool enable) { Function.Call(0x70A2D1137C8ED7C9, ped, attributeFlags, enable); }
 		public static bool _IS_PED_COWERING(int ped) { return Function.Call<bool>(0xB086C8C0F5701D14, ped); }
 		public static bool IS_ANY_PED_NEAR_POINT(float x, float y, float z, float radius) { return Function.Call<bool>(0x083961498679DC9F, x, y, z, radius); }
+		public static bool IS_ANY_PED_NEAR_POINT(Vector3 vec, float radius) { return Function.Call<bool>(0x083961498679DC9F, vec.X, vec.Y, vec.Z, radius); }
 		public static void FORCE_PED_AI_AND_ANIMATION_UPDATE(int ped, bool p1, bool p2) { Function.Call(0x2208438012482A1A, ped, p1, p2); }
 		/// <summary>
 		/// _FORCE_PED_*
@@ -9126,6 +9340,7 @@ namespace RDR2.Native
 		public static void _GIVE_PED_HASH_COMMAND(int ped, Hash commandHash, float activationDuration) { Function.Call(0xD65FDC686A031C83, ped, commandHash, activationDuration); }
 		public static bool _GET_IS_PED_COMMAND_HASH_PRESENT(int ped, Hash commandHash) { return Function.Call<bool>(0x68821369A2CEADD5, ped, commandHash); }
 		public static bool IS_PED_HEADING_TOWARDS_POSITION(int ped, float x, float y, float z, float p4) { return Function.Call<bool>(0xFCF37A457CB96DC0, ped, x, y, z, p4); }
+		public static bool IS_PED_HEADING_TOWARDS_POSITION(int ped, Vector3 vec, float p4) { return Function.Call<bool>(0xFCF37A457CB96DC0, ped, vec.X, vec.Y, vec.Z, p4); }
 		/// <summary>
 		/// Not implemented.
 		/// </summary>
@@ -9252,10 +9467,12 @@ namespace RDR2.Native
 		/// Params: p4 = 35.f, duration = 5000 in R* Scripts
 		/// </summary>
 		public static void SPAWNPOINTS_START_SEARCH(float x, float y, float z, float width, float p4, int spawnpointsFlag, float p6, int duration, float p8) { Function.Call(0x2DF9038C90AD5264, x, y, z, width, p4, spawnpointsFlag, p6, duration, p8); }
+		public static void SPAWNPOINTS_START_SEARCH(Vector3 vec, float width, float p4, int spawnpointsFlag, float p6, int duration, float p8) { Function.Call(0x2DF9038C90AD5264, vec.X, vec.Y, vec.Z, width, p4, spawnpointsFlag, p6, duration, p8); }
 		/// <summary>
 		/// Searching area between coords 1 and 2
 		/// </summary>
 		public static void SPAWNPOINTS_START_SEARCH_IN_ANGLED_AREA(float x1, float y1, float z1, float x2, float y2, float z2, float width, int spawnpointsFlag, float p8, int duration, float p10) { Function.Call(0xB2AFF10216DEFA2F, x1, y1, z1, x2, y2, z2, width, spawnpointsFlag, p8, duration, p10); }
+		public static void SPAWNPOINTS_START_SEARCH_IN_ANGLED_AREA(Vector3 vec1, Vector3 vec2, float width, int spawnpointsFlag, float p8, int duration, float p10) { Function.Call(0xB2AFF10216DEFA2F, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, width, spawnpointsFlag, p8, duration, p10); }
 		public static void _SPAWNPOINTS_START_SEARCH_WITH_VOLUME(Volume volume, int spawnpointsFlag, float p2, int duration, float p4) { Function.Call(0x83ED1FC9DF3411F5, volume, spawnpointsFlag, p2, duration, p4); }
 		public static void SPAWNPOINTS_CANCEL_SEARCH() { Function.Call(0xFEE4A5459472A9F8); }
 		public static bool SPAWNPOINTS_IS_SEARCH_ACTIVE() { return Function.Call<bool>(0x3C67506996001F5E); }
@@ -9265,6 +9482,7 @@ namespace RDR2.Native
 		public static unsafe void SPAWNPOINTS_GET_SEARCH_RESULT(int randomInt, float* x, Any* y, float* z) { Function.Call(0x280C7E3AC7F56E90, randomInt, x, y, z); }
 		public static unsafe void SPAWNPOINTS_GET_SEARCH_RESULT_FLAGS(Any p0, Any* p1) { Function.Call(0xB782F8238512BAD5, p0, p1); }
 		public static void SET_IK_TARGET(int ped, int ikIndex, int entityLookAt, int boneLookAt, float offsetX, float offsetY, float offsetZ, Any p7, int blendInDuration, int blendOutDuration) { Function.Call(0xC32779C16FCEECD9, ped, ikIndex, entityLookAt, boneLookAt, offsetX, offsetY, offsetZ, p7, blendInDuration, blendOutDuration); }
+		public static void SET_IK_TARGET(int ped, int ikIndex, int entityLookAt, int boneLookAt, Vector3 offset, Any p7, int blendInDuration, int blendOutDuration) { Function.Call(0xC32779C16FCEECD9, ped, ikIndex, entityLookAt, boneLookAt, offset.X, offset.Y, offset.Z, p7, blendInDuration, blendOutDuration); }
 		/// <summary>
 		/// For more information, see common:/data/emotional_presets.meta
 		/// </summary>
@@ -9292,6 +9510,7 @@ namespace RDR2.Native
 		public static float _GET_PED_LOD_MULTIPLIER(int ped) { return Function.Call<float>(0x1B710E6F4AB69341, ped); }
 		public static Any _0xA218D2BBCAA7388C(Any p0, Any p1) { return Function.Call<Any>(0xA218D2BBCAA7388C, p0, p1); }
 		public static bool IS_ANY_HOSTILE_PED_NEAR_POINT(int ped, float x, float y, float z, float radius) { return Function.Call<bool>(0x68772DB2B2526F9F, ped, x, y, z, radius); }
+		public static bool IS_ANY_HOSTILE_PED_NEAR_POINT(int ped, Vector3 vec, float radius) { return Function.Call<bool>(0x68772DB2B2526F9F, ped, vec.X, vec.Y, vec.Z, radius); }
 		public static void _0xCBDE59C48F2B06F5(Any p0, Any p1, Any p2) { Function.Call(0xCBDE59C48F2B06F5, p0, p1, p2); }
 		public static void _0x6A190B94C2541A99(Any p0) { Function.Call(0x6A190B94C2541A99, p0); }
 		/// <summary>
@@ -9659,6 +9878,7 @@ namespace RDR2.Native
 		/// Only used in SP scripts, for example odriscolls1: BOOLS: true, true, true, false, false
 		/// </summary>
 		public static int _CREATE_METAPED_PED(int requestId, float x, float y, float z, float heading, bool p5, bool p6, bool p7, bool p8, bool p9) { return Function.Call<int>(0x0BCD4091C8EABA42, requestId, x, y, z, heading, p5, p6, p7, p8, p9); }
+		public static int _CREATE_METAPED_PED(int requestId, Vector3 vec, float heading, bool p5, bool p6, bool p7, bool p8, bool p9) { return Function.Call<int>(0x0BCD4091C8EABA42, requestId, vec.X, vec.Y, vec.Z, heading, p5, p6, p7, p8, p9); }
 		public static void _RELEASE_METAPED_PED_REQUEST(int requestId) { Function.Call(0x3972F78A78B5D9DF, requestId); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/blob/master/clothes/metaped_outfits.lua
@@ -9688,12 +9908,14 @@ namespace RDR2.Native
 		/// Creates a pickup-able metaped component. asset doesn't seems to be related to component hashes. Hash example : 0xD20354AB (https ://i.imgur.com/dzHkcDb.png)
 		/// </summary>
 		public static int _CREATE_METAPED_ASSET(Hash asset, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, bool p7, bool p8, bool p9) { return Function.Call<int>(0x9641A9A20310F6B8, asset, posX, posY, posZ, rotX, rotY, rotZ, p7, p8, p9); }
+		public static int _CREATE_METAPED_ASSET(Hash asset, Vector3 vec, Vector3 rotation, bool p7, bool p8, bool p9) { return Function.Call<int>(0x9641A9A20310F6B8, asset, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p7, p8, p9); }
 		public static bool _HAS_METAPED_OUTFIT_LOADED(int requestId) { return Function.Call<bool>(0x610438375E5D1801, requestId); }
 		public static bool _IS_METAPED_OUTFIT_REQUEST_VALID(int requestId) { return Function.Call<bool>(0xB25E57FC8E37114D, requestId); }
 		/// <summary>
 		/// Creates metaped from ped outfit requestId. See _REQUEST_METAPED_OUTFIT
 		/// </summary>
 		public static int _CREATE_METAPED_OUTFIT_PED(int requestId, float x, float y, float z, float heading, bool p5, bool p6, bool p7, bool p8) { return Function.Call<int>(0xEAF682A14F8E5F53, requestId, x, y, z, heading, p5, p6, p7, p8); }
+		public static int _CREATE_METAPED_OUTFIT_PED(int requestId, Vector3 vec, float heading, bool p5, bool p6, bool p7, bool p8) { return Function.Call<int>(0xEAF682A14F8E5F53, requestId, vec.X, vec.Y, vec.Z, heading, p5, p6, p7, p8); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/blob/master/clothes/metaped_outfits.lua
 		/// </summary>
@@ -9769,6 +9991,7 @@ namespace RDR2.Native
 		/// _CREATE_[P-Z]
 		/// </summary>
 		public static int _CREATE_GRAVITY_WELL(float xPos, float yPos, float zPos, float heading, float radius, float p5, float p6, float p7, bool stopAtDestination) { return Function.Call<int>(0x4F5EBE70081E5A20, xPos, yPos, zPos, heading, radius, p5, p6, p7, stopAtDestination); }
+		public static int _CREATE_GRAVITY_WELL(Vector3 vec, float heading, float radius, float p5, float p6, float p7, bool stopAtDestination) { return Function.Call<int>(0x4F5EBE70081E5A20, vec.X, vec.Y, vec.Z, heading, radius, p5, p6, p7, stopAtDestination); }
 		/// <summary>
 		/// Removes gravity well by handle returned from 0x4F5EBE70081E5A20
 		/// </summary>
@@ -9995,6 +10218,7 @@ namespace RDR2.Native
 		/// _IS_N* - _IS_P*
 		/// </summary>
 		public static bool _0x6507AC3BD7C99009(float x, float y, float z, float p3) { return Function.Call<bool>(0x6507AC3BD7C99009, x, y, z, p3); }
+		public static bool _0x6507AC3BD7C99009(Vector3 vec, float p3) { return Function.Call<bool>(0x6507AC3BD7C99009, vec.X, vec.Y, vec.Z, p3); }
 		/// <summary>
 		/// Returns how deep the water is below the ped (if in water)
 		/// -1.0f = Not in water
@@ -10074,8 +10298,10 @@ namespace RDR2.Native
 	{
 		public static void _0x7A1BD123E5CDB6E5() { Function.Call(0x7A1BD123E5CDB6E5); }
 		public static void PERSISTENCE_REMOVE_ALL_ENTITIES_IN_AREA(float x, float y, float z, float radius) { Function.Call(0x9D16896F0DBE78A2, x, y, z, radius); }
+		public static void PERSISTENCE_REMOVE_ALL_ENTITIES_IN_AREA(Vector3 vec, float radius) { Function.Call(0x9D16896F0DBE78A2, vec.X, vec.Y, vec.Z, radius); }
 		public static void _0x065887B694359799(Any p0) { Function.Call(0x065887B694359799, p0); }
 		public static void _0xFC9806DA9A460093(float x1, float y1, float z1, float x2, float y2, float z2) { Function.Call(0xFC9806DA9A460093, x1, y1, z1, x2, y2, z2); }
+		public static void _0xFC9806DA9A460093(Vector3 vec1, Vector3 vec2) { Function.Call(0xFC9806DA9A460093, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z); }
 		/// <summary>
 		/// nullsub, doesn't do anything
 		/// </summary>
@@ -10098,7 +10324,9 @@ namespace RDR2.Native
 		public static void PERSISTENCE_ADD_SCENARIO_LOOTED(int scenario) { Function.Call(0x8245C1F3262F4AC2, scenario); }
 		public static bool _PERSISTENCE_IS_SCENARIO_MARKED_AS_LOOTED(int scenario) { return Function.Call<bool>(0xFB7CF1DE938A3E22, scenario); }
 		public static bool _PERSISTENCE_IS_SCENARIO_MARKED_AS_LOOTED_AT_COORDS(float x, float y, float z) { return Function.Call<bool>(0xB6E1A185C2B9319A, x, y, z); }
+		public static bool _PERSISTENCE_IS_SCENARIO_MARKED_AS_LOOTED_AT_COORDS(Vector3 vec) { return Function.Call<bool>(0xB6E1A185C2B9319A, vec.X, vec.Y, vec.Z); }
 		public static bool _PERSISTENCE_IS_SCENARIO_MARKED_AS_LOOTED_AT_COORDS_WITH_MODEL(float x, float y, float z, Hash model) { return Function.Call<bool>(0x188313616D184213, x, y, z, model); }
+		public static bool _PERSISTENCE_IS_SCENARIO_MARKED_AS_LOOTED_AT_COORDS_WITH_MODEL(Vector3 vec, Hash model) { return Function.Call<bool>(0x188313616D184213, vec.X, vec.Y, vec.Z, model); }
 		public static void _0x66DAA3A9274E8E82() { Function.Call(0x66DAA3A9274E8E82); }
 	}
 
@@ -10110,7 +10338,9 @@ namespace RDR2.Native
 		/// Rope types 0, 15 and 18 have proper physics for hanging objects (taut, do not sag, small to medium diameter, good aspect for a rope)
 		/// </summary>
 		public static unsafe int ADD_ROPE(float x, float y, float z, float rotX, float rotY, float rotZ, float length, int ropeType, float maxLength, float minLength, float p10, bool p11, bool p12, bool rigid, float p14, bool breakWhenShot, Any* unkPtr, bool p17) { return Function.Call<int>(0xE832D760399EB220, x, y, z, rotX, rotY, rotZ, length, ropeType, maxLength, minLength, p10, p11, p12, rigid, p14, breakWhenShot, unkPtr, p17); }
+		public static unsafe int ADD_ROPE(Vector3 vec, Vector3 rotation, float length, int ropeType, float maxLength, float minLength, float p10, bool p11, bool p12, bool rigid, float p14, bool breakWhenShot, Any* unkPtr, bool p17) { return Function.Call<int>(0xE832D760399EB220, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, length, ropeType, maxLength, minLength, p10, p11, p12, rigid, p14, breakWhenShot, unkPtr, p17); }
 		public static int _ADD_ROPE_2(float x, float y, float z, float rotX, float rotY, float rotZ, float length, int ropeType, bool isNetworked, int p9, float p10) { return Function.Call<int>(0xE9C59F6809373A99, x, y, z, rotX, rotY, rotZ, length, ropeType, isNetworked, p9, p10); }
+		public static int _ADD_ROPE_2(Vector3 vec, Vector3 rotation, float length, int ropeType, bool isNetworked, int p9, float p10) { return Function.Call<int>(0xE9C59F6809373A99, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, length, ropeType, isNetworked, p9, p10); }
 		public static unsafe void DELETE_ROPE(int* ropeId) { Function.Call(0x52B4829281364649, ropeId); }
 		public static void _RELEASE_ROPE(int ropeId) { Function.Call(0x6076213101A47B3B, ropeId); }
 		public static void DELETE_CHILD_ROPE(int ropeId) { Function.Call(0xAA5D6B1888E4DB20, ropeId); }
@@ -10118,6 +10348,7 @@ namespace RDR2.Native
 		/// ropeTop returns top half of rope, ropeBottom returns bottom half of rope
 		/// </summary>
 		public static unsafe void _BREAK_ROPE(int* ropeId, int* ropeTop, int* ropeBottom, float offsetX, float offsetY, float offsetZ, int p6) { Function.Call(0x4CFA2B7FAE115ECB, ropeId, ropeTop, ropeBottom, offsetX, offsetY, offsetZ, p6); }
+		public static unsafe void _BREAK_ROPE(int* ropeId, int* ropeTop, int* ropeBottom, Vector3 offset, int p6) { Function.Call(0x4CFA2B7FAE115ECB, ropeId, ropeTop, ropeBottom, offset.X, offset.Y, offset.Z, p6); }
 		public static bool DOES_ROPE_EXIST(int ropeId) { return Function.Call<bool>(0xFD5448BE3111ED96, ropeId); }
 		public static bool _IS_ROPE_BROKEN(int ropeId) { return Function.Call<bool>(0x79C2BEC82CFD7F7F, ropeId); }
 		public static unsafe void _0x7A54D82227A139DB(int* ropeId, Any p1) { Function.Call(0x7A54D82227A139DB, ropeId, p1); }
@@ -10144,6 +10375,7 @@ namespace RDR2.Native
 		public static bool _IS_ROPE_ATTACHED_TO_ENTITY(int ropeId, int entity) { return Function.Call<bool>(0x9B4F7E3E4F9C77B3, ropeId, entity); }
 		public static void DETACH_ROPE_FROM_ENTITY(int ropeId, int entity) { Function.Call(0xBCF3026912A8647D, ropeId, entity); }
 		public static void _HITCH_HORSE(int horse, float x, float y, float z) { Function.Call(0x06AADE17334F7A40, horse, x, y, z); }
+		public static void _HITCH_HORSE(int horse, Vector3 vec) { Function.Call(0x06AADE17334F7A40, horse, vec.X, vec.Y, vec.Z); }
 		public static void _UNHITCH_HORSE(int horse) { Function.Call(0x0348469DAA17576C, horse); }
 		public static void _0x6EA0E93CFFA472CC(Any p0) { Function.Call(0x6EA0E93CFFA472CC, p0); }
 		public static void _0xBDDA142759307528(Any p0) { Function.Call(0xBDDA142759307528, p0); }
@@ -10475,6 +10707,7 @@ namespace RDR2.Native
 		public static bool IS_SYSTEM_UI_BEING_DISPLAYED() { return Function.Call<bool>(0x908258B6209E71F7); }
 		public static void _0xD48227263E3D06AE(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9) { Function.Call(0xD48227263E3D06AE, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static void _0x3946FC742AC305CD(int player, int ped, string p2, float x, float y, float z, int targetEntity, string p7) { Function.Call(0x3946FC742AC305CD, player, ped, p2, x, y, z, targetEntity, p7); }
+		public static void _0x3946FC742AC305CD(int player, int ped, string p2, Vector3 vec, int targetEntity, string p7) { Function.Call(0x3946FC742AC305CD, player, ped, p2, vec.X, vec.Y, vec.Z, targetEntity, p7); }
 		public static void _0xA28056CD1B04B250(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10) { Function.Call(0xA28056CD1B04B250, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10); }
 		/// <summary>
 		/// _DISABLE_*(PLAYER_FORCED_INTERACTION_LOCKON?)
@@ -10639,6 +10872,7 @@ namespace RDR2.Native
 		public static bool _IS_SECONDARY_SPECIAL_ABILITY_ACTIVE(int player) { return Function.Call<bool>(0x45AB66D02B601FA7, player); }
 		public static void _0x107F2A66E1C4C83A(Any p0) { Function.Call(0x107F2A66E1C4C83A, p0); }
 		public static void START_PLAYER_TELEPORT(int player, float x, float y, float z, float heading, bool p5, bool p6, bool p7, bool p8) { Function.Call(0xDF8822C55EDDA65B, player, x, y, z, heading, p5, p6, p7, p8); }
+		public static void START_PLAYER_TELEPORT(int player, Vector3 vec, float heading, bool p5, bool p6, bool p7, bool p8) { Function.Call(0xDF8822C55EDDA65B, player, vec.X, vec.Y, vec.Z, heading, p5, p6, p7, p8); }
 		public static void _0x2C2D287748E8E9B7(bool p0) { Function.Call(0x2C2D287748E8E9B7, p0); }
 		public static bool UPDATE_PLAYER_TELEPORT(int player) { return Function.Call<bool>(0xC39DCE4672CBFBC1, player); }
 		/// <summary>
@@ -10978,6 +11212,7 @@ namespace RDR2.Native
 		public static int GET_NUM_MODELS_IN_POPULATION_SET(Hash popSetHash) { return Function.Call<int>(0xA1E3171ED0E47564, popSetHash); }
 		public static Hash GET_PED_MODEL_NAME_IN_POPULATION_SET(Hash popSetHash, int index) { return Function.Call<Hash>(0x3EAFA1C533B7139E, popSetHash, index); }
 		public static Hash GET_RANDOM_MODEL_FROM_POPULATION_SET(Hash popSetHash, int flags, Hash p2, bool p3, bool p4, float x, float y, float z) { return Function.Call<Hash>(0x6B12ED8C77E8567B, popSetHash, flags, p2, p3, p4, x, y, z); }
+		public static Hash GET_RANDOM_MODEL_FROM_POPULATION_SET(Hash popSetHash, int flags, Hash p2, bool p3, bool p4, Vector3 vec) { return Function.Call<Hash>(0x6B12ED8C77E8567B, popSetHash, flags, p2, p3, p4, vec.X, vec.Y, vec.Z); }
 		public static PopZone _CREATE_POPZONE_FROM_VOLUME(Volume volume) { return Function.Call<PopZone>(0x9AC1C64FE46B6D09, volume); }
 		public static void _DELETE_SCRIPT_POPZONE(PopZone popZone) { Function.Call(0xA6E6A66FC4CA4224, popZone); }
 		public static bool _IS_POPZONE_VALID(PopZone popZone) { return Function.Call<bool>(0xA5BD585005EFCAD4, popZone); }
@@ -11077,18 +11312,23 @@ namespace RDR2.Native
 		public static void _DELETE_PROP_SET(PropSet propSet, bool p1, bool p2) { Function.Call(0x58AC173A55D9D7B4, propSet, p1, p2); }
 		public static bool _RELEASE_PROP_SET(Hash hash) { return Function.Call<bool>(0xB1964A83B345B4AB, hash); }
 		public static PropSet _CREATE_PROP_SET(Hash hash, float x, float y, float z, int p4, float heading, float p6, bool p7, bool p8) { return Function.Call<PropSet>(0xE65C5CBA95F0E510, hash, x, y, z, p4, heading, p6, p7, p8); }
+		public static PropSet _CREATE_PROP_SET(Hash hash, Vector3 vec, int p4, float heading, float p6, bool p7, bool p8) { return Function.Call<PropSet>(0xE65C5CBA95F0E510, hash, vec.X, vec.Y, vec.Z, p4, heading, p6, p7, p8); }
 		/// <summary>
 		/// Same as _CREATE_PROP_SET
 		/// https://github.com/femga/rdr3_discoveries/blob/master/objects/propsets_list.lua
 		/// </summary>
 		public static PropSet _CREATE_PROP_SET_2(Hash hash, float x, float y, float z, int p4, float p5, float p6, bool p7, bool p8) { return Function.Call<PropSet>(0x899C97A1CCE7D483, hash, x, y, z, p4, p5, p6, p7, p8); }
+		public static PropSet _CREATE_PROP_SET_2(Hash hash, Vector3 vec, int p4, float p5, float p6, bool p7, bool p8) { return Function.Call<PropSet>(0x899C97A1CCE7D483, hash, vec.X, vec.Y, vec.Z, p4, p5, p6, p7, p8); }
 		public static PropSet CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY(Hash hash, float x, float y, float z, int entity, float p5, bool p6, int p7, bool p8) { return Function.Call<PropSet>(0x9609DBDDE18FAD8C, hash, x, y, z, entity, p5, p6, p7, p8); }
+		public static PropSet CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY(Hash hash, Vector3 vec, int entity, float p5, bool p6, int p7, bool p8) { return Function.Call<PropSet>(0x9609DBDDE18FAD8C, hash, vec.X, vec.Y, vec.Z, entity, p5, p6, p7, p8); }
 		/// <summary>
 		/// Same as CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY
 		/// </summary>
 		public static PropSet _CREATE_PROP_SET_4(Hash hash, float x, float y, float z, int entity, float p5, bool p6, int p7, bool p8) { return Function.Call<PropSet>(0xACA7FB30269096D4, hash, x, y, z, entity, p5, p6, p7, p8); }
+		public static PropSet _CREATE_PROP_SET_4(Hash hash, Vector3 vec, int entity, float p5, bool p6, int p7, bool p8) { return Function.Call<PropSet>(0xACA7FB30269096D4, hash, vec.X, vec.Y, vec.Z, entity, p5, p6, p7, p8); }
 		public static bool DOES_PROP_SET_EXIST(PropSet propSet) { return Function.Call<bool>(0x7DDDCF815E650FF5, propSet); }
 		public static bool _DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS(Hash propsetHash, float x, float y, float z) { return Function.Call<bool>(0x72068021F498E6E3, propsetHash, x, y, z); }
+		public static bool _DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS(Hash propsetHash, Vector3 vec) { return Function.Call<bool>(0x72068021F498E6E3, propsetHash, vec.X, vec.Y, vec.Z); }
 		public static bool IS_PROP_SET_FULLY_LOADED(PropSet propSet) { return Function.Call<bool>(0xF42DB680A8B2A4D9, propSet); }
 		public static void _SET_PROP_SET_VISIBLE(PropSet propSet, bool toggle) { Function.Call(0x9D096A5BD02F953E, propSet, toggle); }
 		public static bool _IS_PROP_SET_VISIBLE(PropSet propSet) { return Function.Call<bool>(0x0CE8AAFE9E433A23, propSet); }
@@ -11130,6 +11370,7 @@ namespace RDR2.Native
 		public static PropSet _GET_TRAIN_CARRIAGE_PROP_SET(int trainCarriage) { return Function.Call<PropSet>(0xCFC0BD09BB1B73FF, trainCarriage); }
 		public static bool _HAS_VEHICLE_TRAILER_PROP_SET_LOADED(int vehicle, int wagonIndex) { return Function.Call<bool>(0x8F3333F0A6900B3C, vehicle, wagonIndex); }
 		public static PropSet _GET_PROP_SET_AT_COORDS(Hash propsetHash, float x, float y, float z) { return Function.Call<PropSet>(0xC061E50F8D299F95, propsetHash, x, y, z); }
+		public static PropSet _GET_PROP_SET_AT_COORDS(Hash propsetHash, Vector3 vec) { return Function.Call<PropSet>(0xC061E50F8D299F95, propsetHash, vec.X, vec.Y, vec.Z); }
 	}
 
 	public static class QUEUE
@@ -11442,14 +11683,19 @@ namespace RDR2.Native
 		/// p8 is a bit mask with bits 1, 2 and/or 4, relating to collider types; 4 should usually be used.
 		/// </summary>
 		public static ScrHandle START_SHAPE_TEST_LOS_PROBE(float x1, float y1, float z1, float x2, float y2, float z2, int flags, int entity, int p8) { return Function.Call<ScrHandle>(0x7EE9F5D83DD4F90E, x1, y1, z1, x2, y2, z2, flags, entity, p8); }
+		public static ScrHandle START_SHAPE_TEST_LOS_PROBE(Vector3 vec1, Vector3 vec2, int flags, int entity, int p8) { return Function.Call<ScrHandle>(0x7EE9F5D83DD4F90E, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, flags, entity, p8); }
 		public static Any _0x04AA59CA40571C2E(Any p0, Any p1) { return Function.Call<Any>(0x04AA59CA40571C2E, p0, p1); }
 		/// <summary>
 		/// Does the same as 0x7EE9F5D83DD4F90E, except blocking until the shape test completes.
 		/// </summary>
 		public static ScrHandle START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(float x1, float y1, float z1, float x2, float y2, float z2, int flags, int entityToIgnore, int p8) { return Function.Call<ScrHandle>(0x377906D8A31E5586, x1, y1, z1, x2, y2, z2, flags, entityToIgnore, p8); }
+		public static ScrHandle START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(Vector3 vec1, Vector3 vec2, int flags, int entityToIgnore, int p8) { return Function.Call<ScrHandle>(0x377906D8A31E5586, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, flags, entityToIgnore, p8); }
 		public static ScrHandle START_SHAPE_TEST_BOX(float x, float y, float z, float x1, float y2, float z2, float rotX, float rotY, float rotZ, Any p9, Any p10, Any entity, Any p12) { return Function.Call<ScrHandle>(0xFE466162C4401D18, x, y, z, x1, y2, z2, rotX, rotY, rotZ, p9, p10, entity, p12); }
+		public static ScrHandle START_SHAPE_TEST_BOX(Vector3 vec, float x1, float y2, float z2, Vector3 rotation, Any p9, Any p10, Any entity, Any p12) { return Function.Call<ScrHandle>(0xFE466162C4401D18, vec.X, vec.Y, vec.Z, x1, y2, z2, rotation.X, rotation.Y, rotation.Z, p9, p10, entity, p12); }
 		public static ScrHandle START_SHAPE_TEST_CAPSULE(float x1, float y1, float z1, float x2, float y2, float z2, float radius, int flags, int entityToIgnore, int p9) { return Function.Call<ScrHandle>(0x28579D1B8F8AAC80, x1, y1, z1, x2, y2, z2, radius, flags, entityToIgnore, p9); }
+		public static ScrHandle START_SHAPE_TEST_CAPSULE(Vector3 vec1, Vector3 vec2, float radius, int flags, int entityToIgnore, int p9) { return Function.Call<ScrHandle>(0x28579D1B8F8AAC80, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, radius, flags, entityToIgnore, p9); }
 		public static ScrHandle START_SHAPE_TEST_SWEPT_SPHERE(float x1, float y1, float z1, float x2, float y2, float z2, float radius, int flags, int entity, Any p9) { return Function.Call<ScrHandle>(0xAA5B7C8309F73230, x1, y1, z1, x2, y2, z2, radius, flags, entity, p9); }
+		public static ScrHandle START_SHAPE_TEST_SWEPT_SPHERE(Vector3 vec1, Vector3 vec2, float radius, int flags, int entity, Any p9) { return Function.Call<ScrHandle>(0xAA5B7C8309F73230, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, radius, flags, entity, p9); }
 		/// <summary>
 		/// Old name: _START_SHAPE_TEST_SURROUNDING_COORDS
 		/// </summary>
@@ -11647,6 +11893,7 @@ namespace RDR2.Native
 		public static void STATSTRACKER_DEED_STARTED(Hash p0, Any p1) { Function.Call(0xB2A38826E5886E83, p0, p1); }
 		public static unsafe void _0xD5910ECF81A2278C(int p0, Hash p1, int p2, Any* p3) { Function.Call(0xD5910ECF81A2278C, p0, p1, p2, p3); }
 		public static void _0x99230691875FC218(Any p0, Hash p1, float x, float y, float z) { Function.Call(0x99230691875FC218, p0, p1, x, y, z); }
+		public static void _0x99230691875FC218(Any p0, Hash p1, Vector3 vec) { Function.Call(0x99230691875FC218, p0, p1, vec.X, vec.Y, vec.Z); }
 		public static void _0x025E98E317652CDD(int p0) { Function.Call(0x025E98E317652CDD, p0); }
 		public static void _0xE5A680A5D8B1F687(int p0) { Function.Call(0xE5A680A5D8B1F687, p0); }
 		/// <summary>
@@ -11730,12 +11977,16 @@ namespace RDR2.Native
 		public static bool IS_MODEL_A_VEHICLE(Hash model) { return Function.Call<bool>(0x354F62672DE7DB0A, model); }
 		public static bool _IS_MODEL_AN_OBJECT(Hash model) { return Function.Call<bool>(0x274EE1B90CFA669E, model); }
 		public static bool _HAS_COLLISION_LOADED_AT_COORD(float x, float y, float z) { return Function.Call<bool>(0xDA8B2EAF29E872E2, x, y, z); }
+		public static bool _HAS_COLLISION_LOADED_AT_COORD(Vector3 vec) { return Function.Call<bool>(0xDA8B2EAF29E872E2, vec.X, vec.Y, vec.Z); }
 		public static void _0x80B3E0597366ADF1() { Function.Call(0x80B3E0597366ADF1); }
 		public static void REQUEST_COLLISION_AT_COORD(float x, float y, float z) { Function.Call(0x0A3720F162A033C9, x, y, z); }
+		public static void REQUEST_COLLISION_AT_COORD(Vector3 vec) { Function.Call(0x0A3720F162A033C9, vec.X, vec.Y, vec.Z); }
 		public static void _REQUEST_METADATA_AT_COORD(float x, float y, float z) { Function.Call(0xA8432A14D4DC2101, x, y, z); }
+		public static void _REQUEST_METADATA_AT_COORD(Vector3 vec) { Function.Call(0xA8432A14D4DC2101, vec.X, vec.Y, vec.Z); }
 		public static void REQUEST_COLLISION_FOR_MODEL(Hash model) { Function.Call(0xF1767BE37F661551, model); }
 		public static bool HAS_COLLISION_FOR_MODEL_LOADED(Hash model) { return Function.Call<bool>(0x210A79C9EC89778F, model); }
 		public static void REQUEST_ADDITIONAL_COLLISION_AT_COORD(float x, float y, float z) { Function.Call(0x83A8D71650D1894F, x, y, z); }
+		public static void REQUEST_ADDITIONAL_COLLISION_AT_COORD(Vector3 vec) { Function.Call(0x83A8D71650D1894F, vec.X, vec.Y, vec.Z); }
 		public static bool DOES_ANIM_DICT_EXIST(string animDict) { return Function.Call<bool>(0x537F44CB0D7F150D, animDict); }
 		public static void REQUEST_ANIM_DICT(string animDict) { Function.Call(0xA862A2AD321F94B4, animDict); }
 		public static bool HAS_ANIM_DICT_LOADED(string animDict) { return Function.Call<bool>(0x27FF6FE8009B40CA, animDict); }
@@ -11796,6 +12047,7 @@ namespace RDR2.Native
 		/// Returns true if IPL is streamed in (?)
 		/// </summary>
 		public static bool _IS_POSITION_INSIDE_IPL_STREAMING_EXTENTS(Hash iplHash, float x, float y, float z) { return Function.Call<bool>(0x73B40D97D7BAAD77, iplHash, x, y, z); }
+		public static bool _IS_POSITION_INSIDE_IPL_STREAMING_EXTENTS(Hash iplHash, Vector3 vec) { return Function.Call<bool>(0x73B40D97D7BAAD77, iplHash, vec.X, vec.Y, vec.Z); }
 		public static void _0xDEEE1F265B7ECEF5() { Function.Call(0xDEEE1F265B7ECEF5); }
 		public static void SET_GAME_PAUSES_FOR_STREAMING(bool toggle) { Function.Call(0xB3BC8250F4FE8B63, toggle); }
 		public static int GET_NUMBER_OF_STREAMING_REQUESTS() { return Function.Call<int>(0x30CCCC4D88E654CA); }
@@ -11810,6 +12062,7 @@ namespace RDR2.Native
 		public static Any _0x071769BCB24379E5() { return Function.Call<Any>(0x071769BCB24379E5); }
 		public static void CLEAR_FOCUS() { Function.Call(0x86CCAF7CE493EFBE); }
 		public static void SET_FOCUS_POS_AND_VEL(float x, float y, float z, float offsetX, float offsetY, float offsetZ) { Function.Call(0x25F6EF88664540E2, x, y, z, offsetX, offsetY, offsetZ); }
+		public static void SET_FOCUS_POS_AND_VEL(Vector3 vec, Vector3 offset) { Function.Call(0x25F6EF88664540E2, vec.X, vec.Y, vec.Z, offset.X, offset.Y, offset.Z); }
 		/// <summary>
 		/// It seems to make the entity's coords mark the point from which LOD-distances are measured. In my testing, setting a vehicle as the focus entity and moving that vehicle more than 300 distance units away from the player will make the level of detail around the player go down drastically (shadows disappear, textures go extremely low res, etc). The player seems to be the default focus entity.
 		/// </summary>
@@ -11822,7 +12075,9 @@ namespace RDR2.Native
 		public static void SET_ALL_MAPDATA_CULLED(Any p0) { Function.Call(0x19ABCC581D28E6F9, p0); }
 		public static void _0xF01D21DF39554115(Any p0) { Function.Call(0xF01D21DF39554115, p0); }
 		public static bool LOAD_SCENE_START(float posX, float posY, float posZ, float offsetX, float offsetY, float offsetZ, float radius, int p7) { return Function.Call<bool>(0x387AD749E3B69B70, posX, posY, posZ, offsetX, offsetY, offsetZ, radius, p7); }
+		public static bool LOAD_SCENE_START(Vector3 vec, Vector3 offset, float radius, int p7) { return Function.Call<bool>(0x387AD749E3B69B70, vec.X, vec.Y, vec.Z, offset.X, offset.Y, offset.Z, radius, p7); }
 		public static bool LOAD_SCENE_START_SPHERE(float x, float y, float z, float radius, Any p4) { return Function.Call<bool>(0x513F8AA5BF2F17CF, x, y, z, radius, p4); }
+		public static bool LOAD_SCENE_START_SPHERE(Vector3 vec, float radius, Any p4) { return Function.Call<bool>(0x513F8AA5BF2F17CF, vec.X, vec.Y, vec.Z, radius, p4); }
 		public static void LOAD_SCENE_STOP() { Function.Call(0x5A8B01199C3E79C3); }
 		public static bool IS_LOAD_SCENE_ACTIVE() { return Function.Call<bool>(0xCF45DF50C7775F2A); }
 		public static bool IS_LOAD_SCENE_LOADED() { return Function.Call<bool>(0x0909F71B5C070797); }
@@ -11845,6 +12100,7 @@ namespace RDR2.Native
 		public static void SET_SRL_READAHEAD_TIMES(int p0, int p1, int p2, int p3) { Function.Call(0xD346248C1DCE0D76, p0, p1, p2, p3); }
 		public static void SET_SRL_LONG_JUMP_MODE(bool p0) { Function.Call(0x7C907E8A725E5FD2, p0); }
 		public static void SET_HD_AREA(float x, float y, float z, float radius) { Function.Call(0xB88B905AFA35CB4D, x, y, z, radius); }
+		public static void SET_HD_AREA(Vector3 vec, float radius) { Function.Call(0xB88B905AFA35CB4D, vec.X, vec.Y, vec.Z, radius); }
 		public static void CLEAR_HD_AREA() { Function.Call(0xD83B22434E52728D); }
 		public static void _0x09FBF15D73EFC900() { Function.Call(0x09FBF15D73EFC900); }
 		public static void _0xF11D7CB962FCD747(Any p0) { Function.Call(0xF11D7CB962FCD747, p0); }
@@ -11893,6 +12149,7 @@ namespace RDR2.Native
 		public static void TASK_STAND_STILL(int ped, int time) { Function.Call(0x919BE13EED931959, ped, time); }
 		public static void TASK_JUMP(int ped, bool unused) { Function.Call(0x0AE4086104E067B1, ped, unused); }
 		public static void _TASK_JUMP_2(int ped, float x, float y, float z, int entity) { Function.Call(0x91083103137D7254, ped, x, y, z, entity); }
+		public static void _TASK_JUMP_2(int ped, Vector3 vec, int entity) { Function.Call(0x91083103137D7254, ped, vec.X, vec.Y, vec.Z, entity); }
 		public static void TASK_COWER(int ped, int duration, int pedToCowerFrom, string p3) { Function.Call(0x3EB1FE9E8E908E15, ped, duration, pedToCowerFrom, p3); }
 		public static void TASK_HANDS_UP(int ped, int duration, int facingPed, int p3, bool p4) { Function.Call(0xF2EAB31979A7F910, ped, duration, facingPed, p3, p4); }
 		public static void TASK_KNOCKED_OUT(int ped, float p1, bool permanently) { Function.Call(0xF90427F00A495A28, ped, p1, permanently); }
@@ -11931,12 +12188,15 @@ namespace RDR2.Native
 		public static void TASK_HITCH_ANIMAL(int ped, int scenarioPoint, int flag) { Function.Call(0x9030AD4B6207BFE8, ped, scenarioPoint, flag); }
 		public static void _0xE05A5D39BE6E93AF(Any p0) { Function.Call(0xE05A5D39BE6E93AF, p0); }
 		public static void TASK_VEHICLE_DRIVE_TO_COORD(int ped, int vehicle, float x, float y, float z, float speed, Any p6, Hash vehicleModel, int drivingMode, float stopRange, float p10) { Function.Call(0xE2A2AA2F659D77A7, ped, vehicle, x, y, z, speed, p6, vehicleModel, drivingMode, stopRange, p10); }
+		public static void TASK_VEHICLE_DRIVE_TO_COORD(int ped, int vehicle, Vector3 vec, float speed, Any p6, Hash vehicleModel, int drivingMode, float stopRange, float p10) { Function.Call(0xE2A2AA2F659D77A7, ped, vehicle, vec.X, vec.Y, vec.Z, speed, p6, vehicleModel, drivingMode, stopRange, p10); }
 		public static void _TASK_VEHICLE_DRIVE_TO_COORD_2(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { Function.Call(0xF0108F01FB105DA2, ped, p1, p2, p3, p4, p5, p6, p7, p8); }
 		public static void TASK_VEHICLE_DRIVE_WANDER(int ped, int vehicle, float speed, int drivingStyle) { Function.Call(0x480142959D337D00, ped, vehicle, speed, drivingStyle); }
 		public static void TASK_FOLLOW_TO_OFFSET_OF_ENTITY(int ped, int entity, float offsetX, float offsetY, float offsetZ, float movementSpeed, int timeout, float stoppingRange, bool persistFollowing, bool p9, bool walkOnly, bool p11, bool p12, bool p13) { Function.Call(0x304AE42E357B8C7E, ped, entity, offsetX, offsetY, offsetZ, movementSpeed, timeout, stoppingRange, persistFollowing, p9, walkOnly, p11, p12, p13); }
+		public static void TASK_FOLLOW_TO_OFFSET_OF_ENTITY(int ped, int entity, Vector3 offset, float movementSpeed, int timeout, float stoppingRange, bool persistFollowing, bool p9, bool walkOnly, bool p11, bool p12, bool p13) { Function.Call(0x304AE42E357B8C7E, ped, entity, offset.X, offset.Y, offset.Z, movementSpeed, timeout, stoppingRange, persistFollowing, p9, walkOnly, p11, p12, p13); }
 		public static void TASK_FOLLOW_TO_OFFSET_OF_COORD(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14) { Function.Call(0x2E3676282C18A692, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14); }
 		public static void _0x3FFCD7BBA074CC80(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { Function.Call(0x3FFCD7BBA074CC80, ped, p1, p2, p3, p4, p5, p6, p7, p8); }
 		public static void TASK_GO_STRAIGHT_TO_COORD(int ped, float x, float y, float z, float moveBlendSpeedY, int p5, float p6, float p7, int p8) { Function.Call(0xD76B57B44F1E6F8B, ped, x, y, z, moveBlendSpeedY, p5, p6, p7, p8); }
+		public static void TASK_GO_STRAIGHT_TO_COORD(int ped, Vector3 vec, float moveBlendSpeedY, int p5, float p6, float p7, int p8) { Function.Call(0xD76B57B44F1E6F8B, ped, vec.X, vec.Y, vec.Z, moveBlendSpeedY, p5, p6, p7, p8); }
 		public static void TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x61E360B7E040D12E, ped, p1, p2, p3, p4, p5, p6, p7); }
 		public static void TASK_MOVE_IN_TRAFFIC(int ped, Any p1, Any p2, Any p3) { Function.Call(0x8AA1593AEC087A29, ped, p1, p2, p3); }
 		public static void TASK_MOVE_IN_TRAFFIC_TO_DESTINATION(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0xDCA3A13F7A45338B, ped, p1, p2, p3, p4, p5, p6, p7); }
@@ -11946,6 +12206,7 @@ namespace RDR2.Native
 		/// Params: moveBlendRatio commonly 1.25f, p5 is always 0 in R* Scripts
 		/// </summary>
 		public static void TASK_MOVE_FOLLOW_ROAD_USING_NAVMESH(int ped, float moveBlendRatio, float x, float y, float z, Any p5) { Function.Call(0x79482C12482A860D, ped, moveBlendRatio, x, y, z, p5); }
+		public static void TASK_MOVE_FOLLOW_ROAD_USING_NAVMESH(int ped, float moveBlendRatio, Vector3 vec, Any p5) { Function.Call(0x79482C12482A860D, ped, moveBlendRatio, vec.X, vec.Y, vec.Z, p5); }
 		/// <summary>
 		/// Makes the specified ped achieve the specified heading.
 		/// 
@@ -11964,6 +12225,7 @@ namespace RDR2.Native
 		/// A maximum of 8 points can be added.
 		/// </summary>
 		public static void TASK_EXTEND_ROUTE(float x, float y, float z) { Function.Call(0x1E7889778264843A, x, y, z); }
+		public static void TASK_EXTEND_ROUTE(Vector3 vec) { Function.Call(0x1E7889778264843A, vec.X, vec.Y, vec.Z); }
 		public static void TASK_FOLLOW_POINT_ROUTE(int ped, Any p1, Any p2, Any p3, Any p4, Any p5) { Function.Call(0x0E14C5550DC3CD1D, ped, p1, p2, p3, p4, p5); }
 		/// <summary>
 		/// flags:
@@ -12000,10 +12262,12 @@ namespace RDR2.Native
 		public static void TASK_STOP_LEADING_HORSE(int ped) { Function.Call(0xED27560703F37258, ped); }
 		public static void _TASK_FLEE_FROM_COORD(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11) { Function.Call(0x6879FF208ED87F2A, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); }
 		public static void _TASK_FLEE_FROM_PED(int ped, int fleeFromTarget, float x, float y, float z, float distance, int p6, int p7, float p8, int targetPed) { Function.Call(0x7B74D8EEDE9B5727, ped, fleeFromTarget, x, y, z, distance, p6, p7, p8, targetPed); }
+		public static void _TASK_FLEE_FROM_PED(int ped, int fleeFromTarget, Vector3 vec, float distance, int p6, int p7, float p8, int targetPed) { Function.Call(0x7B74D8EEDE9B5727, ped, fleeFromTarget, vec.X, vec.Y, vec.Z, distance, p6, p7, p8, targetPed); }
 		/// <summary>
 		/// Makes the specified ped flee the specified distance from the specified position.
 		/// </summary>
 		public static void TASK_SMART_FLEE_COORD(int ped, float x, float y, float z, float distance, int time, int fleeType, float fleeSpeed) { Function.Call(0x94587F17E9C365D5, ped, x, y, z, distance, time, fleeType, fleeSpeed); }
+		public static void TASK_SMART_FLEE_COORD(int ped, Vector3 vec, float distance, int time, int fleeType, float fleeSpeed) { Function.Call(0x94587F17E9C365D5, ped, vec.X, vec.Y, vec.Z, distance, time, fleeType, fleeSpeed); }
 		/// <summary>
 		/// Makes a ped run away from another ped (fleeFromTarget)
 		/// 
@@ -12020,6 +12284,7 @@ namespace RDR2.Native
 		/// fleeStyle: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/blob/main/eFleeStyle/README.md
 		/// </summary>
 		public static void TASK_FLEE_COORD(int ped, float x, float y, float z, int fleeStyle, int p5, float p6, int duration, int p8) { Function.Call(0x58428248BF4B64E4, ped, x, y, z, fleeStyle, p5, p6, duration, p8); }
+		public static void TASK_FLEE_COORD(int ped, Vector3 vec, int fleeStyle, int p5, float p6, int duration, int p8) { Function.Call(0x58428248BF4B64E4, ped, vec.X, vec.Y, vec.Z, fleeStyle, p5, p6, duration, p8); }
 		/// <summary>
 		/// Params: p4 = -1.0f, p5 = -1, p6 = 0 in R* Scripts
 		/// fleeStyle: see TASK_FLEE_COORD
@@ -12028,6 +12293,7 @@ namespace RDR2.Native
 		public static void TASK_FLEE_COORD_VIA(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11) { Function.Call(0x390E0B697D25EAF5, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); }
 		public static void TASK_FLEE_PED_VIA(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9) { Function.Call(0x5802E0F910E4CF1D, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static void _ADD_FLEE_TARGET_COORDS(int ped, float x, float y, float z, float p4) { Function.Call(0xE8F1A5B4CED3725A, ped, x, y, z, p4); }
+		public static void _ADD_FLEE_TARGET_COORDS(int ped, Vector3 vec, float p4) { Function.Call(0xE8F1A5B4CED3725A, ped, vec.X, vec.Y, vec.Z, p4); }
 		/// <summary>
 		/// Params: p2 is always -1.f in R* Scripts
 		/// </summary>
@@ -12035,6 +12301,7 @@ namespace RDR2.Native
 		public static void _0xA42DC7919159CCCF(Any p0) { Function.Call(0xA42DC7919159CCCF, p0); }
 		public static void TASK_FLY_AWAY(int ped, int fleeFromTarget) { Function.Call(0xE86A537B5A3C297C, ped, fleeFromTarget); }
 		public static void TASK_FLY_TO_COORD(int ped, float travelMbr, float x, float y, float z, bool p5, bool p6) { Function.Call(0xD6CFC2D59DA72042, ped, travelMbr, x, y, z, p5, p6); }
+		public static void TASK_FLY_TO_COORD(int ped, float travelMbr, Vector3 vec, bool p5, bool p6) { Function.Call(0xD6CFC2D59DA72042, ped, travelMbr, vec.X, vec.Y, vec.Z, p5, p6); }
 		public static void TASK_FLYING_CIRCLE(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { Function.Call(0x72997893BFB8ECCC, ped, p1, p2, p3, p4, p5, p6); }
 		public static void TASK_WALK_AWAY(int ped, int entity) { Function.Call(0x04ACFAC71E6858F9, ped, entity); }
 		public static void TASK_SHOCKING_EVENT_REACT(int ped, Any p1, Any p2) { Function.Call(0x452419CBD838065B, ped, p1, p2); }
@@ -12043,7 +12310,9 @@ namespace RDR2.Native
 		/// Params: reactingTo Entity can be 0, p8 is always 4
 		/// </summary>
 		public static void TASK_REACT(int ped, int reactingTo, float x, float y, float z, string reactionName, float p6, float p7, int p8) { Function.Call(0xC4C32C31920E1B70, ped, reactingTo, x, y, z, reactionName, p6, p7, p8); }
+		public static void TASK_REACT(int ped, int reactingTo, Vector3 vec, string reactionName, float p6, float p7, int p8) { Function.Call(0xC4C32C31920E1B70, ped, reactingTo, vec.X, vec.Y, vec.Z, reactionName, p6, p7, p8); }
 		public static void TASK_WANDER_IN_AREA(int ped, float x, float y, float z, float radius, float p5, float p6, int p7) { Function.Call(0xE054346CA3A0F315, ped, x, y, z, radius, p5, p6, p7); }
+		public static void TASK_WANDER_IN_AREA(int ped, Vector3 vec, float radius, float p5, float p6, int p7) { Function.Call(0xE054346CA3A0F315, ped, vec.X, vec.Y, vec.Z, radius, p5, p6, p7); }
 		public static void TASK_WANDER_IN_VOLUME(int ped, Volume volume, float p2, float p3, int p4) { Function.Call(0x9FDA168777B28424, ped, volume, p2, p3, p4); }
 		/// <summary>
 		/// Makes ped walk around the area.
@@ -12053,6 +12322,7 @@ namespace RDR2.Native
 		public static void TASK_WANDER_STANDARD(int ped, float p1, int p2) { Function.Call(0xBB9CE077274F6A1B, ped, p1, p2); }
 		public static void TASK_WANDER_SWIM(int ped, Any p1) { Function.Call(0x527EA3DB8BC7F03B, ped, p1); }
 		public static void TASK_PLANT_BOMB(int ped, float x, float y, float z, float heading) { Function.Call(0x965FEC691D55E9BF, ped, x, y, z, heading); }
+		public static void TASK_PLANT_BOMB(int ped, Vector3 vec, float heading) { Function.Call(0x965FEC691D55E9BF, ped, vec.X, vec.Y, vec.Z, heading); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/tree/master/tasks/TASK_HORSE_ACTION
 		/// Params: p2, p3 are set to 0 in R* Scripts
@@ -12078,7 +12348,9 @@ namespace RDR2.Native
 		/// If no timeout, set timeout to -1.
 		/// </summary>
 		public static void TASK_FOLLOW_NAV_MESH_TO_COORD(int ped, float x, float y, float z, float speedMultiplier, int timeout, float stoppingRange, int flags, float heading) { Function.Call(0x15D3A79D4E44B913, ped, x, y, z, speedMultiplier, timeout, stoppingRange, flags, heading); }
+		public static void TASK_FOLLOW_NAV_MESH_TO_COORD(int ped, Vector3 vec, float speedMultiplier, int timeout, float stoppingRange, int flags, float heading) { Function.Call(0x15D3A79D4E44B913, ped, vec.X, vec.Y, vec.Z, speedMultiplier, timeout, stoppingRange, flags, heading); }
 		public static void TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(int ped, float x, float y, float z, float speedMultiplier, int timeout, float stoppingRange, int flags, float p8, float p9, float p10, int entity, float unk) { Function.Call(0x17F58B88D085DBAC, ped, x, y, z, speedMultiplier, timeout, stoppingRange, flags, p8, p9, p10, entity, unk); }
+		public static void TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(int ped, Vector3 vec, float speedMultiplier, int timeout, float stoppingRange, int flags, float p8, float p9, float p10, int entity, float unk) { Function.Call(0x17F58B88D085DBAC, ped, vec.X, vec.Y, vec.Z, speedMultiplier, timeout, stoppingRange, flags, p8, p9, p10, entity, unk); }
 		public static void SET_PED_PATH_CAN_USE_CLIMBOVERS(int ped, bool toggle) { Function.Call(0x8E06A6FE76C9EFF4, ped, toggle); }
 		public static void SET_PED_PATH_CAN_USE_LADDERS(int ped, bool toggle) { Function.Call(0x77A5B103C87F476E, ped, toggle); }
 		public static void SET_PED_PATH_CAN_DROP_FROM_HEIGHT(int ped, bool toggle) { Function.Call(0xE361C5C71C431A4F, ped, toggle); }
@@ -12112,13 +12384,16 @@ namespace RDR2.Native
 		public static void _0x06ECF3925BC2ABAE(Any p0, Any p1) { Function.Call(0x06ECF3925BC2ABAE, p0, p1); }
 		public static void _0xFA30E2254461ADEB(Any p0, Any p1) { Function.Call(0xFA30E2254461ADEB, p0, p1); }
 		public static void TASK_GO_TO_COORD_ANY_MEANS(int ped, float x, float y, float z, float speed, int entity, bool p6, int walkingStyle, float p8) { Function.Call(0x5BC448CB78FA3E88, ped, x, y, z, speed, entity, p6, walkingStyle, p8); }
+		public static void TASK_GO_TO_COORD_ANY_MEANS(int ped, Vector3 vec, float speed, int entity, bool p6, int walkingStyle, float p8) { Function.Call(0x5BC448CB78FA3E88, ped, vec.X, vec.Y, vec.Z, speed, entity, p6, walkingStyle, p8); }
 		public static void TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS(int ped, float x, float y, float z, float speed, Any p5, bool p6, int walkingStyle, float p8, Any p9, Any p10, Any p11, Any p12) { Function.Call(0x1DD45F9ECFDB1BC9, ped, x, y, z, speed, p5, p6, walkingStyle, p8, p9, p10, p11, p12); }
+		public static void TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS(int ped, Vector3 vec, float speed, Any p5, bool p6, int walkingStyle, float p8, Any p9, Any p10, Any p11, Any p12) { Function.Call(0x1DD45F9ECFDB1BC9, ped, vec.X, vec.Y, vec.Z, speed, p5, p6, walkingStyle, p8, p9, p10, p11, p12); }
 		public static void TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14) { Function.Call(0xB8ECD61F531A7B02, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14); }
 		/// <summary>
 		/// https://github.com/femga/rdr3_discoveries/tree/master/animations
 		/// </summary>
 		public static void TASK_PLAY_ANIM(int ped, string animDict, string animName, float speed, float speedMultiplier, int duration, int flags, float playbackRate, bool p8, int p9, bool p10, string taskFilter, bool p12) { Function.Call(0xEA47FE3719165B94, ped, animDict, animName, speed, speedMultiplier, duration, flags, playbackRate, p8, p9, p10, taskFilter, p12); }
 		public static void TASK_PLAY_ANIM_ADVANCED(int ped, string animDict, string animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float speed, float speedMultiplier, int duration, int flags, float p13, int p14, int p15, int p16) { Function.Call(0x83CDB10EA29B370B, ped, animDict, animName, posX, posY, posZ, rotX, rotY, rotZ, speed, speedMultiplier, duration, flags, p13, p14, p15, p16); }
+		public static void TASK_PLAY_ANIM_ADVANCED(int ped, string animDict, string animName, Vector3 vec, Vector3 rotation, float speed, float speedMultiplier, int duration, int flags, float p13, int p14, int p15, int p16) { Function.Call(0x83CDB10EA29B370B, ped, animDict, animName, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, speed, speedMultiplier, duration, flags, p13, p14, p15, p16); }
 		public static void TASK_PLAY_UPPER_ANIM_FACING_ENTITY(int ped, string animDict, string animName, int entity, int p4, float p5, float p6, int p7, float p8, bool p9, bool p10, float p11, string p12, int p13, float p14) { Function.Call(0xAD67214236AB1CFE, ped, animDict, animName, entity, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14); }
 		public static void STOP_ANIM_TASK(int ped, string animDictionary, string animationName, float p3) { Function.Call(0x97FF36A1D40EA00A, ped, animDictionary, animationName, p3); }
 		public static unsafe void TASK_SCRIPTED_ANIMATION(int ped, Any* args) { Function.Call(0x126EF75F1E17ABE5, ped, args); }
@@ -12150,6 +12425,7 @@ namespace RDR2.Native
 		public static Any _0x678D3226CF70B9C8(Any p0, Any p1) { return Function.Call<Any>(0x678D3226CF70B9C8, p0, p1); }
 		public static void TASK_EVASIVE_ANIM(int ped, Any p1, Any p2) { Function.Call(0x5F22926E1BCE9B08, ped, p1, p2); }
 		public static void TASK_LOOK_AT_COORD(int ped, float x, float y, float z, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x6FA46612594F7973, ped, x, y, z, p4, p5, p6, p7); }
+		public static void TASK_LOOK_AT_COORD(int ped, Vector3 vec, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x6FA46612594F7973, ped, vec.X, vec.Y, vec.Z, p4, p5, p6, p7); }
 		/// <summary>
 		/// param3: duration in ms, use -1 to look forever
 		/// param4: using 2048 is fine
@@ -12212,9 +12488,11 @@ namespace RDR2.Native
 		/// </summary>
 		public static void TASK_TURN_PED_TO_FACE_ENTITY(int ped, int targetEntity, int duration, float p3, float p4, float p5) { Function.Call(0x5AD23D40115353AC, ped, targetEntity, duration, p3, p4, p5); }
 		public static void TASK_AIM_GUN_AT_COORD(int ped, float x, float y, float z, int time, bool p5, bool p6) { Function.Call(0x6671F3EEC681BDA1, ped, x, y, z, time, p5, p6); }
+		public static void TASK_AIM_GUN_AT_COORD(int ped, Vector3 vec, int time, bool p5, bool p6) { Function.Call(0x6671F3EEC681BDA1, ped, vec.X, vec.Y, vec.Z, time, p5, p6); }
 		public static void TASK_AIM_AT_COORD(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { Function.Call(0x4AF1D73861212F52, ped, p1, p2, p3, p4, p5, p6); }
 		public static void TASK_AIM_AT_ENTITY(int ped, Any p1, Any p2, Any p3, Any p4) { Function.Call(0xCF7569BD0FB480A0, ped, p1, p2, p3, p4); }
 		public static void TASK_SHOOT_AT_COORD(int ped, float x, float y, float z, int duration, Hash firingPattern, Any p6) { Function.Call(0x46A6CC01E0826106, ped, x, y, z, duration, firingPattern, p6); }
+		public static void TASK_SHOOT_AT_COORD(int ped, Vector3 vec, int duration, Hash firingPattern, Any p6) { Function.Call(0x46A6CC01E0826106, ped, vec.X, vec.Y, vec.Z, duration, firingPattern, p6); }
 		/// <summary>
 		/// Makes the specified ped shuffle to the next vehicle seat.
 		/// The ped MUST be in a vehicle and the vehicle parameter MUST be the ped's current vehicle.
@@ -12230,6 +12508,7 @@ namespace RDR2.Native
 		public static void TASK_EVERYONE_LEAVE_VEHICLE_IN_ORDER(int vehicle, bool p1) { Function.Call(0x6F1C49F275BD25B3, vehicle, p1); }
 		public static void TASK_INVESTIGATE(int ped, Any p1, Any p2, Any p3, Any p4, Any p5) { Function.Call(0x5C8514540D27FBFB, ped, p1, p2, p3, p4, p5); }
 		public static void TASK_GOTO_ENTITY_OFFSET(int ped, int entity, Any p2, float x, float y, float z, int duration) { Function.Call(0xE39B4FF4FDEBDE27, ped, entity, p2, x, y, z, duration); }
+		public static void TASK_GOTO_ENTITY_OFFSET(int ped, int entity, Any p2, Vector3 vec, int duration) { Function.Call(0xE39B4FF4FDEBDE27, ped, entity, p2, vec.X, vec.Y, vec.Z, duration); }
 		public static void TASK_GOTO_ENTITY_OFFSET_XY(int ped, int entity, int duration, float p3, float p4, float p5, float p6, bool p7) { Function.Call(0x338E7EF52B6095A9, ped, entity, duration, p3, p4, p5, p6, p7); }
 		public static void TASK_GOTO_ENTITY_OFFSET_XYZ(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { Function.Call(0xFA6DA9D151769392, ped, p1, p2, p3, p4, p5, p6, p7, p8); }
 		public static void TASK_GOTO_ENTITY_OFFSET_XY_AIMING(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { Function.Call(0x901BD69984400F62, ped, p1, p2, p3, p4, p5, p6, p7, p8); }
@@ -12239,6 +12518,7 @@ namespace RDR2.Native
 		/// duration in milliseconds
 		/// </summary>
 		public static void TASK_TURN_PED_TO_FACE_COORD(int ped, float x, float y, float z, int duration) { Function.Call(0x1DDA930A0AC38571, ped, x, y, z, duration); }
+		public static void TASK_TURN_PED_TO_FACE_COORD(int ped, Vector3 vec, int duration) { Function.Call(0x1DDA930A0AC38571, ped, vec.X, vec.Y, vec.Z, duration); }
 		/// <summary>
 		/// Documentation from GTA V, might be the same in RDR:
 		/// 
@@ -12284,10 +12564,12 @@ namespace RDR2.Native
 		/// p10 = false
 		/// </summary>
 		public static void TASK_VEHICLE_DRIVE_TO_DESTINATION(int driver, int vehicle, float x, float y, float z, float speed, int drivingFlags, int p7, float stoppingRange1, float stoppingRange2, bool p10) { Function.Call(0x7F241A0D14354583, driver, vehicle, x, y, z, speed, drivingFlags, p7, stoppingRange1, stoppingRange2, p10); }
+		public static void TASK_VEHICLE_DRIVE_TO_DESTINATION(int driver, int vehicle, Vector3 vec, float speed, int drivingFlags, int p7, float stoppingRange1, float stoppingRange2, bool p10) { Function.Call(0x7F241A0D14354583, driver, vehicle, vec.X, vec.Y, vec.Z, speed, drivingFlags, p7, stoppingRange1, stoppingRange2, p10); }
 		/// <summary>
 		/// Tasks vehicle towards owner
 		/// </summary>
 		public static void _TASK_VEHICLE_DRIVE_TO_DESTINATION_2(int vehicle, float x, float y, float z, float speed, int p5, int p6, float p7, float p8) { Function.Call(0x391073B9D3CCE2BA, vehicle, x, y, z, speed, p5, p6, p7, p8); }
+		public static void _TASK_VEHICLE_DRIVE_TO_DESTINATION_2(int vehicle, Vector3 vec, float speed, int p5, int p6, float p7, float p8) { Function.Call(0x391073B9D3CCE2BA, vehicle, vec.X, vec.Y, vec.Z, speed, p5, p6, p7, p8); }
 		/// <summary>
 		/// Vehicle Auto Drive (?)
 		/// p1/p2/p3: usually 1f, 1f, 0f or 0f, 0f, 0f
@@ -12300,12 +12582,15 @@ namespace RDR2.Native
 		/// flag: 524419 and 0 in shop_horse_shop R* Script
 		/// </summary>
 		public static void TASK_VEHICLE_DRIVE_STRAIGHT_TO_POINT(int driver, int vehicle, float x, float y, float z, float p5, float p6, int flag) { Function.Call(0x089FF2FB965F0A29, driver, vehicle, x, y, z, p5, p6, flag); }
+		public static void TASK_VEHICLE_DRIVE_STRAIGHT_TO_POINT(int driver, int vehicle, Vector3 vec, float p5, float p6, int flag) { Function.Call(0x089FF2FB965F0A29, driver, vehicle, vec.X, vec.Y, vec.Z, p5, p6, flag); }
 		/// <summary>
 		/// Params: p4 = 3.f or 8.f, p5 = 0.25f, p6 = 0 in R* Scripts
 		/// </summary>
 		public static void _TASK_VEHICLE_DRIVE_TO_POINT_2(int vehicle, float x, float y, float z, float p4, float p5, Any p6) { Function.Call(0x6524A8981E8BE7C9, vehicle, x, y, z, p4, p5, p6); }
+		public static void _TASK_VEHICLE_DRIVE_TO_POINT_2(int vehicle, Vector3 vec, float p4, float p5, Any p6) { Function.Call(0x6524A8981E8BE7C9, vehicle, vec.X, vec.Y, vec.Z, p4, p5, p6); }
 		public static void _0x1D125814EBC517EB(Any p0, Any p1, Any p2, Any p3) { Function.Call(0x1D125814EBC517EB, p0, p1, p2, p3); }
 		public static bool _0x583AE9AF9CEE0958(int vehicle, float x, float y, float z) { return Function.Call<bool>(0x583AE9AF9CEE0958, vehicle, x, y, z); }
+		public static bool _0x583AE9AF9CEE0958(int vehicle, Vector3 vec) { return Function.Call<bool>(0x583AE9AF9CEE0958, vehicle, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// See TASK_VEHICLE_MISSION
 		/// </summary>
@@ -12313,9 +12598,11 @@ namespace RDR2.Native
 		public static void _0xA263ADBBC8056214(Any p0, Any p1) { Function.Call(0xA263ADBBC8056214, p0, p1); }
 		public static void TASK_VEHICLE_ESCORT(int ped, int vehicle, int targetVehicle, int mode, float speed, int drivingStyle, float minDistance, int p7, float noRoadsDistance) { Function.Call(0x0FA6E4B75F302400, ped, vehicle, targetVehicle, mode, speed, drivingStyle, minDistance, p7, noRoadsDistance); }
 		public static void TASK_BOAT_MISSION(int pedDriver, int boat, Any p2, Any p3, float x, float y, float z, Any p7, float maxSpeed, int drivingStyle, float p10, Any p11) { Function.Call(0x15C86013127CE63F, pedDriver, boat, p2, p3, x, y, z, p7, maxSpeed, drivingStyle, p10, p11); }
+		public static void TASK_BOAT_MISSION(int pedDriver, int boat, Any p2, Any p3, Vector3 vec, Any p7, float maxSpeed, int drivingStyle, float p10, Any p11) { Function.Call(0x15C86013127CE63F, pedDriver, boat, p2, p3, vec.X, vec.Y, vec.Z, p7, maxSpeed, drivingStyle, p10, p11); }
 		public static void TASK_WEAPON(int ped) { Function.Call(0x7157B82D60E4BC46, ped); }
 		public static void TASK_DRIVE_BY(int driverPed, int targetPed, int targetVehicle, float targetX, float targetY, float targetZ, float distanceToShoot, int pedAccuracy, bool p8, Hash firingPattern) { Function.Call(0x2F8AF0E82773A171, driverPed, targetPed, targetVehicle, targetX, targetY, targetZ, distanceToShoot, pedAccuracy, p8, firingPattern); }
 		public static void SET_DRIVEBY_TASK_TARGET(int shootingPed, int targetPed, int targetVehicle, float x, float y, float z) { Function.Call(0xE5B302114D8162EE, shootingPed, targetPed, targetVehicle, x, y, z); }
+		public static void SET_DRIVEBY_TASK_TARGET(int shootingPed, int targetPed, int targetVehicle, Vector3 vec) { Function.Call(0xE5B302114D8162EE, shootingPed, targetPed, targetVehicle, vec.X, vec.Y, vec.Z); }
 		public static void CLEAR_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(int ped) { Function.Call(0xC35B5CDB2824CF69, ped); }
 		public static bool IS_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(int ped) { return Function.Call<bool>(0x8785E6E40C7A8818, ped); }
 		public static bool GET_IS_PED_AIMING_IN_THE_AIR(int ped) { return Function.Call<bool>(0x8785E6E40C7A8819, ped); }
@@ -12352,6 +12639,7 @@ namespace RDR2.Native
 		public static void TASK_SET_SPHERE_DEFENSIVE_AREA(int ped, float p1, float p2, float p3, float p4) { Function.Call(0x933C06518B52A9A4, ped, p1, p2, p3, p4); }
 		public static void TASK_CLEAR_DEFENSIVE_AREA(int ped) { Function.Call(0x95A6C46A31D1917D, ped); }
 		public static void TASK_PED_SLIDE_TO_COORD(int ped, float x, float y, float z, float heading, float p5) { Function.Call(0xD04FE6765D990A06, ped, x, y, z, heading, p5); }
+		public static void TASK_PED_SLIDE_TO_COORD(int ped, Vector3 vec, float heading, float p5) { Function.Call(0xD04FE6765D990A06, ped, vec.X, vec.Y, vec.Z, heading, p5); }
 		public static Any _0x9420FB11B8D77948(Any p0) { return Function.Call<Any>(0x9420FB11B8D77948, p0); }
 		public static Any _0x6BA606AB3A83BC4D(Any p0) { return Function.Call<Any>(0x6BA606AB3A83BC4D, p0); }
 		public static ScrHandle ADD_COVER_POINT(float p0, float p1, float p2, float p3, Any p4, Any p5, Any p6, bool p7) { return Function.Call<ScrHandle>(0xD5C12A75C7B9497F, p0, p1, p2, p3, p4, p5, p6, p7); }
@@ -12369,11 +12657,14 @@ namespace RDR2.Native
 		public static void TASK_COMBAT_PED_TIMED(int ped, int targetPed, int p2, Any p3) { Function.Call(0x944F30DCB7096BDE, ped, targetPed, p2, p3); }
 		public static void _TASK_COMBAT_PED_3(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { Function.Call(0xC624414FA748B9BA, p0, p1, p2, p3, p4, p5); }
 		public static void TASK_SEEK_COVER_FROM_POS(int ped, float x, float y, float z, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x75AC2B60386D89F2, ped, x, y, z, p4, p5, p6, p7); }
+		public static void TASK_SEEK_COVER_FROM_POS(int ped, Vector3 vec, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x75AC2B60386D89F2, ped, vec.X, vec.Y, vec.Z, p4, p5, p6, p7); }
 		public static void TASK_SEEK_COVER_FROM_PED(int ped, Any p1, Any p2, Any p3, Any p4, Any p5) { Function.Call(0x84D32B3BEC531324, ped, p1, p2, p3, p4, p5); }
 		public static void TASK_SEEK_COVER_TO_COVER_POINT(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { Function.Call(0xD43D95C7A869447F, ped, p1, p2, p3, p4, p5, p6, p7, p8); }
 		public static void TASK_SEEK_COVER_TO_COORDS(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10) { Function.Call(0x39246A6958EF072C, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10); }
 		public static void TASK_PUT_PED_DIRECTLY_INTO_COVER(int ped, float x, float y, float z, int timeout, bool p5, float p6, Any p7, Any p8, ScrHandle coverpoint, bool p10, bool p11, Any p12) { Function.Call(0x4172393E6BE1FECE, ped, x, y, z, timeout, p5, p6, p7, p8, coverpoint, p10, p11, p12); }
+		public static void TASK_PUT_PED_DIRECTLY_INTO_COVER(int ped, Vector3 vec, int timeout, bool p5, float p6, Any p7, Any p8, ScrHandle coverpoint, bool p10, bool p11, Any p12) { Function.Call(0x4172393E6BE1FECE, ped, vec.X, vec.Y, vec.Z, timeout, p5, p6, p7, p8, coverpoint, p10, p11, p12); }
 		public static void _TASK_PUT_PED_DIRECTLY_INTO_COVER_FROM_COORDS(int ped, float x, float y, float z, float fromX, float fromY, float fromZ, int timeout, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15, Any p16, Any p17) { Function.Call(0xDF8A5855B9F9A97B, ped, x, y, z, fromX, fromY, fromZ, timeout, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17); }
+		public static void _TASK_PUT_PED_DIRECTLY_INTO_COVER_FROM_COORDS(int ped, Vector3 vec, float fromX, float fromY, float fromZ, int timeout, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15, Any p16, Any p17) { Function.Call(0xDF8A5855B9F9A97B, ped, vec.X, vec.Y, vec.Z, fromX, fromY, fromZ, timeout, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17); }
 		/// <summary>
 		/// meleeStyles: AR_GRAPPLE_BACK_FROM_BACK, AR_GRAPPLE_MOUNT_FACEDOWN_FROM_FRONT, AR_ALLIGATOR_LEAPKILL, AR_ALLIGATOR_WAIST_AUTOKILL_FRONT
 		/// </summary>
@@ -12391,6 +12682,7 @@ namespace RDR2.Native
 		public static void _TASK_GUARD_ASSIGNED_DEFENSIVE_AREA_2(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x1FC9B33976BACD6C, ped, p1, p2, p3, p4, p5, p6, p7); }
 		public static void TASK_GUARD_ASSIGNED_DEFENSIVE_AREA(int ped, float p1, float p2, float p3, float p4, float p5, Any p6) { Function.Call(0xD2A207EEBDF9889B, ped, p1, p2, p3, p4, p5, p6); }
 		public static void TASK_STAND_GUARD(int ped, float x, float y, float z, float heading, string scenarioName) { Function.Call(0xAE032F8BBA959E90, ped, x, y, z, heading, scenarioName); }
+		public static void TASK_STAND_GUARD(int ped, Vector3 vec, float heading, string scenarioName) { Function.Call(0xAE032F8BBA959E90, ped, vec.X, vec.Y, vec.Z, heading, scenarioName); }
 		public static void SET_DRIVE_TASK_CRUISE_SPEED(int driver, float cruiseSpeed) { Function.Call(0x5C9B84BD7D31D908, driver, cruiseSpeed); }
 		/// <summary>
 		/// Not implemented.
@@ -12407,10 +12699,12 @@ namespace RDR2.Native
 		/// Returns scenario
 		/// </summary>
 		public static int CREATE_SCENARIO_POINT_HASH(Hash scenarioHash, float x, float y, float z, float heading, Any p5, Any p6, bool p7) { return Function.Call<int>(0x94B745CE41DB58A1, scenarioHash, x, y, z, heading, p5, p6, p7); }
+		public static int CREATE_SCENARIO_POINT_HASH(Hash scenarioHash, Vector3 vec, float heading, Any p5, Any p6, bool p7) { return Function.Call<int>(0x94B745CE41DB58A1, scenarioHash, vec.X, vec.Y, vec.Z, heading, p5, p6, p7); }
 		/// <summary>
 		/// Returns scenario
 		/// </summary>
 		public static int CREATE_SCENARIO_POINT_HASH_ATTACHED_TO_ENTITY(int entity, Hash scenarioHash, float x, float y, float z, float heading, Any p6, Any p7, bool p8) { return Function.Call<int>(0x794AB1379A74064D, entity, scenarioHash, x, y, z, heading, p6, p7, p8); }
+		public static int CREATE_SCENARIO_POINT_HASH_ATTACHED_TO_ENTITY(int entity, Hash scenarioHash, Vector3 vec, float heading, Any p6, Any p7, bool p8) { return Function.Call<int>(0x794AB1379A74064D, entity, scenarioHash, vec.X, vec.Y, vec.Z, heading, p6, p7, p8); }
 		public static bool _DOES_SCENARIO_POINT_HAVE_PROPS(int scenario) { return Function.Call<bool>(0xEA31F199A73801D3, scenario); }
 		/// <summary>
 		/// Old name: _GET_SCENARIO_POINT_ENTITY
@@ -12448,6 +12742,7 @@ namespace RDR2.Native
 		public static float _GET_SCENARIO_POINT_HEADING(int scenario, bool p1) { return Function.Call<float>(0xB93EA7184BAA85C3, scenario, p1); }
 		public static float _GET_SCENARIO_POINT_RADIUS(int scenario) { return Function.Call<float>(0x6718F40313A2B5A6, scenario); }
 		public static void _SET_SCENARIO_POINT_COORDS(int scenario, float xPos, float yPos, float zPos, bool p4) { Function.Call(0x2056AB38DF06825C, scenario, xPos, yPos, zPos, p4); }
+		public static void _SET_SCENARIO_POINT_COORDS(int scenario, Vector3 vec, bool p4) { Function.Call(0x2056AB38DF06825C, scenario, vec.X, vec.Y, vec.Z, p4); }
 		public static void _SET_SCENARIO_POINT_HEADING(int scenario, float heading, bool p2) { Function.Call(0xD3A0DA8F91612C6E, scenario, heading, p2); }
 		public static void _SET_SCENARIO_POINT_RADIUS(int scenario, float radius) { Function.Call(0xC47D9080A9A8856A, scenario, radius); }
 		/// <summary>
@@ -12459,6 +12754,7 @@ namespace RDR2.Native
 		/// Note: scenariosInRadius is an array, and its size and values should be aligned to 8 bytes.
 		/// </summary>
 		public static unsafe int GET_SCENARIO_POINTS_IN_AREA(float posX, float posY, float posZ, float radius, Any* scenariosInRadius, int size) { return Function.Call<int>(0x345EC3B7EBDE1CB5, posX, posY, posZ, radius, scenariosInRadius, size); }
+		public static unsafe int GET_SCENARIO_POINTS_IN_AREA(Vector3 vec, float radius, Any* scenariosInRadius, int size) { return Function.Call<int>(0x345EC3B7EBDE1CB5, vec.X, vec.Y, vec.Z, radius, scenariosInRadius, size); }
 		public static Any _0xEFD875C2791EBEFD(Any p0, Any p1, Any p2, Any p3) { return Function.Call<Any>(0xEFD875C2791EBEFD, p0, p1, p2, p3); }
 		public static Any _0x152664AA3188B193(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0x152664AA3188B193, p0, p1, p2, p3, p4, p5); }
 		public static Any _0xE7BBC4E56B989449(Any p0, Any p1, Any p2) { return Function.Call<Any>(0xE7BBC4E56B989449, p0, p1, p2); }
@@ -12499,22 +12795,31 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _TASK_START_SCENARIO_IN_PLACE_2(int ped, Any p1, string p2, int p3, bool p4, float p5, bool p6) { Function.Call(0xA917E39F2CEFD215, ped, p1, p2, p3, p4, p5, p6); }
 		public static void TASK_START_SCENARIO_AT_POSITION(int ped, Hash scenarioHash, float x, float y, float z, float heading, int duration, bool sittingScenario, bool teleport, string p9, float p10, bool p11) { Function.Call(0x4D1F61FC34AF3CD1, ped, scenarioHash, x, y, z, heading, duration, sittingScenario, teleport, p9, p10, p11); }
+		public static void TASK_START_SCENARIO_AT_POSITION(int ped, Hash scenarioHash, Vector3 vec, float heading, int duration, bool sittingScenario, bool teleport, string p9, float p10, bool p11) { Function.Call(0x4D1F61FC34AF3CD1, ped, scenarioHash, vec.X, vec.Y, vec.Z, heading, duration, sittingScenario, teleport, p9, p10, p11); }
 		public static Any _0xF97F462779B31786(Any p0) { return Function.Call<Any>(0xF97F462779B31786, p0); }
 		public static Any _0x6C269F673C47031E(Any p0) { return Function.Call<Any>(0x6C269F673C47031E, p0); }
 		public static void _0x9667CCE29BFA0780(Any p0) { Function.Call(0x9667CCE29BFA0780, p0); }
 		public static Any _0x00FFE0F85253C572(Any p0) { return Function.Call<Any>(0x00FFE0F85253C572, p0); }
 		public static void _TASK_USE_NEAREST_SCENARIO_TO_COORD(int ped, float x, float y, float z, float distance, int duration, bool p6, bool p7, bool p8, bool p9) { Function.Call(0x322BFDEA666E2B0E, ped, x, y, z, distance, duration, p6, p7, p8, p9); }
+		public static void _TASK_USE_NEAREST_SCENARIO_TO_COORD(int ped, Vector3 vec, float distance, int duration, bool p6, bool p7, bool p8, bool p9) { Function.Call(0x322BFDEA666E2B0E, ped, vec.X, vec.Y, vec.Z, distance, duration, p6, p7, p8, p9); }
 		public static void TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(int ped, float x, float y, float z, float distance, int duration, bool p6, bool p7, bool p8, bool p9) { Function.Call(0x58E2E0F23F6B76C3, ped, x, y, z, distance, duration, p6, p7, p8, p9); }
+		public static void TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(int ped, Vector3 vec, float distance, int duration, bool p6, bool p7, bool p8, bool p9) { Function.Call(0x58E2E0F23F6B76C3, ped, vec.X, vec.Y, vec.Z, distance, duration, p6, p7, p8, p9); }
 		public static void TASK_USE_NEAREST_TRAIN_SCENARIO_TO_COORD_WARP(int ped, float x, float y, float z, float distance) { Function.Call(0x3774B03456DD6106, ped, x, y, z, distance); }
+		public static void TASK_USE_NEAREST_TRAIN_SCENARIO_TO_COORD_WARP(int ped, Vector3 vec, float distance) { Function.Call(0x3774B03456DD6106, ped, vec.X, vec.Y, vec.Z, distance); }
 		public static void TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD(int ped, float x, float y, float z, float distance, bool p5, bool p6, bool p7, bool p8) { Function.Call(0x9FDA1B3D7E7028B3, ped, x, y, z, distance, p5, p6, p7, p8); }
+		public static void TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD(int ped, Vector3 vec, float distance, bool p5, bool p6, bool p7, bool p8) { Function.Call(0x9FDA1B3D7E7028B3, ped, vec.X, vec.Y, vec.Z, distance, p5, p6, p7, p8); }
 		public static void TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD_WARP(int ped, float x, float y, float z, float distance, bool p5, bool p6, bool p7, bool p8) { Function.Call(0x97A28E63F0BA5631, ped, x, y, z, distance, p5, p6, p7, p8); }
+		public static void TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD_WARP(int ped, Vector3 vec, float distance, bool p5, bool p6, bool p7, bool p8) { Function.Call(0x97A28E63F0BA5631, ped, vec.X, vec.Y, vec.Z, distance, p5, p6, p7, p8); }
 		public static Any _0xFDECCA06E8B81346(Any p0) { return Function.Call<Any>(0xFDECCA06E8B81346, p0); }
 		public static Any _0x2D657B10F211C572(int ped, float p1) { return Function.Call<Any>(0x2D657B10F211C572, ped, p1); }
 		public static void TASK_RIDE_TRAIN(int ped, int train, int scenarioPoint, Hash scenarioHash) { Function.Call(0x37FB1C870E2EC2C6, ped, train, scenarioPoint, scenarioHash); }
 		public static Any _0x79197F7D2BB5E73A(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0x79197F7D2BB5E73A, p0, p1, p2, p3, p4, p5); }
 		public static bool DOES_SCENARIO_EXIST_IN_AREA(float x, float y, float z, float radius, bool p4, Any p5, bool p6) { return Function.Call<bool>(0x5A59271FFADD33C1, x, y, z, radius, p4, p5, p6); }
+		public static bool DOES_SCENARIO_EXIST_IN_AREA(Vector3 vec, float radius, bool p4, Any p5, bool p6) { return Function.Call<bool>(0x5A59271FFADD33C1, vec.X, vec.Y, vec.Z, radius, p4, p5, p6); }
 		public static bool DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA_HASH(float x, float y, float z, Hash typeHash, float radius, bool p5) { return Function.Call<bool>(0x6EEAD6AF637DA752, x, y, z, typeHash, radius, p5); }
+		public static bool DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA_HASH(Vector3 vec, Hash typeHash, float radius, bool p5) { return Function.Call<bool>(0x6EEAD6AF637DA752, vec.X, vec.Y, vec.Z, typeHash, radius, p5); }
 		public static int FIND_SCENARIO_OF_TYPE_HASH(float xPos, float yPos, float zPos, Hash scenarioType, float distance, Any p5, bool p6) { return Function.Call<int>(0xF533D68FF970D190, xPos, yPos, zPos, scenarioType, distance, p5, p6); }
+		public static int FIND_SCENARIO_OF_TYPE_HASH(Vector3 vec, Hash scenarioType, float distance, Any p5, bool p6) { return Function.Call<int>(0xF533D68FF970D190, vec.X, vec.Y, vec.Z, scenarioType, distance, p5, p6); }
 		public static void _0x0D322AEF8878B8FE(Any p0, Any p1) { Function.Call(0x0D322AEF8878B8FE, p0, p1); }
 		public static Any _0xD508FA229F1C4900(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0xD508FA229F1C4900, p0, p1, p2, p3, p4, p5); }
 		public static void _0xB8E213D02F37947D(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { Function.Call(0xB8E213D02F37947D, p0, p1, p2, p3, p4, p5, p6); }
@@ -12580,6 +12885,7 @@ namespace RDR2.Native
 		/// Despite its name, it only attacks ONE hated target. The one closest to the specified position.
 		/// </summary>
 		public static void TASK_COMBAT_HATED_TARGETS_IN_AREA(int ped, float x, float y, float z, float radius, int flags, Any p6) { Function.Call(0x4CF5F55DAC3280A0, ped, x, y, z, radius, flags, p6); }
+		public static void TASK_COMBAT_HATED_TARGETS_IN_AREA(int ped, Vector3 vec, float radius, int flags, Any p6) { Function.Call(0x4CF5F55DAC3280A0, ped, vec.X, vec.Y, vec.Z, radius, flags, p6); }
 		public static void TASK_COMBAT_HATED_TARGETS_NO_LOS_TEST(int ped, float radius) { Function.Call(0xB5BC69D9C4060BC3, ped, radius); }
 		/// <summary>
 		/// Despite its name, it only attacks ONE hated target. The one closest hated target.
@@ -12627,12 +12933,16 @@ namespace RDR2.Native
 		public static void TASK_VEHICLE_SHOOT_AT_PED(int ped, int target, float p2) { Function.Call(0x10AB107B887214D8, ped, target, p2); }
 		public static void TASK_VEHICLE_AIM_AT_PED(int ped, int target) { Function.Call(0xE41885592B08B097, ped, target); }
 		public static void TASK_VEHICLE_SHOOT_AT_COORD(int ped, float x, float y, float z, float p4) { Function.Call(0x5190796ED39C9B6D, ped, x, y, z, p4); }
+		public static void TASK_VEHICLE_SHOOT_AT_COORD(int ped, Vector3 vec, float p4) { Function.Call(0x5190796ED39C9B6D, ped, vec.X, vec.Y, vec.Z, p4); }
 		public static void _0xAF2EF28CE3084505(Any p0, Any p1, Any p2, Any p3) { Function.Call(0xAF2EF28CE3084505, p0, p1, p2, p3); }
 		public static void TASK_VEHICLE_AIM_AT_COORD(int ped, float x, float y, float z) { Function.Call(0x447C1E9EF844BC0F, ped, x, y, z); }
+		public static void TASK_VEHICLE_AIM_AT_COORD(int ped, Vector3 vec) { Function.Call(0x447C1E9EF844BC0F, ped, vec.X, vec.Y, vec.Z); }
 		public static void TASK_VEHICLE_GOTO_NAVMESH(int ped, int vehicle, float x, float y, float z, float speed, int behaviorFlag, float stoppingRange) { Function.Call(0x195AEEB13CEFE2EE, ped, vehicle, x, y, z, speed, behaviorFlag, stoppingRange); }
+		public static void TASK_VEHICLE_GOTO_NAVMESH(int ped, int vehicle, Vector3 vec, float speed, int behaviorFlag, float stoppingRange) { Function.Call(0x195AEEB13CEFE2EE, ped, vehicle, vec.X, vec.Y, vec.Z, speed, behaviorFlag, stoppingRange); }
 		public static void TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15) { Function.Call(0x11315AB3385B8AC0, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15); }
 		public static void TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD_USING_COMBAT_STYLE(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15) { Function.Call(0x639C0425A0B4E77E, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15); }
 		public static void TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY(int ped1, float x, float y, float z, int ped2, float p5, Any p6, float p7, float p8, Any p9, Any p10, Any p11, Hash firingPattern, int p13, Any p14) { Function.Call(0xB2A16444EAD9AE47, ped1, x, y, z, ped2, p5, p6, p7, p8, p9, p10, p11, firingPattern, p13, p14); }
+		public static void TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY(int ped1, Vector3 vec, int ped2, float p5, Any p6, float p7, float p8, Any p9, Any p10, Any p11, Hash firingPattern, int p13, Any p14) { Function.Call(0xB2A16444EAD9AE47, ped1, vec.X, vec.Y, vec.Z, ped2, p5, p6, p7, p8, p9, p10, p11, firingPattern, p13, p14); }
 		public static void TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY_USING_COMBAT_STYLE(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14) { Function.Call(0x78426D0982D083C9, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14); }
 		/// <summary>
 		/// shootatEntity:
@@ -12656,6 +12966,7 @@ namespace RDR2.Native
 		public static unsafe bool WAYPOINT_RECORDING_GET_COORD(string waypointRecording, int point, Vector3* coord) { return Function.Call<bool>(0x2FB897405C90B361, waypointRecording, point, coord); }
 		public static float WAYPOINT_RECORDING_GET_SPEED_AT_POINT(string waypointRecording, int point) { return Function.Call<float>(0x005622AEBC33ACA9, waypointRecording, point); }
 		public static unsafe bool WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(string waypointRecording, float x, float y, float z, int* point) { return Function.Call<bool>(0xB629A298081F876F, waypointRecording, x, y, z, point); }
+		public static unsafe bool WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(string waypointRecording, Vector3 vec, int* point) { return Function.Call<bool>(0xB629A298081F876F, waypointRecording, vec.X, vec.Y, vec.Z, point); }
 		public static void TASK_FOLLOW_WAYPOINT_RECORDING_ADVANCED(int ped, Any p1) { Function.Call(0x0CFC13EBC19BCA52, ped, p1); }
 		public static void TASK_FOLLOW_WAYPOINT_RECORDING(int ped, string waypointRecording, int p2, int flag, int p4, bool p5, Any p6, int p7) { Function.Call(0x0759591819534F7B, ped, waypointRecording, p2, flag, p4, p5, p6, p7); }
 		public static void TASK_FOLLOW_WAYPOINT_RECORDING_AT_OFFSET(int ped, string waypointRecording, float p2, int p3, int p4, int p5, bool p6) { Function.Call(0xBE9B0520BD7C445B, ped, waypointRecording, p2, p3, p4, p5, p6); }
@@ -12666,6 +12977,7 @@ namespace RDR2.Native
 		public static Any SET_PED_WAYPOINT_ROUTE_OFFSET(int ped, float p1, float p2, float p3) { return Function.Call<Any>(0xED98E10B0AFCE4B4, ped, p1, p2, p3); }
 		public static float GET_WAYPOINT_DISTANCE_ALONG_ROUTE(string waypointRecording, int p1) { return Function.Call<float>(0xA5B769058763E497, waypointRecording, p1); }
 		public static float _0x3ACC128510142B9D(string waypointRecording, float x, float y, float z) { return Function.Call<float>(0x3ACC128510142B9D, waypointRecording, x, y, z); }
+		public static float _0x3ACC128510142B9D(string waypointRecording, Vector3 vec) { return Function.Call<float>(0x3ACC128510142B9D, waypointRecording, vec.X, vec.Y, vec.Z); }
 		public static bool WAYPOINT_PLAYBACK_GET_IS_PAUSED(int ped) { return Function.Call<bool>(0x701375A7D43F01CB, ped); }
 		public static bool WAYPOINT_PLAYBACK_GET_IS_AIMING(int ped) { return Function.Call<bool>(0xD73A5D1F0325C71C, ped); }
 		public static bool WAYPOINT_PLAYBACK_GET_IS_SHOOTING(int ped) { return Function.Call<bool>(0xA5B94DF8AF058F46, ped); }
@@ -12709,6 +13021,7 @@ namespace RDR2.Native
 		public static void TASK_MOVE_NETWORK_BY_NAME(int ped, string task, float multiplier, bool p3, string animDict, int flags) { Function.Call(0x2D537BA194896636, ped, task, multiplier, p3, animDict, flags); }
 		public static unsafe void TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(int ped, string moveNetworkDefName, Any* taskData, float p3, bool p4, string animDict, int flags) { Function.Call(0x139805C2A67C4795, ped, moveNetworkDefName, taskData, p3, p4, animDict, flags); }
 		public static unsafe void TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(int ped, string moveNetworkDefName, Any* taskData, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, int p9, float p10, int p11, int p12, int flag, int p14) { Function.Call(0x7B6A04F98BBAFB2C, ped, moveNetworkDefName, taskData, xPos, yPos, zPos, xRot, yRot, zRot, p9, p10, p11, p12, flag, p14); }
+		public static unsafe void TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(int ped, string moveNetworkDefName, Any* taskData, Vector3 vec, Vector3 rotation, int p9, float p10, int p11, int p12, int flag, int p14) { Function.Call(0x7B6A04F98BBAFB2C, ped, moveNetworkDefName, taskData, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, p9, p10, p11, p12, flag, p14); }
 		public static void TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS_ATTACHED(int ped, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15, Any p16, Any p17) { Function.Call(0xF92171093BCABED4, ped, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17); }
 		public static bool IS_TASK_MOVE_NETWORK_ACTIVE(int ped) { return Function.Call<bool>(0x921CE12C489C4C41, ped); }
 		/// <summary>
@@ -12725,6 +13038,7 @@ namespace RDR2.Native
 		public static void _0x099D4A855D53B03B(Any p0, Any p1, Any p2) { Function.Call(0x099D4A855D53B03B, p0, p1, p2); }
 		public static void SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(int ped, string signalName, bool value) { Function.Call(0xB0A6CFD2C69C1088, ped, signalName, value); }
 		public static void _SET_TASK_MOVE_NETWORK_SIGNAL_VECTOR(int ped, string signalName, float x, float y, float z) { Function.Call(0x4662BFE01938D98D, ped, signalName, x, y, z); }
+		public static void _SET_TASK_MOVE_NETWORK_SIGNAL_VECTOR(int ped, string signalName, Vector3 vec) { Function.Call(0x4662BFE01938D98D, ped, signalName, vec.X, vec.Y, vec.Z); }
 		public static float _GET_TASK_MOVE_NETWORK_PHASE_FLOAT(int ped, string phaseName) { return Function.Call<float>(0x844CEEE428EA35B0, ped, phaseName); }
 		public static bool GET_TASK_MOVE_NETWORK_EVENT(int ped, string eventName) { return Function.Call<bool>(0xB4F47213DF45A64C, ped, eventName); }
 		public static void _0x9585FF23C4B8EDE0(Any p0, Any p1) { Function.Call(0x9585FF23C4B8EDE0, p0, p1); }
@@ -12774,6 +13088,7 @@ namespace RDR2.Native
 		public static bool GET_IS_CARRIABLE_ENTITY(int entity) { return Function.Call<bool>(0x0CCFE72B43C9CF96, entity); }
 		public static Any _0x10ADFDF07B7DFFBA(Any p0, Any p1, Any p2) { return Function.Call<Any>(0x10ADFDF07B7DFFBA, p0, p1, p2); }
 		public static void TASK_PLACE_CARRIED_ENTITY_AT_COORD(int ped, int entity, float x, float y, float z, float p5, int flags) { Function.Call(0xC7F0B43DCDC57E3D, ped, entity, x, y, z, p5, flags); }
+		public static void TASK_PLACE_CARRIED_ENTITY_AT_COORD(int ped, int entity, Vector3 vec, float p5, int flags) { Function.Call(0xC7F0B43DCDC57E3D, ped, entity, vec.X, vec.Y, vec.Z, p5, flags); }
 		public static void TASK_PLACE_CARRIED_ENTITY_ON_MOUNT(int ped, int entity, int mount, float p3) { Function.Call(0x6D3D87C57B3D52C7, ped, entity, mount, p3); }
 		public static void TASK_DUMP_CARRIABLE_FROM_PARENT(int ped, int ped2, int entity) { Function.Call(0x17CA98707B15926A, ped, ped2, entity); }
 		public static void _DETACH_CARRIABLE_PED(int ped) { Function.Call(0x36D188AECB26094B, ped); }
@@ -12803,6 +13118,7 @@ namespace RDR2.Native
 		/// Returns compositeId
 		/// </summary>
 		public static unsafe int _CREATE_HERB_COMPOSITES(Hash asset, float x, float y, float z, float heading, int groundSetting, Any* p6, int p7) { return Function.Call<int>(0x5B4BBE80AD5972DC, asset, x, y, z, heading, groundSetting, p6, p7); }
+		public static unsafe int _CREATE_HERB_COMPOSITES(Hash asset, Vector3 vec, float heading, int groundSetting, Any* p6, int p7) { return Function.Call<int>(0x5B4BBE80AD5972DC, asset, vec.X, vec.Y, vec.Z, heading, groundSetting, p6, p7); }
 		/// <summary>
 		/// Params: p1 is always false except in script nb_egg_protector
 		/// </summary>
@@ -12815,6 +13131,7 @@ namespace RDR2.Native
 		public static void TASK_LOOT_ENTITY(int ped, int entity) { Function.Call(0x48FAE038401A2888, ped, entity); }
 		public static void TASK_BREAK_VEHICLE_DOOR_LOCK(int ped, int vehicle) { Function.Call(0xBB28D1BC9EA8A6A5, ped, vehicle); }
 		public static void TASK_LOOT_NEAREST_ENTITY(int ped, float x, float y, float z, int p4, float p5) { Function.Call(0xCF1501CBC4059412, ped, x, y, z, p4, p5); }
+		public static void TASK_LOOT_NEAREST_ENTITY(int ped, Vector3 vec, int p4, float p5) { Function.Call(0xCF1501CBC4059412, ped, vec.X, vec.Y, vec.Z, p4, p5); }
 		public static void TASK_LASSO_PED(int ped, int targetPed) { Function.Call(0xC716EB2BD16370A3, ped, targetPed); }
 		public static void TASK_HOGTIEABLE(int ped) { Function.Call(0x6AFD8FE0D723328F, ped); }
 		/// <summary>
@@ -13201,6 +13518,7 @@ namespace RDR2.Native
 	{
 		public static bool _UILOG_IS_ENTRY_REGISTERED(int p0, Hash p1) { return Function.Call<bool>(0xB8188CCF52202475, p0, p1); }
 		public static void _UILOG_ADD_ENTRY_HASH(int p0, int p1, float x, float y, float z, Hash p5, Hash p6, Any p7) { Function.Call(0x69D5479982355D8F, p0, p1, x, y, z, p5, p6, p7); }
+		public static void _UILOG_ADD_ENTRY_HASH(int p0, int p1, Vector3 vec, Hash p5, Hash p6, Any p7) { Function.Call(0x69D5479982355D8F, p0, p1, vec.X, vec.Y, vec.Z, p5, p6, p7); }
 		public static void _UILOG_ADD_ITEM_TO_TASK_LIST(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { Function.Call(0x49C63FDF69744A27, p0, p1, p2, p3, p4, p5, p6, p7); }
 		public static void _UILOG_SET_ENTRY_ICON_TEXTURE(int p0, Hash p1, Hash icon, Hash iconDictionary) { Function.Call(0x6965469934958D8F, p0, p1, icon, iconDictionary); }
 		public static void _UILOG_SET_ENTRY_BRIEF_TEXTURE(int p0, Hash p1, Hash texture, Hash textureDictionary) { Function.Call(0x69684D9936958D8F, p0, p1, texture, textureDictionary); }
@@ -13344,10 +13662,12 @@ namespace RDR2.Native
 		public static void _0x6355602C02EDC6DF(int entity, Any p1) { Function.Call(0x6355602C02EDC6DF, entity, p1); }
 		public static void _SET_VEHICLE_IS_IN_HURRY(int vehicle, bool enabled) { Function.Call(0xCE1531927AD6C9F8, vehicle, enabled); }
 		public static int CREATE_VEHICLE(Hash modelHash, float x, float y, float z, float heading, bool isNetwork, bool bScriptHostVeh, bool bDontAutoCreateDraftAnimals, bool p8) { return Function.Call<int>(0xAF35D0D2583051B0, modelHash, x, y, z, heading, isNetwork, bScriptHostVeh, bDontAutoCreateDraftAnimals, p8); }
+		public static int CREATE_VEHICLE(Hash modelHash, Vector3 vec, float heading, bool isNetwork, bool bScriptHostVeh, bool bDontAutoCreateDraftAnimals, bool p8) { return Function.Call<int>(0xAF35D0D2583051B0, modelHash, vec.X, vec.Y, vec.Z, heading, isNetwork, bScriptHostVeh, bDontAutoCreateDraftAnimals, p8); }
 		/// <summary>
 		/// Identical to CREATE_VEHICLE but allows to set draftAnimalPopGroup (see popgroups.#mt for DRAFT_HORSES_*)
 		/// </summary>
 		public static int _CREATE_DRAFT_VEHICLE(Hash modelHash, float x, float y, float z, float heading, bool isNetwork, bool bScriptHostVeh, bool bDontAutoCreateDraftAnimals, Hash draftAnimalPopGroup, bool p9) { return Function.Call<int>(0x214651FB1DFEBA89, modelHash, x, y, z, heading, isNetwork, bScriptHostVeh, bDontAutoCreateDraftAnimals, draftAnimalPopGroup, p9); }
+		public static int _CREATE_DRAFT_VEHICLE(Hash modelHash, Vector3 vec, float heading, bool isNetwork, bool bScriptHostVeh, bool bDontAutoCreateDraftAnimals, Hash draftAnimalPopGroup, bool p9) { return Function.Call<int>(0x214651FB1DFEBA89, modelHash, vec.X, vec.Y, vec.Z, heading, isNetwork, bScriptHostVeh, bDontAutoCreateDraftAnimals, draftAnimalPopGroup, p9); }
 		/// <summary>
 		/// Deletes a vehicle.
 		/// The vehicle must be a mission entity to delete, so call this before deleting: SET_ENTITY_AS_MISSION_ENTITY(vehicle, true, true);
@@ -13369,6 +13689,7 @@ namespace RDR2.Native
 		public static bool IS_VEHICLE_MODEL(int vehicle, Hash model) { return Function.Call<bool>(0x0045A54EC7A22455, vehicle, model); }
 		public static void _SET_ALL_VEHICLE_GENERATORS_DISABLED_FOR_VOLUME(Volume volume, bool toggle) { Function.Call(0x424FFCB9F0D2D4B5, volume, toggle); }
 		public static void SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool p6, bool p7) { Function.Call(0xBBB134FB9D50C0CC, x1, y1, z1, x2, y2, z2, p6, p7); }
+		public static void SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(Vector3 vec1, Vector3 vec2, bool p6, bool p7) { Function.Call(0xBBB134FB9D50C0CC, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, p6, p7); }
 		public static void SET_ALL_VEHICLE_GENERATORS_ACTIVE() { Function.Call(0x3D596E6E88A02C24); }
 		public static bool SET_VEHICLE_ON_GROUND_PROPERLY(int vehicle, bool p1) { return Function.Call<bool>(0x7263332501E07F52, vehicle, p1); }
 		/// <summary>
@@ -13541,6 +13862,7 @@ namespace RDR2.Native
 		/// Returns trackIndex
 		/// </summary>
 		public static int _0x331CBD247FC5DAA8(Hash configHash, float x, float y, float z, bool direction, bool p5) { return Function.Call<int>(0x331CBD247FC5DAA8, configHash, x, y, z, direction, p5); }
+		public static int _0x331CBD247FC5DAA8(Hash configHash, Vector3 vec, bool direction, bool p5) { return Function.Call<int>(0x331CBD247FC5DAA8, configHash, vec.X, vec.Y, vec.Z, direction, p5); }
 		/// <summary>
 		/// Takes value returned from 0x45853F4E17D847D5
 		/// </summary>
@@ -13575,6 +13897,7 @@ namespace RDR2.Native
 		/// _IS_* (related to CREATE_MISSION_TRAIN)
 		/// </summary>
 		public static bool _0xF05DFAF1ADFEF2CD(Hash trainConfig, float x, float y, float z, bool direction, bool p5) { return Function.Call<bool>(0xF05DFAF1ADFEF2CD, trainConfig, x, y, z, direction, p5); }
+		public static bool _0xF05DFAF1ADFEF2CD(Hash trainConfig, Vector3 vec, bool direction, bool p5) { return Function.Call<bool>(0xF05DFAF1ADFEF2CD, trainConfig, vec.X, vec.Y, vec.Z, direction, p5); }
 		public static Any _0xD1DF5E54F4ACBE1A(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0xD1DF5E54F4ACBE1A, p0, p1, p2, p3, p4, p5, p6); }
 		public static Any _0x0FDDEE66E3465726(Any p0) { return Function.Call<Any>(0x0FDDEE66E3465726, p0); }
 		public static void _0x4C05B42A8D937796() { Function.Call(0x4C05B42A8D937796); }
@@ -13589,12 +13912,15 @@ namespace RDR2.Native
 		/// Returns trackIndex
 		/// </summary>
 		public static int _0x6C87F49BFA181DB5(float x, float y, float z) { return Function.Call<int>(0x6C87F49BFA181DB5, x, y, z); }
+		public static int _0x6C87F49BFA181DB5(Vector3 vec) { return Function.Call<int>(0x6C87F49BFA181DB5, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Returns trackIndex
 		/// _E* - _F*
 		/// </summary>
 		public static int _GET_TRACK_INDEX_FROM_COORDS(float x, float y, float z) { return Function.Call<int>(0x85D39F5E3B6D7EB0, x, y, z); }
+		public static int _GET_TRACK_INDEX_FROM_COORDS(Vector3 vec) { return Function.Call<int>(0x85D39F5E3B6D7EB0, vec.X, vec.Y, vec.Z); }
 		public static Vector3 _GET_NEAREST_TRAIN_TRACK_POSITION(float x, float y, float z) { return Function.Call<Vector3>(0x6DE03BCC15E81710, x, y, z); }
+		public static Vector3 _GET_NEAREST_TRAIN_TRACK_POSITION(Vector3 vec) { return Function.Call<Vector3>(0x6DE03BCC15E81710, vec.X, vec.Y, vec.Z); }
 		public static void DELETE_ALL_TRAINS() { Function.Call(0xA3120A1385F17FF7); }
 		public static Any _0x0E558D3A49D759D6(Any p0, Any p1) { return Function.Call<Any>(0x0E558D3A49D759D6, p0, p1); }
 		public static void _0xD4907EF4334C7602(Any p0, Any p1) { Function.Call(0xD4907EF4334C7602, p0, p1); }
@@ -13678,15 +14004,18 @@ namespace RDR2.Native
 		/// </summary>
 		public static void SKIP_TIME_IN_PLAYBACK_RECORDED_VEHICLE(int vehicle, float time) { Function.Call(0x5F5E6379C59EFC56, vehicle, time); }
 		public static int GET_CLOSEST_VEHICLE(float x, float y, float z, float radius, Hash modelHash, int flags) { return Function.Call<int>(0x52F45D033645181B, x, y, z, radius, modelHash, flags); }
+		public static int GET_CLOSEST_VEHICLE(Vector3 vec, float radius, Hash modelHash, int flags) { return Function.Call<int>(0x52F45D033645181B, vec.X, vec.Y, vec.Z, radius, modelHash, flags); }
 		public static int GET_TRAIN_CARRIAGE(int train, int trailerNumber) { return Function.Call<int>(0xD0FB093A4CDB932C, train, trailerNumber); }
 		public static unsafe void DELETE_MISSION_TRAIN(int* train) { Function.Call(0x0D3630FB07E8B570, train); }
 		public static unsafe void SET_MISSION_TRAIN_AS_NO_LONGER_NEEDED(int* train, bool p1) { Function.Call(0xBBE7648349B49BE8, train, p1); }
 		public static void SET_MISSION_TRAIN_COORDS(int train, float x, float y, float z) { Function.Call(0x7632755962AB9922, train, x, y, z); }
+		public static void SET_MISSION_TRAIN_COORDS(int train, Vector3 vec) { Function.Call(0x7632755962AB9922, train, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// Notice: BOOL p4 was wrongly named takePassengers (?)
 		/// Can be used to rotate the train by setting the BOOL direction
 		/// </summary>
 		public static void _SET_MISSION_TRAIN_WARP_TO_COORDS(int train, float x, float y, float z, bool direction) { Function.Call(0xC9EA26893C9E4024, train, x, y, z, direction); }
+		public static void _SET_MISSION_TRAIN_WARP_TO_COORDS(int train, Vector3 vec, bool direction) { Function.Call(0xC9EA26893C9E4024, train, vec.X, vec.Y, vec.Z, direction); }
 		public static void _0xA72B1BF3857B94D7(int train, bool p1) { Function.Call(0xA72B1BF3857B94D7, train, p1); }
 		public static bool _IS_THIS_MODEL_A_DRAFT_VEHICLE(Hash model) { return Function.Call<bool>(0xB9D5BDDA88E1BB66, model); }
 		public static bool IS_THIS_MODEL_A_BOAT(Hash model) { return Function.Call<bool>(0x799CFC7C5B743B15, model); }
@@ -13768,6 +14097,7 @@ namespace RDR2.Native
 		/// Outputs junctionIndex, to be used with 0xE6C5E2125EB210C1
 		/// </summary>
 		public static unsafe bool _GET_TRAIN_TRACK_JUNCTION_AT_COORDS(Hash trainTrack, float x, float y, float z, int* junctionIndex) { return Function.Call<bool>(0x86AFC343CF7F0B34, trainTrack, x, y, z, junctionIndex); }
+		public static unsafe bool _GET_TRAIN_TRACK_JUNCTION_AT_COORDS(Hash trainTrack, Vector3 vec, int* junctionIndex) { return Function.Call<bool>(0x86AFC343CF7F0B34, trainTrack, vec.X, vec.Y, vec.Z, junctionIndex); }
 		public static Any _0xD9BF3ED8EFB67EA3(Any p0, Any p1, Any p2, Any p3, Any p4) { return Function.Call<Any>(0xD9BF3ED8EFB67EA3, p0, p1, p2, p3, p4); }
 		public static Vector3 _0x785639D89F8451AB(Any p0, Any p1) { return Function.Call<Vector3>(0x785639D89F8451AB, p0, p1); }
 		/// <summary>
@@ -13783,6 +14113,7 @@ namespace RDR2.Native
 		public static void _SET_ALL_JUNCTIONS_CLEARED() { Function.Call(0x138398153824E332); }
 		public static void _0x34BCF6209B9668A7(int trackIndex, Any p1) { Function.Call(0x34BCF6209B9668A7, trackIndex, p1); }
 		public static void _0xD0BA1853D76683C8(int trackIndex, float x, float y, float z, Any p4) { Function.Call(0xD0BA1853D76683C8, trackIndex, x, y, z, p4); }
+		public static void _0xD0BA1853D76683C8(int trackIndex, Vector3 vec, Any p4) { Function.Call(0xD0BA1853D76683C8, trackIndex, vec.X, vec.Y, vec.Z, p4); }
 		public static void SET_TRAIN_OFFSET_FROM_STATION(int train, float offset) { Function.Call(0x8EC47DD4300BF063, train, offset); }
 		public static void _0xDC69F6913CCA0B99(Any p0, Any p1) { Function.Call(0xDC69F6913CCA0B99, p0, p1); }
 		public static void _0x7840576C50A13DBA(int train, bool p1) { Function.Call(0x7840576C50A13DBA, train, p1); }
@@ -13866,6 +14197,7 @@ namespace RDR2.Native
 		/// Radius of effect damage applied in a sphere at impact location
 		/// </summary>
 		public static void SET_VEHICLE_DAMAGE(int vehicle, float xOffset, float yOffset, float zOffset, float damage, float radius, bool p6) { Function.Call(0x1D7678F81452BB41, vehicle, xOffset, yOffset, zOffset, damage, radius, p6); }
+		public static void SET_VEHICLE_DAMAGE(int vehicle, Vector3 offset, float damage, float radius, bool p6) { Function.Call(0x1D7678F81452BB41, vehicle, offset.X, offset.Y, offset.Z, damage, radius, p6); }
 		/// <summary>
 		/// Returns 1000.0 if the function is unable to get the address of the specified vehicle or if it's not a vehicle.
 		/// 
@@ -13956,6 +14288,7 @@ namespace RDR2.Native
 		public static void SET_VEHICLE_EXPLODES_ON_HIGH_EXPLOSION_DAMAGE(int vehicle, bool toggle) { Function.Call(0xA402939C6761E1A3, vehicle, toggle); }
 		public static void SET_ALLOW_VEHICLE_EXPLODES_ON_CONTACT(int vehicle, bool p1) { Function.Call(0x8D3230A0ED7DE39F, vehicle, p1); }
 		public static bool IS_ANY_VEHICLE_NEAR_POINT(float x, float y, float z, float radius) { return Function.Call<bool>(0x5698BA4FD04D39C4, x, y, z, radius); }
+		public static bool IS_ANY_VEHICLE_NEAR_POINT(Vector3 vec, float radius) { return Function.Call<bool>(0x5698BA4FD04D39C4, vec.X, vec.Y, vec.Z, radius); }
 		public static void REQUEST_VEHICLE_HIGH_DETAIL_MODEL(int vehicle) { Function.Call(0x84B81EF78BD22357, vehicle); }
 		public static void REQUEST_VEHICLE_ASSET(Hash vehicleHash, int vehicleAsset) { Function.Call(0x81A15811460FAB3A, vehicleHash, vehicleAsset); }
 		public static void _0xCF9DA72002FC16BF(Any p0, Any p1, Any p2) { Function.Call(0xCF9DA72002FC16BF, p0, p1, p2); }
@@ -14070,6 +14403,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static int _GET_NUM_DRAFT_VEHICLE_HARNESS_PED(Hash modelHash) { return Function.Call<int>(0x5B1A26BB18E7D451, modelHash); }
 		public static Vector3 _GET_CHECKPOINT_TRAIN_SPAWN_LOCATION(int trackIndex, float x, float y, float z, float distance, bool direction) { return Function.Call<Vector3>(0x35D302397E524939, trackIndex, x, y, z, distance, direction); }
+		public static Vector3 _GET_CHECKPOINT_TRAIN_SPAWN_LOCATION(int trackIndex, Vector3 vec, float distance, bool direction) { return Function.Call<Vector3>(0x35D302397E524939, trackIndex, vec.X, vec.Y, vec.Z, distance, direction); }
 		public static void _0xC399CC89FBA05DA0(int vehicle, bool p1) { Function.Call(0xC399CC89FBA05DA0, vehicle, p1); }
 		/// <summary>
 		/// Returns handles of boat paddles entities.
@@ -14082,7 +14416,9 @@ namespace RDR2.Native
 		public static void _SET_FORCE_COACH_ROBBERY_LOOT(int vehicle, Hash coachrobberyLoot) { Function.Call(0xF489F94BFEE12BB0, vehicle, coachrobberyLoot); }
 		public static Any _0x0BA4250D20007C2E(Any p0) { return Function.Call<Any>(0x0BA4250D20007C2E, p0); }
 		public static void _0x2200AB13CBD10F4E(int vehicle, float x, float y, float z, bool p4, float p5) { Function.Call(0x2200AB13CBD10F4E, vehicle, x, y, z, p4, p5); }
+		public static void _0x2200AB13CBD10F4E(int vehicle, Vector3 vec, bool p4, float p5) { Function.Call(0x2200AB13CBD10F4E, vehicle, vec.X, vec.Y, vec.Z, p4, p5); }
 		public static void _0xB42C87521D1BDD2F(int vehicle, float x, float y, float z) { Function.Call(0xB42C87521D1BDD2F, vehicle, x, y, z); }
+		public static void _0xB42C87521D1BDD2F(int vehicle, Vector3 vec) { Function.Call(0xB42C87521D1BDD2F, vehicle, vec.X, vec.Y, vec.Z); }
 		public static void _0xC351394B932A6A50(Any p0) { Function.Call(0xC351394B932A6A50, p0); }
 		public static void _0x172E9DD35858DCD7(Any p0) { Function.Call(0x172E9DD35858DCD7, p0); }
 		public static int _GET_BREAKABLE_VEHICLE_LOCKS_STATE(int vehicle) { return Function.Call<int>(0xE015CF1F2C0959D8, vehicle); }
@@ -14105,6 +14441,7 @@ namespace RDR2.Native
 		public static void _SET_DRAFT_VEHICLE_ANIMALS_CAN_DETACH(int draft, bool canDetach) { Function.Call(0x6090A031C69F384E, draft, canDetach); }
 		public static void _SET_DRAFT_VEHICLE_YOKE_CAN_BREAK(int draft, bool canBreak) { Function.Call(0x226C6A4E3346D288, draft, canBreak); }
 		public static void _ADD_TRAIN_TEMPORARY_STOP(int train, int trackIndex, float x, float y, float z) { Function.Call(0x41503629D1139ABC, train, trackIndex, x, y, z); }
+		public static void _ADD_TRAIN_TEMPORARY_STOP(int train, int trackIndex, Vector3 vec) { Function.Call(0x41503629D1139ABC, train, trackIndex, vec.X, vec.Y, vec.Z); }
 		/// <summary>
 		/// _SET_VEHICLE_S*
 		/// </summary>
@@ -14184,6 +14521,7 @@ namespace RDR2.Native
 		/// _SET_VELOCITY*
 		/// </summary>
 		public static void _0x12F6C6ED3EFF42DE(int vehicle, float x, float y, float z) { Function.Call(0x12F6C6ED3EFF42DE, vehicle, x, y, z); }
+		public static void _0x12F6C6ED3EFF42DE(int vehicle, Vector3 vec) { Function.Call(0x12F6C6ED3EFF42DE, vehicle, vec.X, vec.Y, vec.Z); }
 		public static void _0x87B974E54C71BA7B(int vehicle, bool p1) { Function.Call(0x87B974E54C71BA7B, vehicle, p1); }
 		public static bool _HAS_TRAIN_LOADED(int train) { return Function.Call<bool>(0xBD3C4A2ED509205E, train); }
 		/// <summary>
@@ -14192,6 +14530,7 @@ namespace RDR2.Native
 		/// To make the train AI controlled, set conductor to true and set the speed once.
 		/// </summary>
 		public static int _CREATE_MISSION_TRAIN(Hash configHash, float x, float y, float z, bool direction, bool passengers, bool p6, bool conductor) { return Function.Call<int>(0xC239DBD9A57D2A71, configHash, x, y, z, direction, passengers, p6, conductor); }
+		public static int _CREATE_MISSION_TRAIN(Hash configHash, Vector3 vec, bool direction, bool passengers, bool p6, bool conductor) { return Function.Call<int>(0xC239DBD9A57D2A71, configHash, vec.X, vec.Y, vec.Z, direction, passengers, p6, conductor); }
 		public static void _0xD1EFA8D68BF5D63D(Any p0, Any p1, Any p2, Any p3) { Function.Call(0xD1EFA8D68BF5D63D, p0, p1, p2, p3); }
 		public static Any _0x1121B07088ED3013(Any p0) { return Function.Call<Any>(0x1121B07088ED3013, p0); }
 		public static Any _0x42404D57D621601A(Any p0) { return Function.Call<Any>(0x42404D57D621601A, p0); }
@@ -14269,19 +14608,28 @@ namespace RDR2.Native
 	public static class VOLUME
 	{
 		public static Volume _CREATE_VOLUME_BY_HASH(Hash volumeType, float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { return Function.Call<Volume>(0x502022FA1AF9DC86, volumeType, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static Volume _CREATE_VOLUME_BY_HASH(Hash volumeType, Vector3 vec, Vector3 rotation, Vector3 scale) { return Function.Call<Volume>(0x502022FA1AF9DC86, volumeType, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static Volume CREATE_VOLUME_BOX(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { return Function.Call<Volume>(0xDF85637F22706891, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static Volume CREATE_VOLUME_BOX(Vector3 vec, Vector3 rotation, Vector3 scale) { return Function.Call<Volume>(0xDF85637F22706891, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static Volume CREATE_VOLUME_CYLINDER(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { return Function.Call<Volume>(0x0522D4774B82E3E6, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static Volume CREATE_VOLUME_CYLINDER(Vector3 vec, Vector3 rotation, Vector3 scale) { return Function.Call<Volume>(0x0522D4774B82E3E6, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static Volume CREATE_VOLUME_SPHERE(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { return Function.Call<Volume>(0xB3FB80A32BAE3065, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static Volume CREATE_VOLUME_SPHERE(Vector3 vec, Vector3 rotation, Vector3 scale) { return Function.Call<Volume>(0xB3FB80A32BAE3065, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static Volume CREATE_VOLUME_AGGREGATE() { return Function.Call<Volume>(0x59F6F5C1D129F106); }
 		public static Volume _CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME(Hash volumeType, float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, string name) { return Function.Call<Volume>(0x1F85E4AC774A201E, volumeType, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, name); }
+		public static Volume _CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME(Hash volumeType, Vector3 vec, Vector3 rotation, Vector3 scale, string name) { return Function.Call<Volume>(0x1F85E4AC774A201E, volumeType, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, name); }
 		public static Volume _CREATE_ANTI_GRIEF_VOLUME(Hash volumeType, float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { return Function.Call<Volume>(0x0EB78C2B156635B1, volumeType, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static Volume _CREATE_ANTI_GRIEF_VOLUME(Hash volumeType, Vector3 vec, Vector3 rotation, Vector3 scale) { return Function.Call<Volume>(0x0EB78C2B156635B1, volumeType, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static void _SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE(Volume volume, bool toggle) { Function.Call(0xBE551C2CC421185D, volume, toggle); }
 		public static void _SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER(Volume volume, bool toggle) { Function.Call(0x5B23DFF8E0948BB2, volume, toggle); }
 		public static Volume _CREATE_WALK_AND_TALK_VOLUME(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12) { return Function.Call<Volume>(0xFD0E389CD44434B6, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); }
 		public static Volume _CREATE_SPEED_VOLUME(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14) { return Function.Call<Volume>(0xBBE768E3AE76E07C, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14); }
 		public static Volume _CREATE_VOLUME_BOX_WITH_CUSTOM_NAME(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, string name) { return Function.Call<Volume>(0xF68485C7495D848E, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, name); }
+		public static Volume _CREATE_VOLUME_BOX_WITH_CUSTOM_NAME(Vector3 vec, Vector3 rotation, Vector3 scale, string name) { return Function.Call<Volume>(0xF68485C7495D848E, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, name); }
 		public static Volume _CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, string name) { return Function.Call<Volume>(0xDF1E350EDDF06E59, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, name); }
+		public static Volume _CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME(Vector3 vec, Vector3 rotation, Vector3 scale, string name) { return Function.Call<Volume>(0xDF1E350EDDF06E59, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, name); }
 		public static Volume _CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME(float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, string name) { return Function.Call<Volume>(0x10157BC3247FF3BA, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, name); }
+		public static Volume _CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME(Vector3 vec, Vector3 rotation, Vector3 scale, string name) { return Function.Call<Volume>(0x10157BC3247FF3BA, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z, name); }
 		public static Volume _CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME(string name) { return Function.Call<Volume>(0x5D580DE6398BB162, name); }
 		/// <summary>
 		/// _ADD_R* - _ADD_V(OLUME?)*
@@ -14292,6 +14640,7 @@ namespace RDR2.Native
 		/// </summary>
 		public static void _REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME(Volume volume, Volume aggregate) { Function.Call(0xF92FA8890DECECF6, volume, aggregate); }
 		public static void _ADD_VOLUME_TO_VOLUME_AGGREGATE(Volume aggregate, Hash typeHash, float x, float y, float z, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) { Function.Call(0x12FCAA23F2320422, aggregate, typeHash, x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ); }
+		public static void _ADD_VOLUME_TO_VOLUME_AGGREGATE(Volume aggregate, Hash typeHash, Vector3 vec, Vector3 rotation, Vector3 scale) { Function.Call(0x12FCAA23F2320422, aggregate, typeHash, vec.X, vec.Y, vec.Z, rotation.X, rotation.Y, rotation.Z, scale.X, scale.Y, scale.Z); }
 		public static void _ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE(Volume aggregate, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9) { Function.Call(0x39816F6F94F385AD, aggregate, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static void _ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE(Volume aggregate, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9) { Function.Call(0xBCE668AAF83608BE, aggregate, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
 		public static void _ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE(Volume aggregate, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9) { Function.Call(0x5B7D7BF36D2DE18B, aggregate, p1, p2, p3, p4, p5, p6, p7, p8, p9); }
@@ -14301,12 +14650,16 @@ namespace RDR2.Native
 		/// Old name: _IS_POSITION_INSIDE_VOLUME
 		/// </summary>
 		public static bool IS_POINT_IN_VOLUME(Volume volume, float x, float y, float z) { return Function.Call<bool>(0xF256A75210C5C0EB, volume, x, y, z); }
+		public static bool IS_POINT_IN_VOLUME(Volume volume, Vector3 vec) { return Function.Call<bool>(0xF256A75210C5C0EB, volume, vec.X, vec.Y, vec.Z); }
 		public static Vector3 GET_VOLUME_COORDS(Volume volume) { return Function.Call<Vector3>(0xF70F00013A62F866, volume); }
 		public static bool SET_VOLUME_COORDS(Volume volume, float posX, float posY, float posZ) { return Function.Call<bool>(0x541B8576615C33DE, volume, posX, posY, posZ); }
+		public static bool SET_VOLUME_COORDS(Volume volume, Vector3 vec) { return Function.Call<bool>(0x541B8576615C33DE, volume, vec.X, vec.Y, vec.Z); }
 		public static Vector3 GET_VOLUME_ROTATION(Volume volume) { return Function.Call<Vector3>(0x18675BC914891122, volume); }
 		public static bool SET_VOLUME_ROTATION(Volume volume, float rotX, float rotY, float rotZ) { return Function.Call<bool>(0xA07CF1B21B56F041, volume, rotX, rotY, rotZ); }
+		public static bool SET_VOLUME_ROTATION(Volume volume, Vector3 rotation) { return Function.Call<bool>(0xA07CF1B21B56F041, volume, rotation.X, rotation.Y, rotation.Z); }
 		public static Vector3 GET_VOLUME_SCALE(Volume volume) { return Function.Call<Vector3>(0x3E2A25B2416DD67E, volume); }
 		public static bool SET_VOLUME_SCALE(Volume volume, float scaleX, float scaleY, float scaleZ) { return Function.Call<bool>(0xA46E98BDC407E23D, volume, scaleX, scaleY, scaleZ); }
+		public static bool SET_VOLUME_SCALE(Volume volume, Vector3 scale) { return Function.Call<bool>(0xA46E98BDC407E23D, volume, scale.X, scale.Y, scale.Z); }
 		public static unsafe void _GET_VOLUME_BOUNDS(Volume volume, Vector3* min, Vector3* max) { Function.Call(0x5737199AF2DC609F, volume, min, max); }
 		/// <summary>
 		/// nullsub, doesn't do anything
@@ -14332,6 +14685,7 @@ namespace RDR2.Native
 		/// Params: p5 is always 0
 		/// </summary>
 		public static Volume _CREATE_VOLUME_LOCK(float x, float y, float z, float radius, int flag, Any p5) { return Function.Call<Volume>(0x00BBF7CEAE8C666A, x, y, z, radius, flag, p5); }
+		public static Volume _CREATE_VOLUME_LOCK(Vector3 vec, float radius, int flag, Any p5) { return Function.Call<Volume>(0x00BBF7CEAE8C666A, vec.X, vec.Y, vec.Z, radius, flag, p5); }
 		/// <summary>
 		/// Params: p3 is always 0
 		/// </summary>
@@ -14347,6 +14701,7 @@ namespace RDR2.Native
 		public static Any _0xAA9EE2AAFC717623(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0xAA9EE2AAFC717623, p0, p1, p2, p3, p4, p5); }
 		public static Any _0x870E9981ED27C815(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return Function.Call<Any>(0x870E9981ED27C815, p0, p1, p2, p3, p4, p5); }
 		public static bool DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK(float x, float y, float z, float radius, bool p4, int p5, int p6) { return Function.Call<bool>(0x397769175A7DBB30, x, y, z, radius, p4, p5, p6); }
+		public static bool DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK(Vector3 vec, float radius, bool p4, int p5, int p6) { return Function.Call<bool>(0x397769175A7DBB30, vec.X, vec.Y, vec.Z, radius, p4, p5, p6); }
 		public static Any _0x769BB7626B8CDB06(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0x769BB7626B8CDB06, p0, p1, p2, p3, p4, p5, p6); }
 		public static Any _0x51E52C9687FCDEEC(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return Function.Call<Any>(0x51E52C9687FCDEEC, p0, p1, p2, p3, p4, p5, p6); }
 		public static unsafe int _FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS(Any* args) { return Function.Call<int>(0x77A6E4AD0C496F81, args); }
@@ -14357,6 +14712,7 @@ namespace RDR2.Native
 		public static unsafe bool _0x58D3803FA639A3BB(Any* p0) { return Function.Call<bool>(0x58D3803FA639A3BB, p0); }
 		public static void _0xC61E2FD926DBB406() { Function.Call(0xC61E2FD926DBB406); }
 		public static int REQUEST_VOLUME_LOCK(float x, float y, float z, float radius, int p4, int p5) { return Function.Call<int>(0xF14BCEF290F869E1, x, y, z, radius, p4, p5); }
+		public static int REQUEST_VOLUME_LOCK(Vector3 vec, float radius, int p4, int p5) { return Function.Call<int>(0xF14BCEF290F869E1, vec.X, vec.Y, vec.Z, radius, p4, p5); }
 		public static unsafe int REQUEST_VOLUME_LOCK_WITH_ARGS(Any* args) { return Function.Call<int>(0x183C0B6CFEFFCAE4, args); }
 		public static bool IS_VOLUME_LOCK_REQUEST_VALID(int volLockRequestId) { return Function.Call<bool>(0xA4A4359320345B34, volLockRequestId); }
 		/// <summary>
@@ -14398,7 +14754,9 @@ namespace RDR2.Native
 		/// Checks against a global variable that is set by _SET_WORLD_WATER_TYPE. If that is set to one it will fail. Likely not the only issue but part of it.
 		/// </summary>
 		public static unsafe bool GET_WATER_HEIGHT(float x, float y, float z, float* height) { return Function.Call<bool>(0xFCA8B23F28813F69, x, y, z, height); }
+		public static unsafe bool GET_WATER_HEIGHT(Vector3 vec, float* height) { return Function.Call<bool>(0xFCA8B23F28813F69, vec.X, vec.Y, vec.Z, height); }
 		public static unsafe bool GET_WATER_HEIGHT_NO_WAVES(float x, float y, float z, float* height) { return Function.Call<bool>(0xDCF3690AA262C03F, x, y, z, height); }
+		public static unsafe bool GET_WATER_HEIGHT_NO_WAVES(Vector3 vec, float* height) { return Function.Call<bool>(0xDCF3690AA262C03F, vec.X, vec.Y, vec.Z, height); }
 		/// <summary>
 		/// enum eScriptWaterTestResult
 		/// {
@@ -14408,12 +14766,14 @@ namespace RDR2.Native
 		/// };
 		/// </summary>
 		public static unsafe int TEST_PROBE_AGAINST_ALL_WATER(float x1, float y1, float z1, float x2, float y2, float z2, int flags, float* waterHeight) { return Function.Call<int>(0x8974647ED222EA5F, x1, y1, z1, x2, y2, z2, flags, waterHeight); }
+		public static unsafe int TEST_PROBE_AGAINST_ALL_WATER(Vector3 vec1, Vector3 vec2, int flags, float* waterHeight) { return Function.Call<int>(0x8974647ED222EA5F, vec1.X, vec1.Y, vec1.Z, vec2.X, vec2.Y, vec2.Z, flags, waterHeight); }
 		/// <summary>
 		/// Checks against a global variable that is set by _SET_WORLD_WATER_TYPE. If it's set to 1 (Guarma) it will fail.
 		/// 
 		/// See TEST_PROBE_AGAINST_ALL_WATER.
 		/// </summary>
 		public static unsafe int TEST_VERTICAL_PROBE_AGAINST_ALL_WATER(float x, float y, float z, int flags, float* waterHeight) { return Function.Call<int>(0x2B3451FA1E3142E2, x, y, z, flags, waterHeight); }
+		public static unsafe int TEST_VERTICAL_PROBE_AGAINST_ALL_WATER(Vector3 vec, int flags, float* waterHeight) { return Function.Call<int>(0x2B3451FA1E3142E2, vec.X, vec.Y, vec.Z, flags, waterHeight); }
 		/// <summary>
 		/// Only used in rcm_crackpot1 R* Script: p0 = 0
 		/// </summary>
@@ -14713,6 +15073,7 @@ namespace RDR2.Native
 		public static void _CLEAR_PED_LAST_WEAPON_DAMAGE(int ped) { Function.Call(0x087D8F4BC65F68E4, ped); }
 		public static bool _HAS_ENTITY_BEEN_DAMAGED_BY_WEAPON(int entity, Hash weaponName, int weaponType) { return Function.Call<bool>(0xDCF06D0CDFF68424, entity, weaponName, weaponType); }
 		public static void SET_PED_DROPS_INVENTORY_WEAPON(int ped, Hash weaponHash, float xOffset, float yOffset, float zOffset, int ammoCount) { Function.Call(0x208A1888007FC0E6, ped, weaponHash, xOffset, yOffset, zOffset, ammoCount); }
+		public static void SET_PED_DROPS_INVENTORY_WEAPON(int ped, Hash weaponHash, Vector3 offset, int ammoCount) { Function.Call(0x208A1888007FC0E6, ped, weaponHash, offset.X, offset.Y, offset.Z, ammoCount); }
 		public static void _0xB0FB9B196A3D13F0(Any p0, Any p1, Any p2) { Function.Call(0xB0FB9B196A3D13F0, p0, p1, p2); }
 		public static void _0x2EBF70E1D8C06683(Any p0, Any p1) { Function.Call(0x2EBF70E1D8C06683, p0, p1); }
 		/// <summary>
@@ -14771,6 +15132,7 @@ namespace RDR2.Native
 		public static bool _HAS_ENTITY_BEEN_DAMAGED_BY_WEAPON_RECENTLY(int entity, Hash weaponHash, int ms) { return Function.Call<bool>(0x9E2D5D6BC97A5F1E, entity, weaponHash, ms); }
 		public static Hash _GET_PED_HOGTIE_WEAPON(int ped) { return Function.Call<Hash>(0x90EB1CB189923587, ped); }
 		public static Object _CREATE_WEAPON_OBJECT(Hash weaponHash, int ammoCount, float x, float y, float z, bool showWorldModel, float scale) { return Function.Call<Object>(0x9888652B8BA77F73, weaponHash, ammoCount, x, y, z, showWorldModel, scale); }
+		public static Object _CREATE_WEAPON_OBJECT(Hash weaponHash, int ammoCount, Vector3 vec, bool showWorldModel, float scale) { return Function.Call<Object>(0x9888652B8BA77F73, weaponHash, ammoCount, vec.X, vec.Y, vec.Z, showWorldModel, scale); }
 		public static void REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(Object weaponObject, Hash component) { Function.Call(0xF7D82B0D66777611, weaponObject, component); }
 		public static bool HAS_WEAPON_GOT_WEAPON_COMPONENT(Object weapon, Hash addonHash) { return Function.Call<bool>(0x76A18844E743BF91, weapon, addonHash); }
 		public static unsafe void _GIVE_WEAPON_COMPONENT_TO_WEAPON_OBJECT(Object* weaponObject, int ped, Hash componentHash, bool p3) { Function.Call(0x1A47699E8D533E8F, weaponObject, ped, componentHash, p3); }
@@ -14988,6 +15350,7 @@ namespace RDR2.Native
 		/// https://github.com/femga/rdr3_discoveries/tree/master/zones & https://alloc8or.re/rdr3/doc/enums/CMapZone__Type.txt
 		/// </summary>
 		public static Hash _GET_MAP_ZONE_AT_COORDS(float x, float y, float z, int type) { return Function.Call<Hash>(0x43AD8FC02B429D33, x, y, z, type); }
+		public static Hash _GET_MAP_ZONE_AT_COORDS(Vector3 vec, int type) { return Function.Call<Hash>(0x43AD8FC02B429D33, vec.X, vec.Y, vec.Z, type); }
 		/// <summary>
 		/// Returns the zone's name hash if its type matches one of the following:
 		/// - LAKE
@@ -15000,6 +15363,7 @@ namespace RDR2.Native
 		/// - GLACIER
 		/// </summary>
 		public static Hash _GET_WATER_MAP_ZONE_AT_COORDS(float x, float y, float z) { return Function.Call<Hash>(0x5BA7A68A346A5A91, x, y, z); }
+		public static Hash _GET_WATER_MAP_ZONE_AT_COORDS(Vector3 vec) { return Function.Call<Hash>(0x5BA7A68A346A5A91, vec.X, vec.Y, vec.Z); }
 	}
 
 	public static class COMPAPP
