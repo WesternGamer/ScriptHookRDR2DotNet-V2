@@ -509,7 +509,7 @@ namespace RDR2
 		
 		public void GiveWeapon(eWeapon weapon, int ammoCount, eWeaponAttachPoint attachPoint, bool bForceInHand = false, bool bForceInHolster = false, bool bAllowMultipleCopies = false)
 		{
-			WEAPON.GIVE_WEAPON_TO_PED(Handle, (uint)weapon, ammoCount, bForceInHand, bForceInHolster, (int)attachPoint, bAllowMultipleCopies, 0.0f, 0.0f, (uint)eAddItemReason.ADD_REASON_DEFAULT, true, 0.0f, false);
+			WEAPON.GIVE_WEAPON_TO_PED(Handle, (uint)weapon, ammoCount, bForceInHand, bForceInHolster, (int)attachPoint, bAllowMultipleCopies, 0.0f, 0.0f, (uint)eAddItemReason.Default, true, 0.0f, false);
 		}
 
 		#endregion

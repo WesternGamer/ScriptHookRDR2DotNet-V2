@@ -57,7 +57,7 @@ namespace RDR2
 		}
 		public void EnterVehicle()
 		{
-			EnterVehicle(new Vehicle(0), eVehicleSeat.VS_ANY_PASSENGER, -1, 0.0f, 0);
+			EnterVehicle(new Vehicle(0), eVehicleSeat.AnyPassenger, -1, 0.0f, 0);
 		}
 		public void EnterVehicle(Vehicle vehicle, eVehicleSeat seat)
 		{
