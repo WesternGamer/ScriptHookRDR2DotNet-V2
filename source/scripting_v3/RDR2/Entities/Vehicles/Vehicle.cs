@@ -18,15 +18,96 @@ namespace RDR2
         {
         }
 
-        public void Repair()
-        {
-            VEHICLE.SET_VEHICLE_FIXED(Handle);
-        }
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Vehicle"/> is xxx.
+		/// </summary>
+		public bool IsDraftVehicle => VEHICLE.IS_DRAFT_VEHICLE(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Vehicle"/> is on all of its wheels.
+		/// </summary>
+		public bool IsOnAllWheels => VEHICLE.IS_VEHICLE_ON_ALL_WHEELS(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Vehicle"/> is stopped.
+		/// </summary>
+		public bool IsStopped => VEHICLE.IS_VEHICLE_STOPPED(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Vehicle"/> is wrecked.
+		/// </summary>
+		public bool IsWrecked => VEHICLE.IS_VEHICLE_WRECKED(Handle);
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="Vehicle"/> is on fire.
+		/// </summary>
+		public new bool IsOnFire => VEHICLE._IS_VEHICLE_ON_FIRE(Handle);
+
+		/// <summary>
+		/// Sets a value indicating whether this <see cref="Vehicle"/> is stolen.
+		/// </summary>
+		public bool IsStolen
+		{
+			set => VEHICLE.SET_VEHICLE_IS_STOLEN(Handle, value);
+		}
+
+		/// <summary>
+		/// Sets a value indicating whether this <see cref="Vehicle"/> can provide cover.
+		/// </summary>
+		public bool ProvidesCover
+		{
+			set => VEHICLE.SET_VEHICLE_PROVIDES_COVER(Handle, value);
+		}
+
+		/// <summary>
+		/// Gets or sets this <see cref="Vehicle"/>s body health.
+		/// </summary>
+		public float BodyHealth
+		{
+			get => VEHICLE.GET_VEHICLE_BODY_HEALTH(Handle);
+			set => VEHICLE.SET_VEHICLE_BODY_HEALTH(Handle, value);
+		}
+
+		/// <summary>
+		/// Gets or sets this <see cref="Vehicle"/>s speed.
+		/// </summary>
+		public new float Speed
+		{
+			get => ENTITY.GET_ENTITY_SPEED(Handle);
+			set
+			{
+				if (Model.IsTrain) {
+					VEHICLE.SET_TRAIN_SPEED(Handle, value);
+					VEHICLE.SET_TRAIN_CRUISE_SPEED(Handle, value);
+				}
+				else {
+					VEHICLE.SET_VEHICLE_FORWARD_SPEED(Handle, value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Repair all damage to this <see cref="Vehicle"/> instantaneously.
+		/// </summary>
+		public void Repair()
+		{
+			VEHICLE.SET_VEHICLE_FIXED(Handle);
+		}
+
+		/// <summary>
+		/// Explode this <see cref="Vehicle"/> instantaneously.
+		/// </summary>
+		public void Explode()
+		{
+			VEHICLE.EXPLODE_VEHICLE(Handle, true, false, 0, 0);
+		}
 
 
-        #region Styling
+		#region Styling
 
-        public bool IsExtraOn(int extra)
+		public bool HasPropSetAttached => VEHICLE._GET_VEHICLE_IS_PROP_SET_APPLIED(Handle);
+
+		public bool IsExtraOn(int extra)
         {
             return VEHICLE.IS_VEHICLE_EXTRA_TURNED_ON(Handle, extra);
         }
@@ -39,52 +120,6 @@ namespace RDR2
         public void ToggleExtra(int extra, bool toggle)
         {
             VEHICLE.SET_VEHICLE_EXTRA(Handle, extra, !toggle);
-        }
-
-        #endregion
-
-        #region Configuration
-
-        public bool IsStolen
-        {
-            set => VEHICLE.SET_VEHICLE_IS_STOLEN(Handle, value);
-        }
-
-        /*public bool IsWanted
-		{
-			set => VEHICLE.SET_VEHICLE_IS_WANTED(Handle, value);
-		}*/
-
-
-        #endregion
-
-        #region Health
-
-        public float BodyHealth
-        {
-            get => VEHICLE.GET_VEHICLE_BODY_HEALTH(Handle);
-            set => VEHICLE.SET_VEHICLE_BODY_HEALTH(Handle, value);
-        }
-
-        #endregion
-
-        #region Performance & Driving
-
-        public new float Speed
-        {
-            get => ENTITY.GET_ENTITY_SPEED(Handle);
-            set
-            {
-                if (Model.IsTrain)
-                {
-                    VEHICLE.SET_TRAIN_SPEED(Handle, value);
-                    VEHICLE.SET_TRAIN_CRUISE_SPEED(Handle, value);
-                }
-                else
-                {
-                    VEHICLE.SET_VEHICLE_FORWARD_SPEED(Handle, value);
-                }
-            }
         }
 
         #endregion
@@ -228,7 +263,7 @@ namespace RDR2
 
 		public int PassengerSeats => VEHICLE.GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(Handle);
 
-		public Ped CreatePedOnSeat(int seat, RDR2.Model model)
+		public Ped CreatePedOnSeat(int seat, Model model)
 		{
 			if (!model.IsPed || !model.Request(1000))
 			{
@@ -247,10 +282,6 @@ namespace RDR2
 		#endregion
 
 		#region Positioning
-
-		public bool IsStopped => VEHICLE.IS_VEHICLE_STOPPED(Handle);
-
-		public bool IsOnAllWheels => VEHICLE.IS_VEHICLE_ON_ALL_WHEELS(Handle);
 
 		public bool PlaceOnGround()
 		{
@@ -282,11 +313,6 @@ namespace RDR2
 					break;
 				}
 			}
-		}
-
-		public bool ProvidesCover
-		{
-			set => VEHICLE.SET_VEHICLE_PROVIDES_COVER(Handle, value);
 		}
 
 		#endregion

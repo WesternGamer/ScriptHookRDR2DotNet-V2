@@ -188,7 +188,7 @@ namespace RDR2.UI
 			GRAPHICS.ANIMPOSTFX_STOP_ALL();
 		}
 
-		// Text
+		#region Subtitle Text Functions
 
 		/// <summary>
 		/// Shows a subtitle at the bottom of the screen for a given time
@@ -203,14 +203,40 @@ namespace RDR2.UI
 		}
 
 		/// <summary>
+		/// Shows a subtitle at the bottom of the screen for a given time
+		/// </summary>
+		/// <param name="message">The message to display.</param>
+		public static void PrintSubtitle(params string[] message)
+		{
+			string actualMessage = string.Empty;
+			foreach (string str in message) {
+				actualMessage = string.Concat(actualMessage, str);
+			}
+
+			PrintSubtitle(actualMessage);
+		}
+
+		/// <summary>
 		/// Shows a subtitle at the bottom of the screen for a given time.
-		/// Alias for function "PrintSubtitle()"
+		/// <remarks>This is an alias for <see cref="PrintSubtitle(string)"/></remarks>
 		/// </summary>
 		/// <param name="message">The message to display.</param>
 		public static void DisplaySubtitle(string message)
 		{
 			PrintSubtitle(message);
 		}
+
+		/// <summary>
+		/// Shows a subtitle at the bottom of the screen for a given time.
+		/// <remarks>This is an alias for <see cref="PrintSubtitle(string[])"/></remarks>
+		/// </summary>
+		/// <param name="message">The message to display.</param>
+		public static void DisplaySubtitle(params string[] message)
+		{
+			PrintSubtitle(message);
+		}
+
+		#endregion
 
 		// Space Conversion
 
