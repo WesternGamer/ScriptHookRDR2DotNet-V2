@@ -51,15 +51,6 @@ namespace RDR2
 			}
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether this <see cref="Blip"/> is not <see langword="null"/>, and exists in the game.
-		/// </summary>
-		/// <returns><see langword="true"/> if <see cref="Blip"/> is not <see langword="null"/> and exists in the game; otherwise, <see langword="false"/>.</returns>
-		public override bool IsValid()
-		{
-			return this != null && this.Exists();
-		}
-
 		public bool Equals( Blip other )
 		{
 			return !ReferenceEquals( null, other ) && other.Handle == Handle;

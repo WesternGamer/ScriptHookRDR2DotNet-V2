@@ -68,6 +68,5 @@ namespace RDR2
 
 		public abstract bool Exists();
 		public abstract void Delete();
-		public abstract bool IsValid();
 	}
 }

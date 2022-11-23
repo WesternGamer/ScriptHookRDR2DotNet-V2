@@ -21,7 +21,7 @@ namespace RDR2
 
 		public float Length
 		{
-			// get => PHYSICS._0x3D69537039F8D824(Handle);
+			//get => PHYSICS._0x3D69537039F8D824((ulong)Handle);
 			set => PHYSICS.ROPE_FORCE_LENGTH(Handle, value);
 		}
 
@@ -86,15 +86,6 @@ namespace RDR2
 		public static bool Exists(Rope rope)
 		{
 			return rope != null && rope.Exists();
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether this <see cref="Rope"/> is not <see langword="null"/>, and exists in the game world.
-		/// </summary>
-		/// <returns><see langword="true"/> if <see cref="Rope"/> is not <see langword="null"/> and exists in the game world; otherwise, <see langword="false"/>.</returns>
-		public override bool IsValid()
-		{
-			return this != null && this.Exists();
 		}
 
 		public bool Equals(Rope obj)

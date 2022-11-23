@@ -3,10 +3,9 @@
 // License: https://github.com/crosire/scripthookvdotnet#license
 //
 
-using RDR2.Math;
-using RDR2.Native;
 using System;
-using System.Drawing;
+using RDR2.Native;
+using RDR2.Math;
 
 namespace RDR2
 {
@@ -143,7 +142,7 @@ namespace RDR2
 				if (target < source) {
 					MONEY._MONEY_DECREMENT_CASH_BALANCE(source - target);
 				} else {
-					MONEY._MONEY_INCREMENT_CASH_BALANCE(target - source, (uint)eAddItemReason.ADD_REASON_DEFAULT);
+					MONEY._MONEY_INCREMENT_CASH_BALANCE(target - source, (uint)eAddItemReason.Default);
 				}
 			}
 		}
@@ -241,11 +240,10 @@ namespace RDR2
 		/// <summary>
 		/// Gets the <see cref="Entity"/> that this <see cref="Player"/> is aiming at.
 		/// </summary>
-		public Entity GetFreeAimEntity()
+		public unsafe Entity GetFreeAimEntity()
 		{
 			int entity = 0;
-			unsafe { PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Handle, &entity); }
-			if (!ENTITY.DOES_ENTITY_EXIST(entity)) {
+			if (!PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Handle, &entity)) {
 				return null;
 			}
 			return Entity.FromHandle(entity);
@@ -254,11 +252,10 @@ namespace RDR2
 		/// <summary>
 		/// Gets the <see cref="Entity"/> that this <see cref="Player"/> is locking onto via interaction.
 		/// </summary>
-		public Entity GetInteractionLockonTargetEntity()
+		public unsafe Entity GetInteractionLockonTargetEntity()
 		{
 			int entity = 0;
-			unsafe { PLAYER.GET_PLAYER_INTERACTION_TARGET_ENTITY(Handle, &entity, false, false); }
-			if (!ENTITY.DOES_ENTITY_EXIST(entity)) {
+			if (PLAYER.GET_PLAYER_INTERACTION_TARGET_ENTITY(Handle, &entity, false, false)) {
 				return null;
 			}
 			return Entity.FromHandle(entity);

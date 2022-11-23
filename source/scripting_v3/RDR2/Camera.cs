@@ -221,15 +221,6 @@ namespace RDR2
 			return camera != null && camera.Exists();
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether this <see cref="Camera"/> is not <see langword="null"/>, and exists in the game.
-		/// </summary>
-		/// <returns><see langword="true"/> if <see cref="Camera"/> is not <see langword="null"/> and exists in the game; otherwise, <see langword="false"/>.</returns>
-		public override bool IsValid()
-		{
-			return this != null && this.Exists();
-		}
-
 		public bool Equals(Camera obj)
 		{
 			return !(obj is null) && Handle == obj.Handle;

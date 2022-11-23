@@ -690,15 +690,6 @@ namespace RDR2
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether this <see cref="Entity"/> is not <see langword="null"/>, and exists in the game world.
-		/// </summary>
-		/// <returns><see langword="true"/> if this <see cref="Entity"/> is not <see langword="null"/> and exists in the game world; otherwise, <see langword="false"/>.</returns>
-		public override bool IsValid()
-		{
-			return this != null && this.Exists();
-		}
-
-		/// <summary>
 		/// Gets a value indicating whether an <see cref="Entity"/> is not <see langword="null"/>, and exists in the game world.
 		/// </summary>
 		/// <returns><see langword="true"/> if <see cref="Entity"/> is not <see langword="null"/> and exists in the game world; otherwise, <see langword="false"/>.</returns>
