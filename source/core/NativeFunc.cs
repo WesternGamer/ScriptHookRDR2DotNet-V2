@@ -151,6 +151,13 @@ namespace RDR2DN
 				}
 			}
 
+			/*
+			if (startPos == 0)
+				action(str);
+			else
+				action(str.Substring(startPos, str.Length - startPos));
+			*/
+
 			action(str.Substring(startPos, str.Length - startPos));
 		}
 

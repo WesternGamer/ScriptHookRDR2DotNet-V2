@@ -50,25 +50,54 @@ namespace RDR2DN
         [DllImport("ScriptHookRDR2.dll", ExactSpelling = true, EntryPoint = "?worldGetAllVehicles@@YAHPEAHH@Z")]
         public static extern int worldGetAllVehicles(int[] arr, int arrSize);
 
-        #endregion
+		#endregion
 
-        /// <summary>
-        /// Searches the address space of the current process for a memory pattern.
-        /// </summary>
-        /// <param name="pattern">The pattern.</param>
-        /// <param name="mask">The pattern mask.</param>
-        /// <returns>The address of a region matching the pattern or <c>null</c> if none was found.</returns>
-        static unsafe byte* FindPattern(string pattern, string mask)
+		/// <summary>
+		/// Searches the address space of the current process for a memory pattern.
+		/// </summary>
+		/// <param name="pattern">The pattern.</param>
+		/// <param name="mask">The pattern mask.</param>
+		/// <returns>The address of a region matching the pattern or <see langword="null" /> if none was found.</returns>
+		public static unsafe byte* FindPattern(string pattern, string mask)
+		{
+			ProcessModule module = Process.GetCurrentProcess().MainModule;
+			return FindPattern(pattern, mask, module.BaseAddress, (ulong)module.ModuleMemorySize);
+		}
+
+		/// <summary>
+		/// Searches the specific address space of the current process for a memory pattern.
+		/// </summary>
+		/// <param name="pattern">The pattern.</param>
+		/// <param name="mask">The pattern mask.</param>
+		/// <param name="startAddress">The address to start searching at.</param>
+		/// <returns>The address of a region matching the pattern or <see langword="null" /> if none was found.</returns>
+		public static unsafe byte* FindPattern(string pattern, string mask, IntPtr startAddress)
 		{
 			ProcessModule module = Process.GetCurrentProcess().MainModule;
 
-			ulong address = (ulong)module.BaseAddress.ToInt64();
-			ulong endAddress = address + (ulong)module.ModuleMemorySize;
+			if ((ulong)startAddress.ToInt64() < (ulong)module.BaseAddress.ToInt64())
+				return null;
 
-			for (; address < endAddress; address++)
-			{
-				for (int i = 0; i < pattern.Length; i++)
-				{
+			ulong size = (ulong)module.ModuleMemorySize - ((ulong)startAddress - (ulong)module.BaseAddress);
+
+			return FindPattern(pattern, mask, startAddress, size);
+		}
+
+		/// <summary>
+		/// Searches the specific address space of the current process for a memory pattern.
+		/// </summary>
+		/// <param name="pattern">The pattern.</param>
+		/// <param name="mask">The pattern mask.</param>
+		/// <param name="startAddress">The address to start searching at.</param>
+		/// <param name="size">The size where the pattern search will be performed from <paramref name="startAddress"/>.</param>
+		/// <returns>The address of a region matching the pattern or <see langword="null" /> if none was found.</returns>
+		static unsafe byte* FindPattern(string pattern, string mask, IntPtr startAddress, ulong size)
+		{
+			ulong address = (ulong)startAddress.ToInt64();
+			ulong endAddress = address + size;
+
+			for (; address < endAddress; address++) {
+				for (int i = 0; i < pattern.Length; i++) {
 					if (mask[i] != '?' && ((byte*)address)[i] != pattern[i])
 						break;
 					else if (i + 1 == pattern.Length)
@@ -84,9 +113,9 @@ namespace RDR2DN
 		/// </summary>
 		static NativeMemory()
 		{
-			//byte* address;
+			/*byte* address;
 
-            /*address = FindPattern("\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx");
+            address = FindPattern("\x40\x53\x48\x83\xEC\x20\x33\xDB\x38\x1D\x00\x00\x00\x00\x74\x1C", "xxxxxxxxxx????xx");
             GetPlayerAddressFunc = GetDelegateForFunctionPointer<GetHandleAddressFuncDelegate>(
                 new IntPtr(*(int*)(address + 3) + address + 7));*/
         }
@@ -307,17 +336,28 @@ namespace RDR2DN
             return nativeUtf8;
         }
 
-        //delegate ulong GetHandleAddressFuncDelegate(int handle);
-        //static GetHandleAddressFuncDelegate GetPlayerAddressFunc;
 
-        /*public static IntPtr GetPlayerAddress(int handle)
-        {
-            return new IntPtr((long)GetPlayerAddressFunc(handle));
-        }*/
+		#region -- Pool Addresses --
 
-        #region -- Game Data --
+		delegate ulong GetHandleAddressFuncDelegate(int handle);
+		static GetHandleAddressFuncDelegate GetEntityAddressFunc;
+		static GetHandleAddressFuncDelegate GetPlayerAddressFunc;
 
-        delegate uint GetHashKeyDelegate(IntPtr stringPtr, uint initialHash);
+		/*public static IntPtr GetEntityAddress(int handle)
+		{
+			return new IntPtr((long)GetEntityAddressFunc(handle));
+		}
+		public static IntPtr GetPlayerAddress(int handle)
+		{
+			return new IntPtr((long)GetPlayerAddressFunc(handle));
+		}*/
+
+		#endregion
+
+
+		#region -- Game Data --
+
+		delegate uint GetHashKeyDelegate(IntPtr stringPtr, uint initialHash);
 		static GetHashKeyDelegate GetHashKeyFunc;
 
 		public static uint GetHashKey(string key)
@@ -333,8 +373,6 @@ namespace RDR2DN
 		
 
 		#endregion
-
-
 
 
 		enum ModelInfoClassType
