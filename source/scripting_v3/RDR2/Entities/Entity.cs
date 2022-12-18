@@ -136,6 +136,11 @@ namespace RDR2
 		public bool IsDynamic => !IsStatic;
 
 		/// <summary>
+		/// Gets a value indicating whether this <see cref="Entity"/> is inside/in a interior.
+		/// </summary>
+		public bool IsInside => INTERIOR.IS_VALID_INTERIOR(INTERIOR.GET_INTERIOR_FROM_ENTITY(Handle));
+
+		/// <summary>
 		/// Gets a value indicating whether this <see cref="Entity"/> is visible.
 		/// </summary>
 		public bool IsVisible
