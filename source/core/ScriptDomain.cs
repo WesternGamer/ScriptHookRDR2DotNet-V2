@@ -36,10 +36,10 @@ namespace RDR2DN
 		/// Gets the friendly name of this script domain.
 		/// </summary>
 		public string Name => AppDomain.FriendlyName;
-        /// <summary>
-        /// Gets the path to the directory containing scripts.
-        /// </summary>
-        public string ScriptPath => System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\scripts\\";
+		/// <summary>
+		/// Gets the path to the directory containing scripts.
+		/// </summary>
+		public string ScriptPath => System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\scripts\\";
 		
 		/// <summary>
 		/// Gets the application domain that is associated with this script domain.
@@ -81,10 +81,10 @@ namespace RDR2DN
 				try
 				{
 					scriptApis.Add(Assembly.LoadFrom(apiPath));
-                    Log.Message(Log.Level.Debug, "API from ", apiPath, " loaded", " ...");
+					Log.Message(Log.Level.Debug, "API from ", apiPath, " loaded", " ...");
 
-                }
-                catch (Exception ex)
+				}
+				catch (Exception ex)
 				{
 					Log.Message(Log.Level.Error, "Unable to load ", Path.GetFileName(apiPath), ": ", ex.ToString());
 				}
@@ -128,55 +128,55 @@ namespace RDR2DN
 		}
 
 
-        /// <summary>
-        /// Creates a new script domain.
-        /// </summary>
-        /// <param name="basePath">The path to the application root directory.</param>
-        /// <param name="scriptPath">The path to the directory containing scripts.</param>
-        /// <returns>The script domain or <c>null</c> in case of failure.</returns>
-        public static ScriptDomain Load(string basePath, string scriptPath)
+		/// <summary>
+		/// Creates a new script domain.
+		/// </summary>
+		/// <param name="basePath">The path to the application root directory.</param>
+		/// <param name="scriptPath">The path to the directory containing scripts.</param>
+		/// <returns>The script domain or <c>null</c> in case of failure.</returns>
+		public static ScriptDomain Load(string basePath, string scriptPath)
 		{
-            string _scriptPath;
-            // Make absolute path to scrips location
-            //if (!Path.IsPathRooted(scriptPath))
-            _scriptPath = Path.GetFullPath(Path.Combine(basePath, scriptPath));
+			string _scriptPath;
+			// Make absolute path to scrips location
+			//if (!Path.IsPathRooted(scriptPath))
+			_scriptPath = Path.GetFullPath(Path.Combine(basePath, scriptPath));
 
-            // Create application and script domain for all the scripts to reside in
-            var name = "ScriptDomain_" + (_scriptPath.GetHashCode() ^ Environment.TickCount).ToString("X");
-            var setup = new AppDomainSetup();
-            setup.ApplicationBase = _scriptPath;
-            setup.ShadowCopyFiles = "true"; // Copy assemblies into memory rather than locking the file, so they can be updated while the domain is still loaded
-            setup.ShadowCopyDirectories = _scriptPath; // Only shadow copy files in the scripts directory
+			// Create application and script domain for all the scripts to reside in
+			var name = "ScriptDomain_" + (_scriptPath.GetHashCode() ^ Environment.TickCount).ToString("X");
+			var setup = new AppDomainSetup();
+			setup.ApplicationBase = _scriptPath;
+			setup.ShadowCopyFiles = "true"; // Copy assemblies into memory rather than locking the file, so they can be updated while the domain is still loaded
+			setup.ShadowCopyDirectories = _scriptPath; // Only shadow copy files in the scripts directory
 
-            var appdomain = AppDomain.CreateDomain(name, null, setup, new System.Security.PermissionSet(System.Security.Permissions.PermissionState.Unrestricted));
-            appdomain.SetCachePath(Path.GetTempPath());
-            appdomain.SetShadowCopyFiles();
-            appdomain.SetShadowCopyPath(_scriptPath);
-            appdomain.InitializeLifetimeService(); // Give the application domain an infinite lifetime
+			var appdomain = AppDomain.CreateDomain(name, null, setup, new System.Security.PermissionSet(System.Security.Permissions.PermissionState.Unrestricted));
+			appdomain.SetCachePath(Path.GetTempPath());
+			appdomain.SetShadowCopyFiles();
+			appdomain.SetShadowCopyPath(_scriptPath);
+			appdomain.InitializeLifetimeService(); // Give the application domain an infinite lifetime
 
-            // Need to attach the resolve handler to the current domain too, so that the .NET framework finds this assembly in the ASI file
-            AppDomain.CurrentDomain.AssemblyResolve += HandleResolve;
+			// Need to attach the resolve handler to the current domain too, so that the .NET framework finds this assembly in the ASI file
+			AppDomain.CurrentDomain.AssemblyResolve += HandleResolve;
 
-            ScriptDomain scriptdomain = null;
+			ScriptDomain scriptdomain = null;
 
-            try
-            {
-                scriptdomain = (ScriptDomain)appdomain.CreateInstanceFromAndUnwrap(typeof(ScriptDomain).Assembly.Location, typeof(ScriptDomain).FullName, false, BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { basePath }, null, null);
+			try
+			{
+				scriptdomain = (ScriptDomain)appdomain.CreateInstanceFromAndUnwrap(typeof(ScriptDomain).Assembly.Location, typeof(ScriptDomain).FullName, false, BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] { basePath }, null, null);
 				
-                //Log.Message(Log.Level.Debug, "Script domain created: ", "Name: ", name, " FullName: ", typeof(ScriptDomain).FullName, " Assembly Location: ", typeof(ScriptDomain).Assembly.Location);
-            }
-            catch (Exception ex)
-            {
-                Log.Message(Log.Level.Error, "Failed to create script domain: ", ex.ToString(), " ", name, " ", typeof(ScriptDomain).FullName, " ", typeof(ScriptDomain).Assembly.Location);
-                AppDomain.Unload(appdomain);
-            }
+				//Log.Message(Log.Level.Debug, "Script domain created: ", "Name: ", name, " FullName: ", typeof(ScriptDomain).FullName, " Assembly Location: ", typeof(ScriptDomain).Assembly.Location);
+			}
+			catch (Exception ex)
+			{
+				Log.Message(Log.Level.Error, "Failed to create script domain: ", ex.ToString(), " ", name, " ", typeof(ScriptDomain).FullName, " ", typeof(ScriptDomain).Assembly.Location);
+				AppDomain.Unload(appdomain);
+			}
 
-            // Remove resolve handler again
-            AppDomain.CurrentDomain.AssemblyResolve -= HandleResolve;
-            Log.Message(Log.Level.Debug, "Resolve handler removed");
+			// Remove resolve handler again
+			AppDomain.CurrentDomain.AssemblyResolve -= HandleResolve;
+			Log.Message(Log.Level.Debug, "Resolve handler removed");
 
-            return scriptdomain;
-        }
+			return scriptdomain;
+		}
 
 		/// <summary>
 		/// Compiles and load scripts from a C# or VB.NET source code file.
@@ -404,11 +404,11 @@ namespace RDR2DN
 		/// </summary>
 		public void Start()
 		{
-            if (scriptTypes.Count != 0 || runningScripts.Count != 0)
-            {
-                Log.Message(Log.Level.Error, "cannot start scriptdomain if scripts are already running");
-                return; // Cannot start script domain if scripts are already running
-            }
+			if (scriptTypes.Count != 0 || runningScripts.Count != 0)
+			{
+				Log.Message(Log.Level.Error, "cannot start scriptdomain if scripts are already running");
+				return; // Cannot start script domain if scripts are already running
+			}
 
 			Log.Message(Log.Level.Debug, "Loading scripts from ", ScriptPath, " ...");
 
@@ -641,18 +641,14 @@ namespace RDR2DN
 		{
 			IntPtr handle = RDR2DN.NativeMemory.StringToCoTaskMemUTF8(str);
 
-            if (handle == IntPtr.Zero)
+			if (handle == IntPtr.Zero)
 			{
-
-                return NativeMemory.NullString;
+				return NativeMemory.NullString;
 			}
 			else
 			{
-                
-                pinnedStrings.Add(handle);
-                
-
-                return handle;
+				pinnedStrings.Add(handle);
+				return handle;
 			}
 		}
 
@@ -802,8 +798,8 @@ namespace RDR2DN
 				var bestVersion = new Version(1, 0, 0, 0); //
 
 
-                // Some scripts reference a version-less RDR2DN, do default those to major version 2
-                if (assemblyName.Version == bestVersion)
+				// Some scripts reference a version-less RDR2DN, do default those to major version 2
+				if (assemblyName.Version == bestVersion)
 				{
 					Log.Message(Log.Level.Warning, "Resolving API version 0.0.0",
 						args.RequestingAssembly != null ? " referenced in " + args.RequestingAssembly.GetName().Name : string.Empty, ".");
@@ -811,7 +807,7 @@ namespace RDR2DN
 					return CurrentDomain.scriptApis.Where(x => x.GetName().Version.Major == 1).FirstOrDefault();
 				}
 
-                Assembly compatibleApi = null;
+				Assembly compatibleApi = null;
 
 				foreach (Assembly api in CurrentDomain.scriptApis)
 				{
@@ -822,10 +818,10 @@ namespace RDR2DN
 					{
 						bestVersion = apiVersion;
 						compatibleApi = api;
-                        Log.Message(Log.Level.Debug, "compatibleApi resolved " + compatibleApi.FullName);
+						Log.Message(Log.Level.Debug, "compatibleApi resolved " + compatibleApi.FullName);
 
-                    }
-                }
+					}
+				}
 
 				// Write a warning message if no compatible scripting API version was found
 				if (compatibleApi == null)

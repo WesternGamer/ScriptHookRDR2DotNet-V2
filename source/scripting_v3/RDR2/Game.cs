@@ -20,7 +20,7 @@ namespace RDR2
 
 
 		/// <summary>
-		/// The interval in seconds from the last frame to the current one
+		/// Get the interval in seconds from the last frame to the current one
 		/// </summary>
 		public static float FrameTime => MISC.GET_FRAME_TIME();
 
@@ -224,6 +224,8 @@ namespace RDR2
 			set => PLAYER.SET_POLICE_RADAR_BLIPS(value);
 		}
 
+		#region User Input
+
 		/// <summary>
 		/// Creates an onscreen keyboard for the user to input text.
 		/// </summary>
@@ -258,6 +260,10 @@ namespace RDR2
 
 			return MISC.GET_ONSCREEN_KEYBOARD_RESULT();
 		}
+
+		#endregion
+
+		#region PAD Namespace Wrappers
 
 		/// <summary>
 		/// Gets whether the last input was made with a GamePad or keyboard and mouse.
@@ -393,6 +399,8 @@ namespace RDR2
 		/// Gets a value indicating whether the game is using keyboard and mouse input
 		/// </summary>
 		public static bool IsUsingKeyboardAndMouse => PAD.IS_USING_KEYBOARD_AND_MOUSE(0);
+
+		#endregion
 
 		/// <summary>
 		/// Create a (case-insensitive) Jenkins-One-at-a-Time hash key

@@ -58,6 +58,7 @@ namespace RDR2
 		}
 	}
 
+	[Flags]
 	public enum RaycastLOSOptions
 	{
 		None		= 0,
@@ -75,6 +76,7 @@ namespace RDR2
 		Everything = Map | Vehicles | Peds | Ragdoll | Objects | Pickups | Glass | Water | Foilage,
 	}
 
+	[Flags]
 	public enum RaycastOptions
 	{
 		IgnoreGlass			= (1 << 0),
@@ -82,5 +84,4 @@ namespace RDR2
 		IgnoreNoCollision	= (1 << 2),
 		Default = IgnoreGlass | IgnoreSeeThrough | IgnoreNoCollision,
 	}
-
 }

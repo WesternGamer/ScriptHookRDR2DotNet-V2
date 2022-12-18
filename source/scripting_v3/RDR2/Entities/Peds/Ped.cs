@@ -13,9 +13,9 @@ namespace RDR2
 	public sealed class Ped : Entity
 	{
 		#region Fields
-		Tasks _tasks;
-		NaturalMotion.Euphoria _euphoria;
-		WeaponCollection _weapons;
+		private Tasks _tasks;
+		private Euphoria _euphoria;
+		private WeaponCollection _weapons;
 		#endregion
 
 		public Ped(int handle) : base(handle)

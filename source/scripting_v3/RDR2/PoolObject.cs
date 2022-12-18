@@ -13,14 +13,8 @@ namespace RDR2
 	/// </summary>
 	public interface ISpatial
 	{
-		Vector3 Position
-		{
-			get; set;
-		}
-		Vector3 Rotation
-		{
-			get; set;
-		}
+		Vector3 Position { get; set; }
+		Vector3 Rotation { get; set; }
 	}
 
 	/// <summary>
