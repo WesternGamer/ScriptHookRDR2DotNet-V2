@@ -1,126 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Platform Condition="'$(Platform)' == ''">x64</Platform>
-    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-    <ProjectGuid>{D68E6CB7-FC70-41C9-BD53-D79552B37F0E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RDR2</RootNamespace>
-    <AssemblyName>ScriptHookRDRNetAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <BaseIntermediateOutputPath>..\..\obj\ScriptHookVDotNet3\</BaseIntermediateOutputPath>
-    <DocumentationFile>..\..\bin\Debug\ScriptHookRDRNetAPI.xml</DocumentationFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>false</Optimize>
-    <NoWarn>1591</NoWarn>
-    <DebugType>pdbonly</DebugType>
+    <TargetFramework>net48</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AssemblyName>$(AssemblyName)</AssemblyName>
+    <OutputPath>..\..\bin\$(Configuration)\</OutputPath>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>..\..\bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <BaseIntermediateOutputPath>..\..\obj\ScriptHookVDotNet3\</BaseIntermediateOutputPath>
-    <DocumentationFile>..\..\bin\Release\ScriptHookRDRNetAPI.xml</DocumentationFile>
-    <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <NoWarn>1591</NoWarn>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>ScriptHookRDRDotNet</PackageId>
+    <Authors>Halen84 and contributors</Authors>
+    <Company>Halen84 and contributors</Company>
+    <Product>ScriptHookRDRDotNet</Product>
+    <Description>The .NET scripting API for Red Dead Redemption 2.</Description>
+    <PackageLicenseExpression>Zlib</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Halen84/ScriptHookRDR2DotNet-V2</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Halen84/ScriptHookRDR2DotNet-V2.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageOutputPath>..\..\bin\$(Configuration)NuGet</PackageOutputPath>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ScriptHookRDRDotNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8564999cffc18483, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Debug\ScriptHookRDRDotNet.dll</HintPath>
+    <Reference Include="ScriptHookRDRDotNet">
+      <HintPath>..\..\bin\$(Configuration)\ScriptHookRDRDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="RDR2.Math\Matrix.cs" />
-    <Compile Include="RDR2.Math\Quaternion.cs" />
-    <Compile Include="RDR2.Math\Vector2.cs" />
-    <Compile Include="RDR2.Math\Vector3.cs" />
-    <Compile Include="RDR2.Native\Native.cs" />
-    <Compile Include="RDR2.Native\NativeDecl.cs" />
-    <Compile Include="RDR2.NaturalMotion\Euphoria.cs" />
-    <Compile Include="RDR2.NaturalMotion\EuphoriaBase.cs" />
-    <Compile Include="RDR2.NaturalMotion\EuphoriaHelpers.cs" />
-    <Compile Include="RDR2.UI\Alignment.cs" />
-    <Compile Include="RDR2.UI\ContainerElement.cs" />
-    <Compile Include="RDR2.UI\CustomSprite.cs" />
-    <Compile Include="RDR2.UI\Drawing.cs" />
-    <Compile Include="RDR2.UI\Font.cs" />
-    <Compile Include="RDR2.UI\Hud.cs" />
-    <Compile Include="RDR2.UI\IElement.cs" />
-    <Compile Include="RDR2.UI\ISpriteElement.cs" />
-    <Compile Include="RDR2.UI\Screen.cs" />
-    <Compile Include="RDR2.UI\Sprite.cs" />
-    <Compile Include="RDR2.UI\TextElement.cs" />
-    <Compile Include="RDR2\Blip.cs" />
-    <Compile Include="RDR2\Camera.cs" />
-    <Compile Include="RDR2\Console.cs" />
-    <Compile Include="RDR2\Entities\Entity.cs" />
-    <Compile Include="RDR2\Entities\EntityType.cs" />
-    <Compile Include="RDR2\Entities\Model.cs" />
-    <Compile Include="RDR2\Entities\Peds\AnimationFlags.cs" />
-    <Compile Include="RDR2\Entities\Peds\Bone.cs" />
-    <Compile Include="RDR2\Entities\Peds\ConfigFlags.cs" />
-    <Compile Include="RDR2\Entities\Peds\DrivingStyle.cs" />
-    <Compile Include="RDR2\Entities\Peds\FiringPattern.cs" />
-    <Compile Include="RDR2\Entities\Peds\FormationType.cs" />
-    <Compile Include="RDR2\Entities\Peds\Gender.cs" />
-    <Compile Include="RDR2\Entities\Peds\Ped.cs" />
-    <Compile Include="RDR2\Entities\Peds\PedHash.cs" />
-    <Compile Include="RDR2\Entities\Peds\Relationship.cs" />
-    <Compile Include="RDR2\Entities\Peds\RelationshipGroup.cs" />
-    <Compile Include="RDR2\Entities\Peds\Tasks.cs" />
-    <Compile Include="RDR2\Entities\Peds\TaskSequence.cs" />
-    <Compile Include="RDR2\Entities\Peds\VehicleFlags.cs" />
-    <Compile Include="RDR2\Entities\Prop.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\Vehicle.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleEnums.cs" />
-    <Compile Include="RDR2\Entities\Vehicles\VehicleHash.cs" />
-    <Compile Include="RDR2\Enums.cs" />
-    <Compile Include="RDR2\Game.cs" />
-    <Compile Include="RDR2\GameplayCamera.cs" />
-    <Compile Include="RDR2\Global.cs" />
-    <Compile Include="RDR2\GlobalCollection.cs" />
-    <Compile Include="RDR2\Handleable.cs" />
-    <Compile Include="RDR2\MarkerType.cs" />
-    <Compile Include="RDR2\Pickup.cs" />
-    <Compile Include="RDR2\PickupType.cs" />
-    <Compile Include="RDR2\Player.cs" />
-    <Compile Include="RDR2\PoolObject.cs" />
-    <Compile Include="RDR2\Prompt.cs" />
-    <Compile Include="RDR2\Raycasting.cs" />
-    <Compile Include="RDR2\RequireScript.cs" />
-    <Compile Include="RDR2\Rope.cs" />
-    <Compile Include="RDR2\RopeType.cs" />
-    <Compile Include="RDR2\Script.cs" />
-    <Compile Include="RDR2\ScriptSettings.cs" />
-    <Compile Include="RDR2\Weapons\Weapon.cs" />
-    <Compile Include="RDR2\Weapons\WeaponCollection.cs" />
-    <Compile Include="RDR2\Weapons\WeaponEnums.cs" />
-    <Compile Include="RDR2\World.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "$(TargetPath)" "D:\Games\Red Dead Redemption 2"</PostBuildEvent>
-  </PropertyGroup>
+
 </Project>
