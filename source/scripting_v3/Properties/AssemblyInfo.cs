@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScriptHookRDRNetAPI")]
-[assembly: AssemblyDescription("The .NET scripting API for RDR2")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ScriptHookRDRNetAPI")]
+//[assembly: AssemblyTitle("ScriptHookRDRNetAPI")]
+//[assembly: AssemblyDescription("The .NET scripting API for RDR2")]
+//[assembly: AssemblyConfiguration("")]
+//[assembly: AssemblyCompany("")]
+//[assembly: AssemblyProduct("ScriptHookRDRNetAPI")]
 [assembly: AssemblyCopyright("Copyright © 2020 Salty | Copyright © 2015 crosire")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+//[assembly: AssemblyVersion("2.0.0.0")]
+//[assembly: AssemblyFileVersion("2.0.0.0")]
