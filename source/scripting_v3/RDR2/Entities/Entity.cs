@@ -721,7 +721,9 @@ namespace RDR2
 			return !(left == right);
 		}
 		
-		public static explicit operator int(Entity e) => e.Handle;
+		public static implicit operator int(Entity e) => e.Handle;
+
+                public static implicit operator Entity(int handle) => new Entity(handle);
 
 		public override int GetHashCode()
 		{
